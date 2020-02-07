@@ -1,4 +1,16 @@
 .gradle
+.idea
+.classpath
+.project
+.settings/
+bin/
+build
+out
+*.iml
+*.log
+*/downloads
+*/build
+*/out
 /build/
 
 # Ignore Gradle GUI config
