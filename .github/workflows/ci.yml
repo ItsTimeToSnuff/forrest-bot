@@ -15,7 +15,6 @@ jobs:
     with:
       version: 11.0.1
       architecture: x64
-      jdkFile: ./openjdk-11.0.1_windows-x64_bin.zip
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
