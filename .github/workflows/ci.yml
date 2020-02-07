@@ -10,9 +10,9 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Set up OpenJDK 11
-      uses: actions/setup-java@v1.1
+      uses: actions/setup-java@v1.11
       with:
-        java-version: openjdk@1.1
+        java-version: openjdk@1.11
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
     - name: Build with Gradle
