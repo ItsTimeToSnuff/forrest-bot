@@ -1,0 +1,76 @@
+apply plugin: 'java'
+apply plugin: 'pmd'
+apply plugin: 'jacoco'
+
+repositories {
+    mavenCentral()
+}
+
+ext {
+    pmdVersion = '6.20.0'
+    jacocoVersion = '0.8.5'
+}
+
+pmd {
+    toolVersion = pmdVersion
+    consoleOutput = true
+    sourceSets = [sourceSets.main]
+    ruleSetFiles = rootProject.files('etc/pmd/ruleset.xml')
+    ruleSets = []
+}
+
+jacoco {
+    toolVersion = jacocoVersion
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled = false
+        csv.enabled = false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+jacocoTestCoverageVerification {
+    violationRules {
+
+        rule {
+            //element = 'METHOD'
+            limit {
+                counter = 'METHOD'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+
+        rule {
+            //element = 'CLASS'
+            limit {
+                counter = 'CLASS'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+
+        }
+        rule {
+            //element = 'INSTRUCTION'
+            limit {
+                counter = 'INSTRUCTION'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+        rule {
+            //element = 'BRANCH'
+            limit {
+                counter = 'BRANCH'
+                value = 'COVEREDRATIO'
+                minimum = 0.9
+            }
+        }
+    }
+
+}
+
+check.dependsOn jacocoTestCoverageVerification
+test.finalizedBy jacocoTestReport

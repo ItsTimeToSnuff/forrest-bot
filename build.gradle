@@ -1,20 +1,71 @@
-plugins {
-    id 'java'
+buildscript {
+    apply from: "${rootProject.projectDir}/etc/repositories.gradle"
+    repositories extRepositories
+    apply from: "${rootProject.projectDir}/etc/dependencies.gradle"
+    apply from: "${rootProject.projectDir}/etc/analyze.gradle"
+    dependencies {
+        classpath boot.springBootPlugin
+    }
 }
 
-group 'com.itstimetosnuff'
+group 'com.itstimetosnuff.forrest.bot'
 version '1.0-SNAPSHOT'
-
-sourceCompatibility = 1.8
-
-repositories {
-    mavenCentral()
-}
-
-dependencies {
-    
-}
 
 wrapper {
     gradleVersion = '6.1.1'
+}
+
+configure(allprojects) { project->
+    apply plugin: 'java'
+    apply plugin: 'org.springframework.boot'
+    apply plugin: 'io.spring.dependency-management'
+
+    repositories extRepositories
+
+    sourceCompatibility = 11
+
+    test {
+        useJUnitPlatform {
+            excludeTags 'slow'
+            includeEngines 'junit-jupiter'
+        }
+        testLogging {
+            events 'PASSED', 'FAILED', 'SKIPPED'
+        }
+        failFast = false
+    }
+
+    springBoot {
+        mainClassName = 'com.itstimetosnuff.forrest.bot.BotStarter'
+    }
+
+    bootRun {
+        systemProperties = System.properties as Map<String, ?>
+    }
+
+    dependencies {
+        implementation boot.starterWeb
+
+        annotationProcessor utils.lombok
+        annotationProcessor boot.annotationProcessor
+
+        compileOnly utils.lombok
+        testCompileOnly utils.lombok
+    }
+
+    clean.doFirst {
+        delete "${project.projectDir}/out/"
+    }
+}
+
+project("forrest-bot-main") {
+    jar {
+        enabled = true
+    }
+    bootJar {
+        archiveClassifier.set('boot')
+    }
+    dependencies {
+
+    }
 }
