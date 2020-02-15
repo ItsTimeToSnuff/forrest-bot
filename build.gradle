@@ -1,10 +1,3 @@
-buildscript {
-    apply from: "${rootProject.projectDir}/etc/repositories.gradle"
-    repositories extRepositories
-    apply from: "${rootProject.projectDir}/etc/buildscript-dependencies.gradle"
-    dependencies extDependencies
-}
-
 group 'com.itstimetosnuff.forrest.bot'
 version '1.0-SNAPSHOT'
 
@@ -14,23 +7,13 @@ wrapper {
 
 configure(allprojects) { project->
     apply plugin: 'java'
-    apply plugin: 'application'
+    apply from: "${rootProject.projectDir}/etc/repositories.gradle"
+    repositories extRepositories
     apply from: "${rootProject.projectDir}/etc/dependencies.gradle"
     apply from: "${rootProject.projectDir}/etc/analyze.gradle"
 
-
-    repositories extRepositories
-
-    distributions {
-        distZip.enabled = false
-        distTar.enabled = false
-    }
-
-    sourceSets {
-        main.java.srcDirs += "build/generated/sources/annotationProcessor/java/main"
-    }
-
     sourceCompatibility = 11
+    repositories extRepositories
 
     test {
         useJUnitPlatform {
@@ -43,20 +26,14 @@ configure(allprojects) { project->
         failFast = false
     }
 
-    application {
-
-        mainClassName = 'com.itstimetosnuff.forrest.bot.BotStarter'
-        applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
-    }
-
     dependencies {
         annotationProcessor utils.lombok
 
-        compileOnly utils.lombok
-        testCompileOnly utils.lombok
+        testImplementation testing.junit5
 
-        compile "org.slf4j:slf4j-log4j12:1.7.5"
-        compile "org.telegram:telegrambots:4.6"
+        compile utils.lombok
+        compile log.slf4jLog4j
+        compile telegram.bots
     }
 
     clean.doFirst {
@@ -65,10 +42,9 @@ configure(allprojects) { project->
 }
 
 project("forrest-bot-main") {
-    applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
+
     jar {
         enabled = true
-        applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
         manifest {
             attributes ('Implementation-Title': 'Gradle Jar File Example',
                     'Implementation-Version': '0.1b',
@@ -78,20 +54,7 @@ project("forrest-bot-main") {
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     }
 
-//    bootJar {
-//        archiveClassifier.set('boot')
-//    }
-    application {
-        mainClassName = 'com.itstimetosnuff.forrest.bot.BotStarter'
-        applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
-    }
-
     dependencies {
-        implementation misc.flyway
-        application
-        application {
-            mainClassName = 'com.itstimetosnuff.forrest.bot.BotStarter'
-            applicationDefaultJvmArgs = ['--add-opens', 'java.base/java.lang=ALL-UNNAMED']
-        }
+
     }
 }
