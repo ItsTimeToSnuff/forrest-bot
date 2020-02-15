@@ -12,8 +12,6 @@ pmd {
     toolVersion = "6.20.0"
     consoleOutput = true
     sourceSets = [sourceSets.main]
-    ruleSetFiles = rootProject.files("etc/pmd/ruleset.xml")
-    ruleSets = []
 }
 
 
@@ -85,10 +83,6 @@ jacocoTestCoverageVerification {
         }
     }
 
-}
-
-test {
-    useJUnitPlatform()
 }
 
 check.dependsOn jacocoTestCoverageVerification
