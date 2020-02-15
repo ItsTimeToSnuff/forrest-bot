@@ -1,26 +1,25 @@
+
 apply plugin: 'java'
 apply plugin: 'pmd'
+apply plugin: 'jdepend'
 apply plugin: 'jacoco'
 
-repositories {
-    mavenCentral()
-}
-
-ext {
-    pmdVersion = '6.20.0'
-    jacocoVersion = '0.8.5'
+jacoco {
+    toolVersion = '0.8.5'
 }
 
 pmd {
-    toolVersion = pmdVersion
+    toolVersion = "6.20.0"
     consoleOutput = true
     sourceSets = [sourceSets.main]
-    ruleSetFiles = rootProject.files('etc/pmd/ruleset.xml')
+    ruleSetFiles = rootProject.files("etc/pmd/ruleset.xml")
     ruleSets = []
 }
 
-jacoco {
-    toolVersion = jacocoVersion
+
+jdepend {
+    toolVersion = "2.9.1"
+    sourceSets = [sourceSets.main]
 }
 
 jacocoTestReport {
@@ -29,9 +28,25 @@ jacocoTestReport {
         csv.enabled = false
         html.destination file("${buildDir}/jacocoHtml")
     }
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(
+                    dir: it,
+                    exclude: ['**/dto/**', '**/parameter/**', '**/*Application.*', '**/*Starter.*', '**/entity/**', '**/*Main*/**', '**/exception/**', '**/configuration/**', '**/filter/**']
+            )
+        })
+    }
 }
 
 jacocoTestCoverageVerification {
+    afterEvaluate {
+        classDirectories = files(classDirectories.files.collect {
+            fileTree(
+                    dir: it,
+                    exclude: ['**/dto/**', '**/parameter/**', '**/*Application.*', '**/*Starter.*', '**/entity/**', '**/*Main*/**', '**/exception/**', '**/configuration/**', '**/filter/**']
+            )
+        })
+    }
     violationRules {
 
         rule {
@@ -70,6 +85,10 @@ jacocoTestCoverageVerification {
         }
     }
 
+}
+
+test {
+    useJUnitPlatform()
 }
 
 check.dependsOn jacocoTestCoverageVerification

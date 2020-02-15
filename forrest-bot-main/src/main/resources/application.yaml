@@ -1,0 +1,11 @@
+
+server:
+  port: 8080
+
+bot:
+  botName: bot
+  webAppUrl: https://forrest.com.ua
+
+telegram:
+  external-url: https://f88da5d9.ngrok.io
+  internal-url: http://localhost:80

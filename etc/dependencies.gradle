@@ -6,7 +6,7 @@ ext {
     springSecurityVersion = '5.2.0.RELEASE'
     springBatchVersion = '4.2.0.RELEASE'
     springIntegrationVersion = '5.2.0.RELEASE'
-    springBootVersion = '2.2.4.RELEASE'
+    springBootVersion = '2.2.0.RELEASE' //'2.1.9.RELEASE'
 
     //logging libs
     slf4jVersion = '1.7.25'
@@ -319,8 +319,10 @@ ext {
             jmhCore: "org.openjdk.jmh:jmh-core:$jmhCore",
             jmhGenerator: "org.openjdk.jmh:jmh-generator-annprocess:$jmhCore"
     ]
-
+    
     security = [
             jwt: "io.jsonwebtoken:jjwt:0.9.1"
     ]
+
+
 }
