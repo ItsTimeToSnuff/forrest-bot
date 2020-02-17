@@ -7,7 +7,9 @@ public interface Session {
 
     Long getChatId();
 
-    BotApiMethod onMessage(Request request);
+
+
+    BotApiMethod onCommand(Request request);
 
     void onClose();
 

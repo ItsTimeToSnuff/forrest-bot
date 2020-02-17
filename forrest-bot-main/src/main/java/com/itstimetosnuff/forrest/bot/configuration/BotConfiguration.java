@@ -1,41 +1,53 @@
 package com.itstimetosnuff.forrest.bot.configuration;
 
-//import org.springframework.beans.factory.annotation.Value;
-//import org.springframework.boot.context.properties.ConfigurationProperties;
-//import org.springframework.boot.context.properties.EnableConfigurationProperties;
-//import org.springframework.context.annotation.Configuration;
-//import org.springframework.context.annotation.PropertySource;
+import lombok.Getter;
+import lombok.extern.slf4j.Slf4j;
 
-//@Configuration
-//@ConfigurationProperties(prefix = "test")
-//@EnableConfigurationProperties
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Properties;
+
+@Getter
+@Slf4j
 public class BotConfiguration {
 
-    private String webAppUrl;
+    private String botUsername;
 
-    private String botName;
+    private String botToken;
 
-    public final String botToken = "";
+    private String botPath;
 
-    public String getWebAppUrl() {
-        return webAppUrl;
+    private String externalUrl;
+
+    private String internalUrl;
+
+    public BotConfiguration() {
+        Properties properties = new Properties();
+        setProperties(properties);
+        this.botUsername = properties.getProperty("bot.username");
+        log.debug("set bot user name: " + botUsername);
+        this.botToken = System.getenv("BOT_TOKEN");
+        log.debug("set bot token: " + botToken);
+        this.botPath = properties.getProperty("bot.path");
+        log.debug("set bot path: " + botPath);
+        this.externalUrl = properties.getProperty("bot.externalUrl");
+        log.debug("set external url: " + externalUrl);
+        this.internalUrl = properties.getProperty("bot.internalUrl");
+        log.debug("set internal url: " + internalUrl);
     }
 
-    public void setWebAppUrl(String webAppUrl) {
-        this.webAppUrl = webAppUrl;
+    private void setProperties(Properties properties) {
+        String propFileName = "config.properties";
+        log.debug("load properties from: " + propFileName);
+        try(InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(propFileName)) {
+            if (inputStream != null) {
+                properties.load(inputStream);
+            } else {
+                throw new FileNotFoundException("property file '" + propFileName + "' not found in the classpath");
+            }
+        }catch (IOException e){
+            log.error(e.getMessage(), e);
+        }
     }
-
-    public String getBotName() {
-        return botName;
-    }
-
-    public void setBotName(String botName) {
-        this.botName = botName;
-    }
-
-    //    public BotConfiguration(/*@Value("${BOT_TOKEN") String botToken, */String botName, String webAppUrl) {
-//        this.botToken = ;//botToken;
-//        this.botName = botName;
-//        this.webAppUrl = webAppUrl;
-//    }
 }

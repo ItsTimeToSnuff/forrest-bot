@@ -1,7 +1,8 @@
 package com.itstimetosnuff.forrest.bot.enums;
 
 public enum EventType {
-    COMMAND_START("/start");
+    COMMAND_START("/start"),
+    ERROR("error");
 
     private String command;
 
@@ -20,6 +21,7 @@ public enum EventType {
             }
         }
         //TODO command not found
-        throw new IllegalArgumentException("Command not found");
+        return ERROR;
+        //throw new IllegalArgumentException("Command not found");
     }
 }
