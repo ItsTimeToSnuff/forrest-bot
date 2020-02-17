@@ -1,7 +1,7 @@
 package com.itstimetosnuff.forrest.bot.session;
 
-import com.itstimetosnuff.forrest.bot.request.Request;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 public interface Session {
 
@@ -9,7 +9,7 @@ public interface Session {
 
 
 
-    BotApiMethod onCommand(Request request);
+    BotApiMethod onCommand(Update update);
 
     void onClose();
 

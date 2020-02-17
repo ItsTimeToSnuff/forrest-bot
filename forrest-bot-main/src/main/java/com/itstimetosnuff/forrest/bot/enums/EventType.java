@@ -16,7 +16,7 @@ public enum EventType {
 
     public static EventType byCommand(String command) {
         for (EventType t : values()) {
-            if (t.command.equals(command)){
+            if (command.contains(t.command)){
                 return t;
             }
         }
