@@ -1,8 +1,6 @@
 package com.itstimetosnuff.forrest.bot.bot;
 
 import com.itstimetosnuff.forrest.bot.configuration.BotConfiguration;
-import com.itstimetosnuff.forrest.bot.request.Request;
-import com.itstimetosnuff.forrest.bot.request.RequestUtils;
 import com.itstimetosnuff.forrest.bot.session.DefaultSessionFactory;
 import com.itstimetosnuff.forrest.bot.session.InMemorySessionStore;
 import com.itstimetosnuff.forrest.bot.session.Session;
@@ -34,8 +32,7 @@ public class ForRestBot extends TelegramWebhookBot {
             log.info(chatId.toString());
             Session session = sessionStore.findSession(chatId).orElseGet(() -> sessionFactory.createSession(chatId));
             log.info(session.toString());
-            Request request = RequestUtils.create(update);
-            return session.onCommand(request);
+            return session.onCommand(update);
         }
     }
 

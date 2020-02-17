@@ -1,11 +1,11 @@
 package com.itstimetosnuff.forrest.bot.session;
 
+import com.itstimetosnuff.forrest.bot.enums.EventType;
 import com.itstimetosnuff.forrest.bot.hendler.Handler;
 import com.itstimetosnuff.forrest.bot.hendler.HandlerRegistry;
-import com.itstimetosnuff.forrest.bot.request.Request;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.Update;
 
 @AllArgsConstructor
 public class DefaultSession implements Session {
@@ -20,10 +20,11 @@ public class DefaultSession implements Session {
     }
 
     @Override
-    public BotApiMethod onCommand(Request request) {
-        Handler<Request, BotApiMethod> handler = handlerRegistry.getHandler(request.getType());
+    public BotApiMethod onCommand(Update update) {
+        String text = update.getMessage().getText();
+        Handler handler = handlerRegistry.getHandler(EventType.byCommand(text));
         if (handler != null){
-            return handler.handleEvent(request);
+            return handler.handleEvent(update);
         }
         return null;
     }
