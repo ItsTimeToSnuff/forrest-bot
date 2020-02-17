@@ -19,8 +19,6 @@ public class HandlerRegistry {
     }
 
     public void register(EventType type, Handler<? extends Request, ? extends BotApiMethod> handler) {
-        log.error("before length->"+handler.toString());
         handlers.put(type, handler);
-        log.error("after length->"+handlers.toString() + handlers.getClass().getCanonicalName());
     }
 }

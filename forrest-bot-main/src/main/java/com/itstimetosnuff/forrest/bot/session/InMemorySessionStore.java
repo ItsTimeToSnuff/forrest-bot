@@ -14,12 +14,7 @@ public class InMemorySessionStore implements SessionStore {
 
     @Override
     public Optional<Session> findSession(Long chatId) {
-        Session session = sessions.get(chatId);
-        if (session != null){
-            return Optional.of(session);
-        }else {
-            return Optional.empty();
-        }
+        return Optional.ofNullable(sessions.get(chatId));
     }
 
     @Override

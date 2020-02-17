@@ -10,17 +10,17 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 @AllArgsConstructor
 public class DefaultSession implements Session {
 
-    private Long carId;
+    private Long chatId;
 
     private HandlerRegistry handlerRegistry;
 
     @Override
     public Long getChatId() {
-        return this.carId;
+        return this.chatId;
     }
 
     @Override
-    public BotApiMethod onMessage(Request request) {
+    public BotApiMethod onCommand(Request request) {
         Handler<Request, BotApiMethod> handler = handlerRegistry.getHandler(request.getType());
         if (handler != null){
             return handler.handleEvent(request);
