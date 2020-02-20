@@ -29,11 +29,17 @@ configure(allprojects) { project->
     dependencies {
         annotationProcessor utils.lombok
 
-        testImplementation testing.junit5
+        compileOnly utils.lombok
 
-        compile utils.lombok
         compile log.slf4jLog4j
         compile telegram.bots
+
+        testAnnotationProcessor utils.lombok
+
+        testImplementation testing.junit5
+        testImplementation testing.junit5Mockhito
+
+        testCompileOnly utils.lombok
     }
 
     clean.doFirst {
@@ -50,7 +56,6 @@ project("forrest-bot-main") {
                     'Implementation-Version': '0.1b',
                     'Main-Class': 'com.itstimetosnuff.forrest.bot.BotStarter')
         }
-        baseName = project.name + '-all'
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
     }
 

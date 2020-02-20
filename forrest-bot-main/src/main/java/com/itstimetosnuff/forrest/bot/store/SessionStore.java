@@ -1,4 +1,6 @@
-package com.itstimetosnuff.forrest.bot.session;
+package com.itstimetosnuff.forrest.bot.store;
+
+import com.itstimetosnuff.forrest.bot.session.Session;
 
 import java.util.Optional;
 

@@ -9,7 +9,11 @@ import java.util.Map;
 @Slf4j
 public class HandlerRegistry {
 
-    private static Map<EventType, Handler> handlers = new EnumMap<>(EventType.class);
+    private transient Map<EventType, Handler> handlers;
+
+    public HandlerRegistry() {
+        this.handlers = new EnumMap<>(EventType.class);
+    }
 
     public Handler getHandler(EventType eventType){
         return handlers.get(eventType);
