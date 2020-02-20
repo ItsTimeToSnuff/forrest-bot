@@ -15,6 +15,10 @@ configure(allprojects) { project->
     sourceCompatibility = 11
     repositories extRepositories
 
+    task stage {
+        dependsOn build
+    }
+
     test {
         useJUnitPlatform {
             excludeTags 'slow'
