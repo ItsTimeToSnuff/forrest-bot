@@ -1,4 +1,6 @@
-package com.itstimetosnuff.forrest.bot.session;
+package com.itstimetosnuff.forrest.bot.store;
+
+import com.itstimetosnuff.forrest.bot.session.Session;
 
 import java.util.Map;
 import java.util.Optional;
@@ -6,7 +8,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemorySessionStore implements SessionStore {
 
-    private final transient Map<Long, Session> sessions;
+    private transient Map<Long, Session> sessions;
 
     public InMemorySessionStore() {
         sessions = new ConcurrentHashMap<>();

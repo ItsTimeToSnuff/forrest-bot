@@ -7,11 +7,7 @@ public interface Session {
 
     Long getChatId();
 
-
-
-    BotApiMethod onCommand(Update update);
-
-    void onClose();
+    BotApiMethod onUpdate(Update update);
 
     void close();
 }
