@@ -12,7 +12,7 @@ configure(allprojects) { project->
     apply from: "${rootProject.projectDir}/etc/dependencies.gradle"
     apply from: "${rootProject.projectDir}/etc/analyze.gradle"
 
-    sourceCompatibility = 11
+    sourceCompatibility = 1.8
     repositories extRepositories
 
     task stage {
