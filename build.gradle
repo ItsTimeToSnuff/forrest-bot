@@ -37,6 +37,7 @@ configure(allprojects) { project->
 
         compile log.slf4jLog4j
         compile telegram.bots
+        compile google.client
 
         testAnnotationProcessor utils.lombok
 
@@ -51,7 +52,7 @@ configure(allprojects) { project->
     }
 }
 
-project("forrest-bot-main") {
+project('forrest-bot-main') {
 
     jar {
         enabled = true
@@ -64,6 +65,13 @@ project("forrest-bot-main") {
     }
 
     dependencies {
+        implementation project(':forrest-bot-scheduler')
+    }
+}
 
+project('forrest-bot-scheduler') {
+
+    dependencies {
+        implementation project(':forrest-bot-main')
     }
 }
