@@ -106,6 +106,9 @@ ext {
     //telegram
     botsVersion = '4.6'
 
+    //google
+    googleClientVersion = '1.30.5'
+
     spring = [
             context: "org.springframework:spring-context:$springVersion",
             webmvc: "org.springframework:spring-webmvc:$springVersion",
@@ -333,5 +336,7 @@ ext {
             bots: "org.telegram:telegrambots:$botsVersion"
     ]
 
-
+    google = [
+            client: "com.google.api-client:google-api-client:$googleClientVersion"
+    ]
 }
