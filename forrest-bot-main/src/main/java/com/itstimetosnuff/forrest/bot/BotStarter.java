@@ -20,7 +20,7 @@ public class BotStarter {
             log.info("Initiating bot configuration");
             BotConfiguration configuration =
                     BotConfiguration
-                            .builder("config.properties")
+                            .builder(args[0])
                             .withBotPath()
                             .withEnvBotToken()
                             .withBotUsername()
