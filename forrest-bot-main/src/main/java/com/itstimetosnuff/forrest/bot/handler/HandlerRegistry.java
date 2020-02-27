@@ -1,12 +1,10 @@
-package com.itstimetosnuff.forrest.bot.hendler;
+package com.itstimetosnuff.forrest.bot.handler;
 
 import com.itstimetosnuff.forrest.bot.enums.EventType;
-import lombok.extern.slf4j.Slf4j;
 
 import java.util.EnumMap;
 import java.util.Map;
 
-@Slf4j
 public class HandlerRegistry {
 
     private transient Map<EventType, Handler> handlers;

@@ -10,13 +10,19 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -36,6 +42,12 @@ public class ForRestBotTest {
     private Message mockMessage;
     @Mock
     private BotApiMethod mockBotApiMethod;
+    @Mock
+    private CallbackQuery mockCallbackQuery;
+    @Mock
+    private List<BotApiMethod> mockExecutes;
+    @Mock
+    private Iterator mockIterator;
 
     @InjectMocks
     private ForRestBot bot;
@@ -43,11 +55,14 @@ public class ForRestBotTest {
     @Test
     void whenForRestBotOnWebhookWithNewSessionThenReturnBotApiMethod() {
         //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getChatId()).thenReturn(1L);
         when(mockSessionStore.findSession(1L)).thenReturn(Optional.empty());
         when(mockSessionFactory.createSession(1L)).thenReturn(mockSession);
         when(mockSession.onUpdate(mockUpdate)).thenReturn(mockBotApiMethod);
+        when(mockSession.getExecutes()).thenReturn(mockExecutes);
+        when(mockExecutes.isEmpty()).thenReturn(true);
         //when
         BotApiMethod method = bot.onWebhookUpdateReceived(mockUpdate);
         //then
@@ -55,14 +70,23 @@ public class ForRestBotTest {
     }
 
     @Test
-    void whenForRestBotOnWebhookWithExistingSessionThenReturnBotApiMethod() {
+    void whenForRestBotOnWebhookWithExistingSessionThenReturnBotApiMethod() throws TelegramApiException {
         //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
+        ForRestBot spyBot = spy(bot);
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getChatId()).thenReturn(1L);
         when(mockSessionStore.findSession(1L)).thenReturn(Optional.of(mockSession));
         when(mockSession.onUpdate(mockUpdate)).thenReturn(mockBotApiMethod);
+        when(mockSession.getExecutes()).thenReturn(mockExecutes);
+        when(mockExecutes.isEmpty()).thenReturn(false);
+        when(mockExecutes.iterator()).thenReturn(mockIterator);
+        when(mockIterator.hasNext()).thenReturn(true, false);
+        when(mockIterator.next()).thenReturn(mockBotApiMethod);
+        doReturn(null).when(spyBot).execute(mockBotApiMethod);
         //when
-        BotApiMethod method = bot.onWebhookUpdateReceived(mockUpdate);
+        BotApiMethod method = spyBot.onWebhookUpdateReceived(mockUpdate);
         //then
         assertEquals(mockBotApiMethod, method);
     }
