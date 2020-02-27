@@ -38,6 +38,8 @@ configure(allprojects) { project->
         compile log.slf4jLog4j
         compile telegram.bots
         compile google.client
+        compile google.oauth
+        compile google.calendar
 
         testAnnotationProcessor utils.lombok
 
@@ -65,13 +67,12 @@ project('forrest-bot-main') {
     }
 
     dependencies {
-        implementation project(':forrest-bot-scheduler')
+        implementation project(':forrest-bot-google')
     }
 }
 
-project('forrest-bot-scheduler') {
+project('forrest-bot-google') {
 
     dependencies {
-        implementation project(':forrest-bot-main')
     }
 }

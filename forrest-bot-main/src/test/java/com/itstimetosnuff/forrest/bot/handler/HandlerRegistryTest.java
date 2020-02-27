@@ -1,8 +1,6 @@
 package com.itstimetosnuff.forrest.bot.handler;
 
 import com.itstimetosnuff.forrest.bot.enums.EventType;
-import com.itstimetosnuff.forrest.bot.hendler.Handler;
-import com.itstimetosnuff.forrest.bot.hendler.HandlerRegistry;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -29,7 +27,7 @@ public class HandlerRegistryTest {
     @Test
     void whenHandlerRegistryGetHandlerThenReturnIt() {
         //when
-        handlerRegistry.getHandler(EventType.COMMAND_START);
+        handlerRegistry.getHandler(EventType.START);
         //then
         verify(handlers, times(1)).get(any(EventType.class));
     }
@@ -37,7 +35,7 @@ public class HandlerRegistryTest {
     @Test
     void whenHandlerRegistryRegisterThenRegisterIt() {
         //when
-        handlerRegistry.register(EventType.COMMAND_START, handler);
+        handlerRegistry.register(EventType.START, handler);
         //then
         verify(handlers, times(1)).put(any(EventType.class), any(Handler.class));
     }

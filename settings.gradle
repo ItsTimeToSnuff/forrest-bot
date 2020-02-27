@@ -1,4 +1,4 @@
 rootProject.name = 'forrest-bot'
 include 'forrest-bot-main'
-include 'forrest-bot-scheduler'
+include 'forrest-bot-google'
 

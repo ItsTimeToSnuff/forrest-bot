@@ -11,6 +11,9 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @RequiredArgsConstructor
 public class ForRestBot extends TelegramWebhookBot {
@@ -22,11 +25,24 @@ public class ForRestBot extends TelegramWebhookBot {
     @Override
     public BotApiMethod onWebhookUpdateReceived(Update update) {
             try {
-                Long chatId = update.getMessage().getChatId();
+                Long chatId;
+                if (update.hasCallbackQuery()){
+                    chatId = update.getCallbackQuery().getMessage().getChatId();
+                } else {
+                    chatId = update.getMessage().getChatId();
+                }
                 log.info(chatId.toString());
                 Session session = sessionStore.findSession(chatId).orElseGet(() -> sessionFactory.createSession(chatId));
                 log.info(session.toString());
-                return session.onUpdate(update);
+                BotApiMethod onUpdate = session.onUpdate(update);
+                List<BotApiMethod> executes = session.getExecutes();
+                if (!executes.isEmpty()){
+                    for (BotApiMethod method : executes){
+                        execute(method);
+                    }
+                    session.setExecutes(new ArrayList<>());
+                }
+                return onUpdate;
             }catch (Exception e){
                 log.info(e.getMessage(), e);
                 return null;

@@ -8,16 +8,16 @@ public class EventTypeTest {
 
     @Test
     void whenEventTypeGetCommandThenReturnIt() {
-        assertEquals(EventType.COMMAND_START.getCommand(), "/start");
+        assertEquals(EventType.START.getValue(), "/start");
     }
 
     @Test
     void whenEventTypeByCommandThenReturnIt() {
-        assertEquals(EventType.byCommand("/start"), EventType.COMMAND_START);
+        assertEquals(EventType.byType("/start"), EventType.START);
     }
 
     @Test
     void whenEventTypeByCommandThenReturnError() {
-        assertEquals(EventType.byCommand("/test"), EventType.ERROR);
+        assertEquals(EventType.byType("/test"), EventType.ERROR);
     }
 }

@@ -1,6 +1,6 @@
-package com.itstimetosnuff.forrest.bot.handler;
+package com.itstimetosnuff.forrest.bot.handler.statistics;
 
-import com.itstimetosnuff.forrest.bot.hendler.StartHandler;
+import com.itstimetosnuff.forrest.bot.session.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -9,35 +9,30 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import org.telegram.telegrambots.meta.api.objects.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class StartHandlerTest {
+public class StatisticsHandlerTest {
     @Mock
     private Update mockUpdate;
     @Mock
     private Message mockMessage;
     @Mock
-    private User mockUser;
+    private Session mockSession;
 
     @InjectMocks
-    private StartHandler startHandler;
+    private StatisticsHandler statisticsHandler;
 
     @Test
-    void whenStartHandlerHandleEventThenReturnSendMessage() {
+    void whenErrorHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getChatId()).thenReturn(1L);
-        when(mockMessage.getFrom()).thenReturn(mockUser);
-        when(mockUser.getFirstName()).thenReturn("test name");
         //when
-        SendMessage sendMessage = startHandler.handleEvent(mockUpdate);
+        SendMessage sendMessage = statisticsHandler.handleEvent(mockUpdate, mockSession);
         //then
-        assertTrue(sendMessage.getText().contains("test name"));
         assertEquals(sendMessage.getChatId(), "1");
     }
 }
