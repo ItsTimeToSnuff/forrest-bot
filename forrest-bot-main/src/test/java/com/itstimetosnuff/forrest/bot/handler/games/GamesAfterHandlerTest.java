@@ -306,7 +306,7 @@ public class GamesAfterHandlerTest {
 
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase14SaveThenReturnEditMessage() {
+    void whenGamesAfterHandlerHandleEventCase14SaveThenReturnSendMessage() {
         //given
         gamesAfterHandler.setCase(14);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);

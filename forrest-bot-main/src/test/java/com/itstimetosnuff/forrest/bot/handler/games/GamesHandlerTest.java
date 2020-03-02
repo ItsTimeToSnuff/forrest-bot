@@ -27,7 +27,7 @@ public class GamesHandlerTest {
     private GamesHandler gamesHandler;
 
     @Test
-    void whenErrorHandlerHandleEventThenReturnSendMessage() {
+    void whenGamesHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");

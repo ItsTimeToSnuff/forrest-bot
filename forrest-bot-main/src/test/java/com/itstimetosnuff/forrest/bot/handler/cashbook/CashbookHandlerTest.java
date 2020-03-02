@@ -28,7 +28,7 @@ public class CashbookHandlerTest {
     private CashbookHandler cashbookHandler;
 
     @Test
-    void whenErrorHandlerHandleEventThenReturnSendMessage() {
+    void whenCashbookHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");
