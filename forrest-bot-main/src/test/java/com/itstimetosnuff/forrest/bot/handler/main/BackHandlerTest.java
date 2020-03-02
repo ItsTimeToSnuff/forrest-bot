@@ -27,7 +27,7 @@ public class BackHandlerTest {
     private BackHandler backHandler;
 
     @Test
-    void whenErrorHandlerHandleEventThenReturnSendMessage() {
+    void whenBackHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");

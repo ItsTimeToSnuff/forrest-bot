@@ -1,4 +1,4 @@
-package com.itstimetosnuff.forrest.bot.handler.warehouse;
+package com.itstimetosnuff.forrest.bot.handler.cashbook;
 
 import com.itstimetosnuff.forrest.bot.session.Session;
 import org.junit.jupiter.api.Test;
@@ -15,7 +15,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class WarehouseHandlerTest {
+public class CashbookBalanceHandlerTest {
+
     @Mock
     private Update mockUpdate;
     @Mock
@@ -24,16 +25,16 @@ public class WarehouseHandlerTest {
     private Session mockSession;
 
     @InjectMocks
-    private WarehouseHandler warehouseHandler;
+    private CashbookBalanceHandler cashbookBalanceHandler;
 
     @Test
-    void whenWarehouseHandlerHandleEventThenReturnSendMessage() {
+    void whenCashbookBalanceHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");
         when(mockMessage.getMessageId()).thenReturn(1);
         //when
-        BotApiMethod method = warehouseHandler.handleEvent(mockUpdate);
+        BotApiMethod method = cashbookBalanceHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }

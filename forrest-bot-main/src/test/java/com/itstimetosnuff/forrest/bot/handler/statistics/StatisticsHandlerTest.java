@@ -27,7 +27,7 @@ public class StatisticsHandlerTest {
     private StatisticsHandler statisticsHandler;
 
     @Test
-    void whenErrorHandlerHandleEventThenReturnSendMessage() {
+    void whenStatisticsHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");
