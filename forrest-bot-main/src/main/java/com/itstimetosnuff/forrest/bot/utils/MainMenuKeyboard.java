@@ -1,87 +1,106 @@
 package com.itstimetosnuff.forrest.bot.utils;
 
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
-public final class MainMenuKeyboard {
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
+public final class MainMenuKeyboard extends KeyboardHelper {
 
     public static ReplyKeyboardMarkup mainMenu(){
-
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-
-        row.add(Buttons.GAMES);
-        row.add(Buttons.WAREHOUSE);
-        keyboard.add(row);
-        row = new KeyboardRow();
-        row.add(Buttons.STATISTICS);
-        keyboard.add(row);
-        keyboardMarkup.setResizeKeyboard(true);
-        return keyboardMarkup.setKeyboard(keyboard);
+        return threeButton(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.STATISTICS);
     }
 
     public static ReplyKeyboardMarkup gamesMenu(){
-
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-
-        row.add(Buttons.GAMES_CREATE);
-        row.add(Buttons.GAMES_AFTER);
-        keyboard.add(row);
-        row = new KeyboardRow();
-        row.add(Buttons.BACK);
-        keyboard.add(row);
-        keyboardMarkup.setResizeKeyboard(true);
-        return keyboardMarkup.setKeyboard(keyboard);
+        return threeButton(Buttons.GAMES_CREATE, Buttons.GAMES_AFTER, Buttons.BACK);
     }
 
     public static ReplyKeyboardMarkup warehouseMenu(){
-
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-
-        row.add(Buttons.WAREHOUSE_DEBIT);
-        row.add(Buttons.WAREHOUSE_CREDIT);
-        keyboard.add(row);
-        row = new KeyboardRow();
-        row.add(Buttons.WAREHOUSE_BALANCE);
-        row.add(Buttons.BACK);
-        keyboard.add(row);
-        keyboardMarkup.setResizeKeyboard(true);
-        return keyboardMarkup.setKeyboard(keyboard);
+        return fourButton(Buttons.WAREHOUSE_DEBIT, Buttons.WAREHOUSE_CREDIT,
+                Buttons.WAREHOUSE_BALANCE, Buttons.BACK);
     }
 
     public static ReplyKeyboardMarkup statisticsMenu(){
-
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
-
-        row.add(Buttons.STATISTICS_MONTH);
-        row.add(Buttons.STATISTICS_YEAR);
-        keyboard.add(row);
-        row = new KeyboardRow();
-        row.add(Buttons.BACK);
-        keyboard.add(row);
-        keyboardMarkup.setResizeKeyboard(true);
-        return keyboardMarkup.setKeyboard(keyboard);
+        return threeButton(Buttons.STATISTICS_MONTH, Buttons.STATISTICS_YEAR, Buttons.BACK);
     }
 
     public static ReplyKeyboardMarkup cancel(){
+        return oneButton(Buttons.CANCEL);
+    }
 
-        ReplyKeyboardMarkup keyboardMarkup = new ReplyKeyboardMarkup();
-        List<KeyboardRow> keyboard = new ArrayList<>();
-        KeyboardRow row = new KeyboardRow();
+    public static InlineKeyboardMarkup calendar(LocalDate date) {
 
-        row.add(Buttons.CANCEL);
-        keyboard.add(row);
-        keyboardMarkup.setResizeKeyboard(true);
+        InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
+        List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
+        List<InlineKeyboardButton> buttons = new ArrayList<>();
+
+        date = date.withDayOfMonth(1);
+        int dayOfWeek = date.getDayOfWeek().getValue();
+
+        //create header of calendar navigation buttons |<backward|month|forward>|
+        InlineKeyboardButton title = new InlineKeyboardButton();
+        title.setText(Buttons.CALENDAR_SCROLL_BACKWARD);
+        title.setCallbackData(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK + ":" + date.getMonthValue());
+        buttons.add(title);
+        title = new InlineKeyboardButton();
+        title.setText(date.format(DateTimeFormatter.ofPattern("MMMM YYYY")));
+        title.setCallbackData(Buttons.EMPTY);
+        buttons.add(title);
+        title = new InlineKeyboardButton();
+        title.setText(Buttons.CALENDAR_SCROLL_FORWARD);
+        title.setCallbackData(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK + ":" + date.getMonthValue());
+        buttons.add(title);
+        keyboard.add(buttons);
+
+        //create header of calendar titles of days of week
+        InlineKeyboardButton dayTitle = new InlineKeyboardButton();
+        buttons = new ArrayList<>();
+        String[] dayTitles = {"Пн", "Вт", "Ср", "Чт", "Пт", "Сб", "Нд"};
+        for (String t : dayTitles) {
+            dayTitle.setText(t);
+            dayTitle.setCallbackData(Buttons.EMPTY);
+            buttons.add(dayTitle);
+            dayTitle = new InlineKeyboardButton();
+        }
+        keyboard.add(buttons);
+
+        //filling the empty spaces in the start of calendar if present
+        buttons = new ArrayList<>();
+        InlineKeyboardButton day = new InlineKeyboardButton();
+        for (int i = 0; i < dayOfWeek - 1; i++) {
+            day.setText(Buttons.EMPTY);
+            day.setCallbackData(Buttons.EMPTY);
+            buttons.add(day);
+            day = new InlineKeyboardButton();
+        }
+
+        //filling main body of calendar
+        for (int i = 0, dayOfMonth = 1; dayOfMonth <= date.getMonth().length(date.isLeapYear()); i++) {
+            for (int j = ((i == 0) ? dayOfWeek : 1); j <= 7 && (dayOfMonth <= date.getMonth().length(date.isLeapYear())); j++) {
+                day.setText(String.valueOf(dayOfMonth));
+                day.setCallbackData(String.valueOf(LocalDate.of(date.getYear(), date.getMonthValue(), dayOfMonth)));
+                buttons.add(day);
+                day = new InlineKeyboardButton();
+                dayOfMonth++;
+            }
+            //filing empty spaces in the end of calendar if present
+            while (buttons.size() < 7) {
+                day.setText(Buttons.EMPTY);
+                day.setCallbackData(Buttons.EMPTY);
+                buttons.add(day);
+                day = new InlineKeyboardButton();
+            }
+            keyboard.add(buttons);
+            buttons = new ArrayList<>();
+        }
         return keyboardMarkup.setKeyboard(keyboard);
     }
 }

@@ -1,169 +1,99 @@
 package com.itstimetosnuff.forrest.bot.handler.games;
 
-import com.itstimetosnuff.forrest.bot.dto.GameDto;
+import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
-import com.itstimetosnuff.forrest.bot.handler.Handler;
+import com.itstimetosnuff.forrest.bot.handler.AbsDialogHandler;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
-import com.itstimetosnuff.forrest.bot.utils.GameKeyboard;
-import com.itstimetosnuff.forrest.bot.utils.MainMenuKeyboard;
+import com.itstimetosnuff.forrest.bot.utils.GamesKeyboard;
 import com.itstimetosnuff.forrest.bot.session.Session;
-import com.itstimetosnuff.forrest.bot.utils.MethodHelper;
+import com.itstimetosnuff.forrest.bot.utils.MainMenuKeyboard;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.List;
 
-@SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-public class GamesCreateHandler implements Handler {
+public class GamesCreateHandler extends AbsDialogHandler {
 
-    private transient int createCase;
-    private transient GameDto gameCreate;
-    private transient List<Integer> msgIdDelete;
+    private transient CreateGameDto createGameDto;
 
-    public GamesCreateHandler(int createCase) {
-        this.createCase = createCase;
+    public GamesCreateHandler(Session session) {
+        super(session);
     }
 
     @Override
-    public BotApiMethod handleEvent(Update update, Session session) {
+    public BotApiMethod handleEvent(Update update) {
 
-        String data;
-        Integer msgId;
-        Long chatId;
+        variablesInit(update);
 
-        //initiate variables
-        if (update.hasCallbackQuery()) {
-            chatId = update.getCallbackQuery().getMessage().getChatId();
-            data = update.getCallbackQuery().getData();
-            msgId = update.getCallbackQuery().getMessage().getMessageId();
-        } else {
-            chatId = update.getMessage().getChatId();
-            data = update.getMessage().getText();
-            msgId = update.getMessage().getMessageId();
+        if (data.contains(Buttons.SAVE_CALLBACK)) {
+            return finishAndClear(formatDto());
         }
-
-        //check for cancel
-        if (data.contains(Buttons.CANCEL)) {
-            session.setEventLock(EventType.LOCK_FREE);
-            msgIdDelete.forEach(msg -> session.getExecutes().add(MethodHelper.deleteMessage(chatId, msg)));
-            createCase = 0;
-            return MethodHelper.backMainMenu(chatId);
-        }
-
-        //check for calendar scrolling
-        if (data.contains(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK) || data.contains(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK)) {
-            int year = LocalDate.now().getYear();
-            int month = Integer.parseInt(data.substring(data.lastIndexOf(":") + 1));
-            if (data.contains(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK)) {
-                month += 1;
-            } else {
-                month -= 1;
-            }
-            return MethodHelper.editMessage(
-                    chatId,
-                    msgId,
-                    "Укажите дату",
-                    GameKeyboard.gameDate(LocalDate.of(year, month, 1)));
-        }
-
-        //main workflow
-        switch (createCase) {
+        switch (CREATE_CASE.getAndIncrement()) {
             case 0: {
-                gameCreate = new GameDto();
-                msgIdDelete = new ArrayList<>();
-                session.setEventLock(EventType.GAMES_CREATE);
-                session.getExecutes().add(MethodHelper.addCancelButton(chatId));
-                createCase += 1;
-                msgIdDelete.add(msgId + 2);
-                return MethodHelper.sendMessage(
-                        chatId,
+                createGameDto = new CreateGameDto();
+                startAndInit(EventType.GAMES_CREATE);
+                return sendMessage(
                         "Выберите тип игры",
-                        GameKeyboard.gameType());
+                        GamesKeyboard.gameType());
             }
             case 1: {
-                gameCreate.setGameType(data);
-                createCase += 1;
-                return MethodHelper.editMessage(
-                        chatId,
-                        msgId,
+                createGameDto.setGameType(data);
+                addMsgDelete();
+                return editMessage(
                         "Укажите дату",
-                        GameKeyboard.gameDate(LocalDate.now()));
+                        MainMenuKeyboard.calendar(LocalDate.now()));
             }
             case 2: {
-                gameCreate.setDate(data);
-                createCase += 1;
-                return MethodHelper.editMessage(
-                        chatId,
-                        msgId,
+                createGameDto.setDate(data);
+                addMsgDelete();
+                return editMessage(
                         "Укажите время начала",
-                        GameKeyboard.gameTime());
+                        GamesKeyboard.gameTime());
             }
             case 3: {
-                int lastIndex = data.lastIndexOf(":");
-                int strHours = Integer.parseInt(data.substring(0, lastIndex));
-                int strMinutes = Integer.parseInt(data.substring(lastIndex + 1));
-                LocalTime startTime = LocalTime.of(strHours, strMinutes);
-                gameCreate.setStartTime(startTime);
-                gameCreate.setEndTime(startTime.plusHours(2));
-                createCase += 1;
-                return MethodHelper.editMessage(
-                        chatId,
-                        msgId,
+                LocalTime startTime = getTime(data);
+                createGameDto.setStartTime(startTime);
+                createGameDto.setEndTime(startTime.plusHours(2));
+                addMsgDelete();
+                return editMessage(
                         "Укажите количество игроков",
-                        GameKeyboard.gamePeople());
+                        GamesKeyboard.gamePeople());
             }
             case 4: {
-                gameCreate.setPeople(Long.valueOf(data));
-                createCase += 1;
-                return MethodHelper.editMessage(
-                        chatId,
-                        msgId,
+                createGameDto.setPeople(Long.valueOf(data));
+                addMsgDelete();
+                return editMessage(
                         "Укажите номер телефона с +380",
                         null);
             }
             case 5: {
-                gameCreate.setPhone(data);
-                createCase += 1;
-                msgIdDelete.add(msgId);
-                msgIdDelete.add(msgId + 1);
-                return MethodHelper.sendMessage(
-                        chatId,
+                createGameDto.setPhone(data);
+                addMsgDelete();
+                return sendMessage(
                         "Укажите дополнительное описание",
-                        GameKeyboard.gameEmpty());
+                        GamesKeyboard.gameEmpty());
             }
             case 6: {
-                if (data.contains(Buttons.SAVE_CALLBACK)) {
-                    session.setEventLock(EventType.LOCK_FREE);
-                    msgIdDelete.forEach(msg -> session.getExecutes().add(MethodHelper.deleteMessage(chatId, msg)));
-                    createCase = 0;
-                    return MethodHelper.sendMessage(
-                            chatId,
-                            "✅ Запись успешно создана:\n" + formatDto(),
-                            MainMenuKeyboard.mainMenu());
-                }
-                gameCreate.setDescription(data);
+                createGameDto.setDescription(data);
                 if (!data.equals(" ")) {
-                    msgIdDelete.add(msgId);
+                    addMsgDelete();
                 }
-                msgIdDelete.add(msgId + 1);
-                return MethodHelper.sendMessage(
-                        chatId,
-                        "Сохранить запись?\n" + formatDto(),
-                        GameKeyboard.gameSave());
+                addMsgDelete();
+                return sendMessage(
+                        "Сохранить запись?\n\n" + formatDto(),
+                        GamesKeyboard.gameSave());
             }
         }
         return null;
     }
 
     private String formatDto() {
-        return "<b>Тип игры</b>: " + gameCreate.getGameType() + "\n" +
-                "<b>Дата</b>: " + gameCreate.getDate() + "\n" +
-                "<b>Время</b>: " + gameCreate.getStartTime() + " - " + gameCreate.getEndTime() + "\n" +
-                "<b>Количество игроков</b>: " + gameCreate.getPeople() + "\n" +
-                "<b>Номер телефона</b>: " + gameCreate.getPhone() + "\n" +
-                "<b>Дополнительно</b>: " + gameCreate.getDescription() + "\n";
+        return "<b>Тип игры</b>: " + createGameDto.getGameType() + "\n" +
+                "<b>Дата</b>: " + createGameDto.getDate() + "\n" +
+                "<b>Время</b>: " + createGameDto.getStartTime() + " - " + createGameDto.getEndTime() + "\n" +
+                "<b>Количество игроков</b>: " + createGameDto.getPeople() + "\n" +
+                "<b>Номер телефона</b>: " + createGameDto.getPhone() + "\n" +
+                "<b>Дополнительно</b>: " + createGameDto.getDescription() + "\n";
     }
 }

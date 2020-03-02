@@ -14,8 +14,6 @@ public interface Session {
 
     List<BotApiMethod> getExecutes();
 
-    void setExecutes(List<BotApiMethod> executes);
-
     BotApiMethod onUpdate(Update update);
 
     void close();

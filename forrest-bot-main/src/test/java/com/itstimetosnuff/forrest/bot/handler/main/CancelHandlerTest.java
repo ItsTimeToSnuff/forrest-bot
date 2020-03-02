@@ -1,6 +1,7 @@
-package com.itstimetosnuff.forrest.bot.handler.warehouse;
+package com.itstimetosnuff.forrest.bot.handler.main;
 
 import com.itstimetosnuff.forrest.bot.session.Session;
+import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -15,7 +16,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class WarehouseHandlerTest {
+public class CancelHandlerTest {
+
     @Mock
     private Update mockUpdate;
     @Mock
@@ -24,16 +26,16 @@ public class WarehouseHandlerTest {
     private Session mockSession;
 
     @InjectMocks
-    private WarehouseHandler warehouseHandler;
+    private CancelHandler cancelHandler;
 
     @Test
-    void whenErrorHandlerHandleEventThenReturnSendMessage() {
+    void whenCancelHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getText()).thenReturn("test");
+        when(mockMessage.getText()).thenReturn(Buttons.CANCEL);
         when(mockMessage.getMessageId()).thenReturn(1);
         //when
-        BotApiMethod method = warehouseHandler.handleEvent(mockUpdate);
+        BotApiMethod method = cancelHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }

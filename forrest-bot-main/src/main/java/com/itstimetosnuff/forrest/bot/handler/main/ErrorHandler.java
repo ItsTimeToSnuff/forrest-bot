@@ -1,20 +1,21 @@
 package com.itstimetosnuff.forrest.bot.handler.main;
 
-import com.itstimetosnuff.forrest.bot.handler.Handler;
+import com.itstimetosnuff.forrest.bot.handler.AbsBaseHandler;
 import com.itstimetosnuff.forrest.bot.session.Session;
-import com.itstimetosnuff.forrest.bot.utils.MethodHelper;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class ErrorHandler implements Handler {
+public class ErrorHandler extends AbsBaseHandler {
+
+    public ErrorHandler(Session session) {
+        super(session);
+    }
 
     @Override
-    public SendMessage handleEvent(Update update, Session session) {
-        Long chatId = update.getMessage().getChatId();
-        String text = update.getMessage().getText();
-        return MethodHelper.sendMessage(
-                chatId,
-                String.format("комманда \"%s\" не поддерживается", text),
+    public BotApiMethod handleEvent(Update update) {
+        variablesInit(update);
+        return sendMessage(
+                String.format("комманда \"%s\" не поддерживается", data),
                 null
         );
     }

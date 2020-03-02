@@ -4,6 +4,7 @@ import com.itstimetosnuff.forrest.bot.enums.EventType;
 import com.itstimetosnuff.forrest.bot.handler.Handler;
 import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
 import com.itstimetosnuff.forrest.bot.store.SessionStore;
+import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -11,10 +12,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -42,6 +43,8 @@ public class DefaultSessionTest {
     private BotApiMethod mockBotApiMethod;
     @Mock
     private List<BotApiMethod> mockExecutes;
+    @Mock
+    private CallbackQuery mockCallbackQuery;
 
 
     @InjectMocks
@@ -61,22 +64,21 @@ public class DefaultSessionTest {
     }
 
     @Test
-    void whenDefaultSessionSetExecutesThenSetIt(){
-        //given
-        List<BotApiMethod> executes = new ArrayList<>();
+    void whenDefaultSessionGetExecutesThenReturnIt() {
         //when
-        session.setExecutes(executes);
+        List<BotApiMethod> found = session.getExecutes();
         //then
-        assertEquals(executes, session.getExecutes());
+        assertEquals(mockExecutes, found);
     }
 
     @Test
     void whenDefaultSessionOnUpdateReturnBotApiMethod() {
         //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("/test");
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
-        when(mockHandler.handleEvent(mockUpdate, session)).thenReturn(mockBotApiMethod);
+        when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when
         BotApiMethod method = session.onUpdate(mockUpdate);
         //then
@@ -86,9 +88,57 @@ public class DefaultSessionTest {
     @Test
     void whenDefaultSessionOnUpdateEventLockReturnBotApiMethod() {
         //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getData()).thenReturn("test");
         session.setEventLock(EventType.GAMES_CREATE);
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
-        when(mockHandler.handleEvent(mockUpdate, session)).thenReturn(mockBotApiMethod);
+        when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
+        //when
+        BotApiMethod method = session.onUpdate(mockUpdate);
+        //then
+        assertEquals(mockBotApiMethod, method);
+    }
+
+    @Test
+    void whenDefaultSessionOnUpdateCancelReturnBotApiMethod() {
+        //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getData()).thenReturn(Buttons.CANCEL);
+        session.setEventLock(EventType.GAMES_CREATE);
+        when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
+        when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
+        //when
+        BotApiMethod method = session.onUpdate(mockUpdate);
+        //then
+        assertEquals(mockBotApiMethod, method);
+    }
+
+    @Test
+    void whenDefaultSessionOnUpdateCalendarForwardReturnBotApiMethod() {
+        //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK);
+        session.setEventLock(EventType.GAMES_CREATE);
+        when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
+        when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
+        //when
+        BotApiMethod method = session.onUpdate(mockUpdate);
+        //then
+        assertEquals(mockBotApiMethod, method);
+    }
+
+    @Test
+    void whenDefaultSessionOnUpdateCalendarBackwardReturnBotApiMethod() {
+        //given
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK);
+        session.setEventLock(EventType.GAMES_CREATE);
+        when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
+        when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when
         BotApiMethod method = session.onUpdate(mockUpdate);
         //then

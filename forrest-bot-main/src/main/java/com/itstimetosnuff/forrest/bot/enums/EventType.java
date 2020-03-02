@@ -3,10 +3,10 @@ package com.itstimetosnuff.forrest.bot.enums;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 
 public enum EventType {
-    START("/start"),
-    HELP("/help"),
     LOCK_FREE("lockFree"),
     ERROR("error"),
+    START(Buttons.START),
+    HELP(Buttons.HELP),
     BACK(Buttons.BACK),
     CANCEL(Buttons.CANCEL),
     GAMES(Buttons.GAMES),
@@ -18,7 +18,8 @@ public enum EventType {
     WAREHOUSE_DEBIT(Buttons.WAREHOUSE_DEBIT),
     STATISTICS(Buttons.STATISTICS),
     STATISTICS_MONTH(Buttons.STATISTICS_MONTH),
-    STATISTICS_YEAR(Buttons.STATISTICS_YEAR);
+    STATISTICS_YEAR(Buttons.STATISTICS_YEAR),
+    CALENDAR(Buttons.CALENDAR);
 
     private String type;
 

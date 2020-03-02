@@ -7,7 +7,7 @@ import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
-public class GameDto {
+public class CreateGameDto {
 
     private String description;
 
