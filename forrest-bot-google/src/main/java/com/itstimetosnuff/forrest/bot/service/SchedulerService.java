@@ -1,9 +1,9 @@
 package com.itstimetosnuff.forrest.bot.service;
 
-import com.itstimetosnuff.forrest.bot.dto.GameDto;
+import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
 
 public interface SchedulerService {
 
-    void createEvent(GameDto gameDto);
+    void createEvent(CreateGameDto createGameDto);
 
 }

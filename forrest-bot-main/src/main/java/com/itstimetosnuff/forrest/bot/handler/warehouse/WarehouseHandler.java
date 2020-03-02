@@ -1,20 +1,22 @@
 package com.itstimetosnuff.forrest.bot.handler.warehouse;
 
-import com.itstimetosnuff.forrest.bot.handler.Handler;
+import com.itstimetosnuff.forrest.bot.handler.AbsBaseHandler;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import com.itstimetosnuff.forrest.bot.utils.MainMenuKeyboard;
 import com.itstimetosnuff.forrest.bot.session.Session;
-import com.itstimetosnuff.forrest.bot.utils.MethodHelper;
-import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-public class WarehouseHandler implements Handler {
+public class WarehouseHandler extends AbsBaseHandler {
+
+    public WarehouseHandler(Session session) {
+        super(session);
+    }
 
     @Override
-    public SendMessage handleEvent(Update update, Session session) {
-        Long chatId = update.getMessage().getChatId();
-        return MethodHelper.sendMessage(
-                chatId,
+    public BotApiMethod handleEvent(Update update) {
+        variablesInit(update);
+        return sendMessage(
                 Buttons.ASK_FOR_HELP,
                 MainMenuKeyboard.warehouseMenu()
         );

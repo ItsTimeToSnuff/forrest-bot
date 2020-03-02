@@ -1,7 +1,7 @@
 package com.itstimetosnuff.forrest.bot.handler.games;
 
-import com.itstimetosnuff.forrest.bot.dto.GameDto;
-import com.itstimetosnuff.forrest.bot.handler.Handler;
+import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
+import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,115 +17,66 @@ import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.function.Consumer;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doCallRealMethod;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
 public class GamesCreateHandlerTest {
 
-    private String data = "test";
-    private Integer msgId = 1;
-    private Long chatId = 1L;
     @Mock
     private Update mockUpdate;
     @Mock
-    Session mockSession;
+    private Message mockMessage;
     @Mock
-    Message mockMessage;
+    private CallbackQuery mockCallbackQuery;
     @Mock
-    CallbackQuery mockCallbackQuery;
+    private CreateGameDto createGameDto;
     @Mock
-    private GameDto gameCreate;
-    @Mock
-    private List<Integer> msgIdDelete;
-    @Mock
-    private Iterator mockIterator;
-    @Mock
-    private List<BotApiMethod> mockExecutes;
+    private static DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
-    Handler gamesCreateHandler0 = new GamesCreateHandler(0);
-    @InjectMocks
-    Handler gamesCreateHandler1 = new GamesCreateHandler(1);
-    @InjectMocks
-    Handler gamesCreateHandler2 = new GamesCreateHandler(2);
-    @InjectMocks
-    Handler gamesCreateHandler3 = new GamesCreateHandler(3);
-    @InjectMocks
-    Handler gamesCreateHandler4 = new GamesCreateHandler(4);
-    @InjectMocks
-    Handler gamesCreateHandler5 = new GamesCreateHandler(5);
-    @InjectMocks
-    Handler gamesCreateHandler6 = new GamesCreateHandler(6);
-    @InjectMocks
-    Handler gamesCreateHandler7 = new GamesCreateHandler(7);
+    private TestHelper gamesCreateHandler = new TestHelper(mockSession);
+
+    private String data = "test";
+
+    static {
+        when(mockSession.getChatId()).thenReturn(1L);
+    }
+
+    private class TestHelper extends GamesCreateHandler {
+
+        private void setCase(int i) {
+            CREATE_CASE.set(i);
+        }
+
+        private TestHelper(Session session) {
+            super(session);
+        }
+
+        @Override
+        public BotApiMethod handleEvent(Update update) {
+            return super.handleEvent(update);
+        }
+    }
 
     @BeforeEach
     void init() {
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
-        when(mockMessage.getMessageId()).thenReturn(msgId);
-    }
-
-    @Test
-    void whenGamesCreateHandlerHandleEventCancelShouldCancelIt() {
-        //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
-        when(mockMessage.getText()).thenReturn(Buttons.CANCEL);
-        doCallRealMethod().when(msgIdDelete).forEach(any(Consumer.class));
-        when(msgIdDelete.iterator()).thenReturn(mockIterator);
-        when(mockIterator.hasNext()).thenReturn(true, false);
-        when(mockIterator.next()).thenReturn(1);
-        when(mockSession.getExecutes()).thenReturn(mockExecutes);
-        //when
-        BotApiMethod method = gamesCreateHandler2.handleEvent(mockUpdate, mockSession);
-        //then
-        assertEquals(SendMessage.class, method.getClass());
-    }
-
-    @Test
-    void whenGamesCreateHandlerHandleEventCalendarScrollForwardThenReturnSendMessage() {
-        //given
-        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
-        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
-        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK+ ":1");
-        //when
-        BotApiMethod method = gamesCreateHandler1.handleEvent(mockUpdate, mockSession);
-        //then
-        assertEquals(EditMessageText.class, method.getClass());
-    }
-
-    @Test
-    void whenGamesCreateHandlerHandleEventCalendarScrollBackwardThenReturnSendMessage() {
-        //given
-        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
-        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
-        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK+ ":2");
-        //when
-        BotApiMethod method = gamesCreateHandler1.handleEvent(mockUpdate, mockSession);
-        //then
-        assertEquals(EditMessageText.class, method.getClass());
+        when(mockMessage.getMessageId()).thenReturn(1);
     }
 
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase0SendMessage() {
         //given
+        gamesCreateHandler.setCase(0);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(data);
-        when(mockSession.getExecutes()).thenReturn(new ArrayList<>());
         //when
-        BotApiMethod method = gamesCreateHandler0.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
@@ -133,12 +84,14 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase1SendMessage() {
         //given
+        gamesCreateHandler.setCase(1);
+        doNothing().when(createGameDto).setGameType(any());
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(data);
         //when
-        BotApiMethod method = gamesCreateHandler1.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
@@ -146,11 +99,14 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase2SendMessage() {
         //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
-        when(mockMessage.getText()).thenReturn(data);
+        gamesCreateHandler.setCase(2);
+        doNothing().when(createGameDto).setDate(any());
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn(data);
         //when
-        BotApiMethod method = gamesCreateHandler2.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
@@ -158,11 +114,14 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase3SendMessage() {
         //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
-        when(mockMessage.getText()).thenReturn("10:00");
+        gamesCreateHandler.setCase(3);
+        doNothing().when(createGameDto).setStartTime(any());
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("10:00");
         //when
-        BotApiMethod method = gamesCreateHandler3.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
@@ -170,11 +129,14 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase4SendMessage() {
         //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
-        when(mockMessage.getText()).thenReturn("1");
+        gamesCreateHandler.setCase(4);
+        doNothing().when(createGameDto).setPeople(any());
+        when(mockUpdate.hasCallbackQuery()).thenReturn(true);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = gamesCreateHandler4.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
@@ -182,11 +144,12 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase5SendMessage() {
         //given
+        gamesCreateHandler.setCase(5);
+        doNothing().when(createGameDto).setPhone(any());
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(data);
         //when
-        BotApiMethod method = gamesCreateHandler5.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
@@ -194,11 +157,12 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase6SendMessage() {
         //given
+        gamesCreateHandler.setCase(6);
+        doNothing().when(createGameDto).setDescription(any());
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(data);
         //when
-        BotApiMethod method = gamesCreateHandler6.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
@@ -206,11 +170,12 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase6WithEmptyDataSendMessage() {
         //given
+        gamesCreateHandler.setCase(6);
+        doNothing().when(createGameDto).setDescription(any());
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(" ");
         //when
-        BotApiMethod method = gamesCreateHandler6.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
@@ -218,17 +183,11 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventThenReturnCase6WithSaveCallbackSendMessage() {
         //given
+        gamesCreateHandler.setCase(6);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
-        doCallRealMethod().when(msgIdDelete).forEach(any(Consumer.class));
-        when(msgIdDelete.iterator()).thenReturn(mockIterator);
-        when(mockIterator.hasNext()).thenReturn(true, false);
-        when(mockIterator.next()).thenReturn(1);
-        when(mockSession.getExecutes()).thenReturn(mockExecutes);
-
         //when
-        BotApiMethod method = gamesCreateHandler6.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
@@ -236,11 +195,11 @@ public class GamesCreateHandlerTest {
     @Test
     void whenGamesCreateHandlerHandleEventCase7ThenReturnNull() {
         //given
+        gamesCreateHandler.setCase(7);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(chatId);
         when(mockMessage.getText()).thenReturn(data);
         //when
-        BotApiMethod method = gamesCreateHandler7.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
         assertNull(method);
     }

@@ -6,6 +6,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -29,10 +30,12 @@ public class BackHandlerTest {
     void whenErrorHandlerHandleEventThenReturnSendMessage() {
         //given
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getChatId()).thenReturn(1L);
+        when(mockMessage.getText()).thenReturn("test");
+        when(mockMessage.getMessageId()).thenReturn(1);
+
         //when
-        SendMessage sendMessage = backHandler.handleEvent(mockUpdate, mockSession);
+        BotApiMethod method = backHandler.handleEvent(mockUpdate);
         //then
-        assertEquals(sendMessage.getChatId(), "1");
+        assertEquals(SendMessage.class, method.getClass());
     }
 }
