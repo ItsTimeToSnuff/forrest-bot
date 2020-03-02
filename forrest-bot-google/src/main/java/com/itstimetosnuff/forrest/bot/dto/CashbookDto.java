@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
-public class CashbookDebitDto {
+public class CashbookDto {
 
     private Integer amount;
 

@@ -41,6 +41,9 @@ public final class MainMenuKeyboard extends KeyboardHelper {
         return oneButton(Buttons.CANCEL);
     }
 
+    public static ReplyKeyboardMarkup back() {
+        return oneButton(Buttons.BACK);
+    }
 
     public static InlineKeyboardMarkup save() {
         return oneButton(Buttons.SAVE, Buttons.SAVE_CALLBACK);
