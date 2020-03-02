@@ -27,7 +27,7 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
         switch (CREATE_CASE.getAndIncrement()) {
             case 0 : {
                 cashbookDto = new CashbookDto();
-                startAndInit(EventType.CASHBOOK_DEBIT);
+                startAndInit(EventType.byType(data));
                 return sendMessage(
                         "Введите сумму",
                         null

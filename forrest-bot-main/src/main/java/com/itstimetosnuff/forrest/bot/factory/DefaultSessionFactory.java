@@ -15,6 +15,8 @@ import com.itstimetosnuff.forrest.bot.handler.main.ErrorHandler;
 import com.itstimetosnuff.forrest.bot.handler.main.StartHandler;
 import com.itstimetosnuff.forrest.bot.handler.statistics.PeriodStatisticsHandler;
 import com.itstimetosnuff.forrest.bot.handler.statistics.StatisticsHandler;
+import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseBalanceHandler;
+import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseDebitCreditHandler;
 import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseHandler;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
@@ -49,6 +51,9 @@ public class DefaultSessionFactory implements SessionFactory{
         handlerRegistry.register(EventType.GAMES_CREATE, new GamesCreateHandler(session));
         handlerRegistry.register(EventType.GAMES_AFTER, new GamesAfterHandler(session));
         handlerRegistry.register(EventType.WAREHOUSE, new WarehouseHandler(session));
+        handlerRegistry.register(EventType.WAREHOUSE_BALANCE, new WarehouseBalanceHandler(session));
+        handlerRegistry.register(EventType.WAREHOUSE_DEBIT, new WarehouseDebitCreditHandler(session));
+        handlerRegistry.register(EventType.WAREHOUSE_CREDIT, new WarehouseDebitCreditHandler(session));
         handlerRegistry.register(EventType.CASHBOOK, new CashbookHandler(session));
         handlerRegistry.register(EventType.CASHBOOK_DEBIT, new CashbookCreditDebitHandler(session));
         handlerRegistry.register(EventType.CASHBOOK_CREDIT, new CashbookCreditDebitHandler(session));

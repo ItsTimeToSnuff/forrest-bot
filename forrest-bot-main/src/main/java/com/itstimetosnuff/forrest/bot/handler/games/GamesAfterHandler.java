@@ -79,7 +79,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
                 afterGameDto.setBalls(Integer.valueOf(data));
                 return editMessage(
                         "Докупались: гранаты, флешки, дымы?",
-                        GamesKeyboard.gamesYesNo());
+                        MainMenuKeyboard.yesNo());
             }
             case 6: {
                 addMsgDelete();
