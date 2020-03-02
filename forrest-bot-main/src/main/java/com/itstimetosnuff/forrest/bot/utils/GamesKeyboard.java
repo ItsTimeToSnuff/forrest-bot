@@ -35,10 +35,6 @@ public final class GamesKeyboard extends KeyboardHelper{
         return format(balls);
     }
 
-    public static InlineKeyboardMarkup gamesYesNo() {
-        return twoButtons(Buttons.YES, Buttons.YES_CALLBACK, Buttons.NO, Buttons.NO_CALLBACK);
-    }
-
     public static InlineKeyboardMarkup gameConsumables() {
         String[] amounts = {
                 "0", "1", "2", "3",

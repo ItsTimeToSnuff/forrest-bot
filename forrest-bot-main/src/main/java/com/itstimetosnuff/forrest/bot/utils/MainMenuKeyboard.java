@@ -49,6 +49,10 @@ public final class MainMenuKeyboard extends KeyboardHelper {
         return oneButton(Buttons.SAVE, Buttons.SAVE_CALLBACK);
     }
 
+    public static InlineKeyboardMarkup yesNo() {
+        return twoButtons(Buttons.YES, Buttons.YES_CALLBACK, Buttons.NO, Buttons.NO_CALLBACK);
+    }
+
     public static InlineKeyboardMarkup calendar(LocalDate date) {
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();

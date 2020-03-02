@@ -278,7 +278,7 @@ public class GamesAfterHandlerTest {
 
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase14SaveThenReturnSendMessage() {
+    void whenGamesAfterHandlerHandleEventCase12SaveThenReturnSendMessage() {
         //given
         gamesAfterHandler.setCase(12);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
@@ -291,7 +291,7 @@ public class GamesAfterHandlerTest {
     }
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase15ThenReturnNull() {
+    void whenGamesAfterHandlerHandleEventCase13ThenReturnNull() {
         //given
         gamesAfterHandler.setCase(13);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
