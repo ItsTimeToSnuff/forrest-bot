@@ -13,6 +13,7 @@ import com.itstimetosnuff.forrest.bot.handler.main.CalendarHandler;
 import com.itstimetosnuff.forrest.bot.handler.main.CancelHandler;
 import com.itstimetosnuff.forrest.bot.handler.main.ErrorHandler;
 import com.itstimetosnuff.forrest.bot.handler.main.StartHandler;
+import com.itstimetosnuff.forrest.bot.handler.statistics.PeriodStatisticsHandler;
 import com.itstimetosnuff.forrest.bot.handler.statistics.StatisticsHandler;
 import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseHandler;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
@@ -53,5 +54,7 @@ public class DefaultSessionFactory implements SessionFactory{
         handlerRegistry.register(EventType.CASHBOOK_CREDIT, new CashbookCreditDebitHandler(session));
         handlerRegistry.register(EventType.CASHBOOK_BALANCE, new CashbookBalanceHandler(session));
         handlerRegistry.register(EventType.STATISTICS, new StatisticsHandler(session));
+        handlerRegistry.register(EventType.STATISTICS_MONTH, new PeriodStatisticsHandler(session));
+        handlerRegistry.register(EventType.STATISTICS_YEAR, new PeriodStatisticsHandler(session));
     }
 }

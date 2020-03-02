@@ -224,34 +224,6 @@ public class GamesAfterHandlerTest {
     void whenGamesAfterHandlerHandleEventCase10ThenReturnEditMessage() {
         //given
         gamesAfterHandler.setCase(10);
-        doNothing().when(afterGameDto).setSmokeS(any());
-        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
-        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn("10");
-        //when
-        BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
-        //then
-        assertEquals(EditMessageText.class, method.getClass());
-    }
-
-    @Test
-    void whenGamesAfterHandlerHandleEventCase11ThenReturnEditMessage() {
-        //given
-        gamesAfterHandler.setCase(11);
-        doNothing().when(afterGameDto).setSmokeM(any());
-        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
-        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn("10");
-        //when
-        BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
-        //then
-        assertEquals(EditMessageText.class, method.getClass());
-    }
-
-    @Test
-    void whenGamesAfterHandlerHandleEventCase12ThenReturnEditMessage() {
-        //given
-        gamesAfterHandler.setCase(12);
         doNothing().when(afterGameDto).setSmokeL(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
@@ -263,9 +235,9 @@ public class GamesAfterHandlerTest {
     }
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase13ThenReturnSendMessage() {
+    void whenGamesAfterHandlerHandleEventCase11ThenReturnSendMessage() {
         //given
-        gamesAfterHandler.setCase(13);
+        gamesAfterHandler.setCase(11);
         doNothing().when(afterGameDto).setGazebo(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
@@ -277,9 +249,9 @@ public class GamesAfterHandlerTest {
     }
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase14Repair0ThenReturnEditMessage() {
+    void whenGamesAfterHandlerHandleEventCase12Repair0ThenReturnEditMessage() {
         //given
-        gamesAfterHandler.setCase(14);
+        gamesAfterHandler.setCase(12);
         doNothing().when(afterGameDto).setRepair(any());
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
@@ -291,9 +263,9 @@ public class GamesAfterHandlerTest {
     }
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase14RepairNotNullThenReturnEditMessage() {
+    void whenGamesAfterHandlerHandleEventCase12RepairNotNullThenReturnEditMessage() {
         //given
-        gamesAfterHandler.setCase(14);
+        gamesAfterHandler.setCase(12);
         doNothing().when(afterGameDto).setRepair(any());
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
@@ -308,7 +280,7 @@ public class GamesAfterHandlerTest {
     @Test
     void whenGamesAfterHandlerHandleEventCase14SaveThenReturnSendMessage() {
         //given
-        gamesAfterHandler.setCase(14);
+        gamesAfterHandler.setCase(12);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
@@ -321,7 +293,7 @@ public class GamesAfterHandlerTest {
     @Test
     void whenGamesAfterHandlerHandleEventCase15ThenReturnNull() {
         //given
-        gamesAfterHandler.setCase(15);
+        gamesAfterHandler.setCase(13);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);
