@@ -37,10 +37,12 @@ public class ForRestBot extends TelegramWebhookBot {
             List<BotApiMethod> executes = session.getExecutes();
             if (!executes.isEmpty()) {
                 for (BotApiMethod method : executes) {
+                    log.info(method.toString());
                     execute(method);
                 }
                 session.getExecutes().clear();
             }
+            log.info(onUpdate.toString());
             return onUpdate;
         } catch (Exception e) {
             log.info(e.getMessage(), e);
