@@ -80,9 +80,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
                     addMsgDelete();
                 }
                 addMsgDelete();
-                return sendMessage(
-                        "Сохранить запись?\n\n" + formatDto(),
-                        GamesKeyboard.gameSave());
+                return sendSaveMessage(formatDto());
             }
         }
         return null;
