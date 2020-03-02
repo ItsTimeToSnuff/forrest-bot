@@ -25,10 +25,6 @@ public class AfterGameDto {
 
     private Integer flashL;
 
-    private Integer smokeS;
-
-    private Integer smokeM;
-
     private Integer smokeL;
 
     private Integer gazebo;

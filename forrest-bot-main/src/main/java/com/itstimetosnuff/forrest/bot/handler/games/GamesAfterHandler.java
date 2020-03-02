@@ -31,12 +31,10 @@ public class GamesAfterHandler extends AbsDialogHandler {
             return finishAndClear(formatDto());
         }
         if (data.equals(Buttons.NO_CALLBACK)){
-            CREATE_CASE.set(12);
+            CREATE_CASE.set(10);
             afterGameDto.setGrenades(0);
             afterGameDto.setFlashM(0);
             afterGameDto.setFlashL(0);
-            afterGameDto.setSmokeS(0);
-            afterGameDto.setSmokeM(0);
             afterGameDto.setSmokeL(0);
         }
         switch (CREATE_CASE.getAndIncrement()) {
@@ -112,20 +110,6 @@ public class GamesAfterHandler extends AbsDialogHandler {
             }
             case 10: {
                 addMsgDelete();
-                afterGameDto.setSmokeS(Integer.valueOf(data));
-                return editMessage(
-                        "Укажите количество купленых дымов средних",
-                        GamesKeyboard.gameConsumables());
-            }
-            case 11: {
-                addMsgDelete();
-                afterGameDto.setSmokeM(Integer.valueOf(data));
-                return editMessage(
-                        "Укажите количество купленых дымов больших",
-                        GamesKeyboard.gameConsumables());
-            }
-            case 12: {
-                addMsgDelete();
                 if (!data.equals(Buttons.NO_CALLBACK)) {
                     afterGameDto.setSmokeL(Integer.valueOf(data));
                 }
@@ -133,14 +117,14 @@ public class GamesAfterHandler extends AbsDialogHandler {
                         "Укажите сколько часов сидели на беседках",
                         GamesKeyboard.gameConsumables());
             }
-            case 13: {
+            case 11: {
                 addMsgDelete();
                 afterGameDto.setGazebo(Integer.valueOf(data));
                 return sendMessage(
                         "Укажите сумму за поломки",
                         GamesKeyboard.gameEmpty());
             }
-            case 14: {
+            case 12: {
                 if (!data.equals(" ")) {
                     addMsgDelete();
                     afterGameDto.setRepair(Integer.valueOf(data));
@@ -165,8 +149,6 @@ public class GamesAfterHandler extends AbsDialogHandler {
                 "<b>Куплено гранат</b>: " + afterGameDto.getGrenades() + "\n" +
                 "<b>Куплено средних флешек</b>: " + afterGameDto.getFlashM() + "\n" +
                 "<b>Куплено больших флешек</b>: " + afterGameDto.getFlashL() + "\n" +
-                "<b>Куплено маленьких дымов</b>: " + afterGameDto.getSmokeS() + "\n" +
-                "<b>Куплено средних дымов</b>: " + afterGameDto.getSmokeM() + "\n" +
                 "<b>Куплено больших дымов</b>: " + afterGameDto.getSmokeL() + "\n" +
                 "<b>Часов на беседке</b>: " + afterGameDto.getGazebo() + "\n" +
                 "<b>Дополнительно</b>: " + afterGameDto.getRepair() + "\n";
