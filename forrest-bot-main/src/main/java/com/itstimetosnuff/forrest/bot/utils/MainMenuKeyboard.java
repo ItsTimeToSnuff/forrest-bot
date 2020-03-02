@@ -15,24 +15,29 @@ import java.util.List;
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
 public final class MainMenuKeyboard extends KeyboardHelper {
 
-    public static ReplyKeyboardMarkup mainMenu(){
-        return threeButton(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.STATISTICS);
+    public static ReplyKeyboardMarkup mainMenu() {
+        return fourButton(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.CASHBOOK, Buttons.STATISTICS);
     }
 
-    public static ReplyKeyboardMarkup gamesMenu(){
+    public static ReplyKeyboardMarkup gamesMenu() {
         return threeButton(Buttons.GAMES_CREATE, Buttons.GAMES_AFTER, Buttons.BACK);
     }
 
-    public static ReplyKeyboardMarkup warehouseMenu(){
+    public static ReplyKeyboardMarkup warehouseMenu() {
         return fourButton(Buttons.WAREHOUSE_DEBIT, Buttons.WAREHOUSE_CREDIT,
                 Buttons.WAREHOUSE_BALANCE, Buttons.BACK);
     }
 
-    public static ReplyKeyboardMarkup statisticsMenu(){
+    public static ReplyKeyboardMarkup cashbookMenu() {
+        return fourButton(Buttons.CASHBOOK_DEBIT, Buttons.CASHBOOK_CREDIT,
+                Buttons.CASHBOOK_BALANCE, Buttons.BACK);
+    }
+
+    public static ReplyKeyboardMarkup statisticsMenu() {
         return threeButton(Buttons.STATISTICS_MONTH, Buttons.STATISTICS_YEAR, Buttons.BACK);
     }
 
-    public static ReplyKeyboardMarkup cancel(){
+    public static ReplyKeyboardMarkup cancel() {
         return oneButton(Buttons.CANCEL);
     }
 

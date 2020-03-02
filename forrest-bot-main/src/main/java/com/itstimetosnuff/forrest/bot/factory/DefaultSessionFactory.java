@@ -1,6 +1,7 @@
 package com.itstimetosnuff.forrest.bot.factory;
 
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.handler.cashbook.CashbookHandler;
 import com.itstimetosnuff.forrest.bot.handler.games.GamesAfterHandler;
 import com.itstimetosnuff.forrest.bot.handler.games.GamesCreateHandler;
 import com.itstimetosnuff.forrest.bot.handler.games.GamesHandler;
@@ -45,6 +46,7 @@ public class DefaultSessionFactory implements SessionFactory{
         handlerRegistry.register(EventType.GAMES_CREATE, new GamesCreateHandler(session));
         handlerRegistry.register(EventType.GAMES_AFTER, new GamesAfterHandler(session));
         handlerRegistry.register(EventType.WAREHOUSE, new WarehouseHandler(session));
+        handlerRegistry.register(EventType.CASHBOOK, new CashbookHandler(session));
         handlerRegistry.register(EventType.STATISTICS, new StatisticsHandler(session));
     }
 }
