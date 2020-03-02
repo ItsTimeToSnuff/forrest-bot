@@ -148,9 +148,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
                     afterGameDto.setRepair(0);
                 }
                 addMsgDelete();
-                return sendMessage(
-                        "Сохранить запись?\n\n" + formatDto(),
-                        GamesKeyboard.gameSave());
+                return sendSaveMessage(formatDto());
             }
         }
         return null;

@@ -21,10 +21,6 @@ public final class GamesKeyboard extends KeyboardHelper{
         return format(times);
     }
 
-    public static InlineKeyboardMarkup gameSave() {
-        return oneButton(Buttons.SAVE, Buttons.SAVE_CALLBACK);
-    }
-
     public static InlineKeyboardMarkup gameEmpty() {
         return oneButton("Оставить пустым", " ");
     }

@@ -41,6 +41,11 @@ public final class MainMenuKeyboard extends KeyboardHelper {
         return oneButton(Buttons.CANCEL);
     }
 
+
+    public static InlineKeyboardMarkup save() {
+        return oneButton(Buttons.SAVE, Buttons.SAVE_CALLBACK);
+    }
+
     public static InlineKeyboardMarkup calendar(LocalDate date) {
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();

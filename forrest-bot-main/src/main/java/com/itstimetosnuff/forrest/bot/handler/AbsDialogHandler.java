@@ -41,6 +41,13 @@ public abstract class AbsDialogHandler extends AbsBaseHandler {
         return LocalTime.of(strHours, strMinutes);
     }
 
+    protected SendMessage sendSaveMessage(String formatDto) {
+        return sendMessage(
+                "Сохранить запись?\n\n" + formatDto,
+                MainMenuKeyboard.save()
+        );
+    }
+
     private SendMessage addCancelButton() {
         SendMessage sendMessage = new SendMessage();
         sendMessage.setChatId(chatId);
