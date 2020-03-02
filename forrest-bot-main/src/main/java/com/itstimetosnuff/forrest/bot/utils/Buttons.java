@@ -11,6 +11,7 @@ public final class Buttons {
     public static final String HELP = "/help";
     public static final String GAMES = "\uD83C\uDFAE Игры";
     public static final String WAREHOUSE = "\uD83C\uDFE6 Склад";
+    public static final String CASHBOOK = "\uD83D\uDCB2 Касса";
     public static final String STATISTICS = "\uD83D\uDCCA Статистика";
     public static final String CANCEL = "❌ Отмена";
     public static final String BACK = "⇐ Назад";
@@ -38,6 +39,12 @@ public final class Buttons {
     public static final String WAREHOUSE_DEBIT = "\uD83D\uDED2 Пополнение";
     public static final String WAREHOUSE_CREDIT = "\uD83D\uDCE4 Расход";
     public static final String WAREHOUSE_BALANCE = "\uD83C\uDFE6 Баланс";
+
+    //cashbook menu
+    public static final String CASHBOOK_DEBIT = "\uD83E\uDD11 Пополнение";
+    public static final String CASHBOOK_CREDIT = "\uD83E\uDD0F Расход";
+    public static final String CASHBOOK_BALANCE = "\uD83D\uDCB0 Баланс";
+
     //statistics menu
     public static final String STATISTICS_MONTH = "\uD83D\uDCD7 За месяц";
     public static final String STATISTICS_YEAR = "\uD83D\uDCDA За год";
