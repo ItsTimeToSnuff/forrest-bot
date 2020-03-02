@@ -60,9 +60,7 @@ public class BotConfiguration {
         }
 
         public Builder withInternalUrl(){
-            String internalUrl = properties.getProperty("bot.internalUrl") + System.getenv("PORT");
-            log.debug("loading internal url: " + internalUrl);
-            botConfiguration.internalUrl = internalUrl;
+            botConfiguration.internalUrl = properties.getProperty("bot.internalUrl") + System.getenv("PORT");
             return this;
         }
 

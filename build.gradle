@@ -67,7 +67,7 @@ project('forrest-bot-main') {
     }
 
     dependencies {
-        implementation project(':forrest-bot-google')
+        compile project(':forrest-bot-google')
     }
 }
 
