@@ -8,6 +8,9 @@ import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 public class CashbookCreditDebitHandler extends AbsDialogHandler {
 
     private transient CashbookDto cashbookDto;
@@ -22,11 +25,18 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
         variablesInit(update);
 
         if (data.equals(Buttons.SAVE_CALLBACK)) {
+            if (session.getEventLock().equals(EventType.CASHBOOK_DEBIT)){
+                session.getGoogleService().cashbookWriteDebit(cashbookDto);
+            } else {
+                session.getGoogleService().cashbookWriteCredit(cashbookDto);
+            }
             return finishAndClear(formatDto());
         }
         switch (CREATE_CASE.getAndIncrement()) {
             case 0 : {
                 cashbookDto = new CashbookDto();
+                cashbookDto.setRecordDate(LocalDate.now());
+                cashbookDto.setAuthor(chatId.toString() + "-" + update.getMessage().getFrom().getFirstName());
                 startAndInit(EventType.byType(data));
                 return sendMessage(
                         "Введите сумму",
@@ -34,7 +44,7 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
                 );
             }
             case 1 : {
-                cashbookDto.setAmount(Integer.parseInt(data));
+                cashbookDto.setAmount(data);
                 addMsgDelete();
                 return sendMessage(
                         "Введите описание",

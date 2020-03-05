@@ -3,6 +3,7 @@ package com.itstimetosnuff.forrest.bot.session;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
 import com.itstimetosnuff.forrest.bot.handler.Handler;
 import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
+import com.itstimetosnuff.forrest.bot.service.GoogleService;
 import com.itstimetosnuff.forrest.bot.store.SessionStore;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import lombok.AllArgsConstructor;
@@ -26,9 +27,16 @@ public class DefaultSession implements Session {
 
     private SessionStore sessionStore;
 
+    private GoogleService googleService;
+
     @Override
     public Long getChatId() {
         return this.chatId;
+    }
+
+    @Override
+    public EventType getEventLock() {
+        return this.eventLock;
     }
 
     @Override
@@ -50,6 +58,11 @@ public class DefaultSession implements Session {
             return handler.handleEvent(update);
         }
         return null;
+    }
+
+    @Override
+    public GoogleService getGoogleService() {
+        return this.googleService;
     }
 
     @Override

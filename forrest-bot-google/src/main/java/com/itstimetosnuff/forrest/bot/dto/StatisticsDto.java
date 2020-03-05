@@ -9,23 +9,23 @@ public class StatisticsDto {
 
     private String period;
 
-    private Integer earnMoney;
+    private String earnMoney;
 
-    private Integer spendMoney;
+    private String spendMoney;
 
-    private Integer spendBalls;
+    private String spendBalls;
 
-    private Integer spendGrenades;
+    private String spendGrenades;
 
-    private Integer spendFlashM;
+    private String spendFlashM;
 
-    private Integer spendFlashL;
+    private String spendFlashL;
 
-    private Integer spendSmokeL;
+    private String spendSmokeL;
 
-    private Integer gazeboTimes;
+    private String gazeboTimes;
 
-    private Integer spendNapkins;
+    private String spendNapkins;
 
-    private Integer spendClean;
+    private String spendClean;
 }

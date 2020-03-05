@@ -110,6 +110,7 @@ ext {
     googleClientVersion = '1.30.5'
     googleOauthVersion = '1.23.0'
     googleCalendarVersion = 'v3-rev305-1.23.0'
+    googleSheetsVersion = 'v4-rev493-1.23.0'
 
     spring = [
             context: "org.springframework:spring-context:$springVersion",
@@ -341,6 +342,7 @@ ext {
     google = [
             client: "com.google.api-client:google-api-client:$googleClientVersion",
             oauth: "com.google.oauth-client:google-oauth-client-jetty:$googleOauthVersion",
-            calendar: "com.google.apis:google-api-services-calendar:$googleCalendarVersion"
+            calendar: "com.google.apis:google-api-services-calendar:$googleCalendarVersion",
+            sheets: "com.google.apis:google-api-services-sheets:$googleSheetsVersion"
     ]
 }

@@ -18,6 +18,7 @@ import com.itstimetosnuff.forrest.bot.handler.statistics.StatisticsHandler;
 import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseBalanceHandler;
 import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseDebitCreditHandler;
 import com.itstimetosnuff.forrest.bot.handler.warehouse.WarehouseHandler;
+import com.itstimetosnuff.forrest.bot.service.GoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.store.SessionStore;
@@ -29,13 +30,14 @@ import java.util.ArrayList;
 @AllArgsConstructor
 public class DefaultSessionFactory implements SessionFactory{
 
-    private SessionStore sessionStore;
+    private final SessionStore sessionStore;
+    private final GoogleService googleService;
 
     @Override
     public Session createSession(Long chatId) {
         HandlerRegistry handlerRegistry = new HandlerRegistry();
         ArrayList<BotApiMethod> executes = new ArrayList<>();
-        Session session = new DefaultSession(chatId, EventType.LOCK_FREE, executes, handlerRegistry, sessionStore);
+        Session session = new DefaultSession(chatId, EventType.LOCK_FREE, executes, handlerRegistry, sessionStore, googleService);
         registerHandlers(handlerRegistry, session);
         sessionStore.registerSession(session);
         return session;

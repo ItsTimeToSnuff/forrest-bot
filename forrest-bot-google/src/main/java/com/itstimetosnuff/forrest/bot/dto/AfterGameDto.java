@@ -3,31 +3,32 @@ package com.itstimetosnuff.forrest.bot.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalTime;
 
 @Data
 @NoArgsConstructor
 public class AfterGameDto {
 
-    private String date;
+    private LocalDate date;
 
     private LocalTime startTime;
 
     private String gameType;
 
-    private Integer people;
+    private String people;
 
-    private Integer balls;
+    private String balls;
 
-    private Integer grenades;
+    private String grenades;
 
-    private Integer flashM;
+    private String flashM;
 
-    private Integer flashL;
+    private String flashL;
 
-    private Integer smokeL;
+    private String smokeL;
 
-    private Integer gazebo;
+    private String gazebo;
 
-    private Integer repair;
+    private String repair;
 }

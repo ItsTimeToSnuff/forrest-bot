@@ -16,10 +16,10 @@ public class CashbookBalanceHandler extends AbsBaseHandler {
     @Override
     public BotApiMethod handleEvent(Update update) {
         variablesInit(update);
-        CashbookDto cashbookDto = new CashbookDto();
-        cashbookDto.setAmount(100500);
+
+        String balance = session.getGoogleService().cashbookGetBalance();
         return sendMessage(
-                "<b>В кассе сейчас:</b> " + cashbookDto.getAmount() + " грн",
+                "<b>В кассе сейчас:</b> " + balance + " грн",
                 MainMenuKeyboard.back()
         );
     }
