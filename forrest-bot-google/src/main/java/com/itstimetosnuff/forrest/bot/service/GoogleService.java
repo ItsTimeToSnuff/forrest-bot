@@ -6,6 +6,8 @@ import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
 import com.itstimetosnuff.forrest.bot.dto.StatisticsDto;
 import com.itstimetosnuff.forrest.bot.dto.WarehouseDto;
 
+import java.time.LocalDate;
+
 public interface GoogleService {
 
     void gameCreateEvent(CreateGameDto createGameDto);
@@ -24,7 +26,7 @@ public interface GoogleService {
 
     String cashbookGetBalance();
 
-    StatisticsDto statisticsGetMonth();
+    StatisticsDto statisticsGetMonth(LocalDate date);
 
-    StatisticsDto statisticsGetYear();
+    StatisticsDto statisticsGetYear(LocalDate date);
 }

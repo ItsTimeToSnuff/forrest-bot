@@ -16,6 +16,7 @@ import lombok.RequiredArgsConstructor;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.ZoneId;
@@ -189,13 +190,13 @@ public class DefaultGoogleService implements GoogleService {
         );
         List<ValueRange> data = bathGet(ranges).getValueRanges();
         WarehouseDto warehouseDto = new WarehouseDto();
-        warehouseDto.setBalls(parseValues(data, 0));
-        warehouseDto.setGrenades(parseValues(data, 1));
-        warehouseDto.setFlashS(parseValues(data, 2));
-        warehouseDto.setFlashM(parseValues(data, 3));
-        warehouseDto.setSmokeL(parseValues(data, 4));
-        warehouseDto.setNaples(parseValues(data, 5));
-        warehouseDto.setClean(parseValues(data, 6));
+        warehouseDto.setBalls(parseValues(data, 0,0));
+        warehouseDto.setGrenades(parseValues(data, 1,0));
+        warehouseDto.setFlashS(parseValues(data, 2,0));
+        warehouseDto.setFlashM(parseValues(data, 3,0));
+        warehouseDto.setSmokeL(parseValues(data, 4,0));
+        warehouseDto.setNaples(parseValues(data, 5,0));
+        warehouseDto.setClean(parseValues(data, 6,0));
         return warehouseDto;
     }
 
@@ -241,17 +242,92 @@ public class DefaultGoogleService implements GoogleService {
     public String cashbookGetBalance() {
         List<String> ranges = Collections.singletonList("'Касса'!H3");
         List<ValueRange> data = bathGet(ranges).getValueRanges();
-        return parseValues(data, 0);
+        return parseValues(data, 0,0);
     }
 
     @Override
-    public StatisticsDto statisticsGetMonth() {
-        return null;
+    public StatisticsDto statisticsGetMonth(LocalDate date) {
+        List<String> ranges = Arrays.asList(
+                "'Прайс/Статистика'!F41:F52",
+                "'Прайс/Статистика'!E41:E52",
+                "'Прайс/Статистика'!C41:C52",
+                "'Прайс/Статистика'!D41:D52",
+                "'Прайс/Статистика'!B7:B18",
+                "'Прайс/Статистика'!C7:C18",
+                "'Прайс/Статистика'!D7:D18",
+                "'Прайс/Статистика'!E7:E18",
+                "'Прайс/Статистика'!F7:F18",
+                "'Прайс/Статистика'!B24:B35",
+                "'Прайс/Статистика'!C24:C35",
+                "'Прайс/Статистика'!D24:D35",
+                "'Прайс/Статистика'!E24:E35",
+                "'Прайс/Статистика'!F24:F35",
+                "'Прайс/Статистика'!G24:G35",
+                "'Прайс/Статистика'!H24:H35"
+        );
+        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        int secondInd = date.getMonthValue()-1;
+        StatisticsDto statisticsDto = new StatisticsDto();
+        statisticsDto.setPeriod(date.format(DateTimeFormatter.ofPattern("MM:yyyy")));
+        statisticsDto.setNetIncome(parseValues(data, 0, secondInd));
+        statisticsDto.setRevenue(parseValues(data, 1, secondInd));
+        statisticsDto.setEarnMoney(parseValues(data, 2, secondInd));
+        statisticsDto.setSpendMoney(parseValues(data, 3, secondInd));
+        statisticsDto.setTotalGames(parseValues(data, 4, secondInd));
+        statisticsDto.setPokuponGames(parseValues(data, 5, secondInd));
+        statisticsDto.setUsualGame(parseValues(data, 6, secondInd));
+        statisticsDto.setTotalPeople(parseValues(data, 7, secondInd));
+        statisticsDto.setGazeboTimes(parseValues(data, 8, secondInd));
+        statisticsDto.setSpendBalls(parseValues(data, 9, secondInd));
+        statisticsDto.setSpendGrenades(parseValues(data, 10, secondInd));
+        statisticsDto.setSpendFlashS(parseValues(data, 11, secondInd));
+        statisticsDto.setSpendFlashM(parseValues(data, 12, secondInd));
+        statisticsDto.setSpendSmokeL(parseValues(data, 13, secondInd));
+        statisticsDto.setSpendNapkins(parseValues(data, 14, secondInd));
+        statisticsDto.setSpendClean(parseValues(data, 15, secondInd));
+        return statisticsDto;
     }
 
     @Override
-    public StatisticsDto statisticsGetYear() {
-        return null;
+    public StatisticsDto statisticsGetYear(LocalDate date) {
+        List<String> ranges = Arrays.asList(
+                "'Прайс/Статистика'!F53",
+                "'Прайс/Статистика'!E53",
+                "'Прайс/Статистика'!C53",
+                "'Прайс/Статистика'!D53",
+                "'Прайс/Статистика'!B19",
+                "'Прайс/Статистика'!C19",
+                "'Прайс/Статистика'!D19",
+                "'Прайс/Статистика'!E19",
+                "'Прайс/Статистика'!F19",
+                "'Прайс/Статистика'!B36",
+                "'Прайс/Статистика'!C36",
+                "'Прайс/Статистика'!D36",
+                "'Прайс/Статистика'!E36",
+                "'Прайс/Статистика'!F36",
+                "'Прайс/Статистика'!G36",
+                "'Прайс/Статистика'!H36"
+        );
+        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        StatisticsDto statisticsDto = new StatisticsDto();
+        statisticsDto.setPeriod(date.format(DateTimeFormatter.ofPattern("yyyy")));
+        statisticsDto.setNetIncome(parseValues(data, 0, 0));
+        statisticsDto.setRevenue(parseValues(data, 1, 0));
+        statisticsDto.setEarnMoney(parseValues(data, 2, 0));
+        statisticsDto.setSpendMoney(parseValues(data, 3, 0));
+        statisticsDto.setTotalGames(parseValues(data, 4, 0));
+        statisticsDto.setPokuponGames(parseValues(data, 5, 0));
+        statisticsDto.setUsualGame(parseValues(data, 6, 0));
+        statisticsDto.setTotalPeople(parseValues(data, 7, 0));
+        statisticsDto.setGazeboTimes(parseValues(data, 8, 0));
+        statisticsDto.setSpendBalls(parseValues(data, 9, 0));
+        statisticsDto.setSpendGrenades(parseValues(data, 10, 0));
+        statisticsDto.setSpendFlashS(parseValues(data, 11, 0));
+        statisticsDto.setSpendFlashM(parseValues(data, 12, 0));
+        statisticsDto.setSpendSmokeL(parseValues(data, 13, 0));
+        statisticsDto.setSpendNapkins(parseValues(data, 14, 0));
+        statisticsDto.setSpendClean(parseValues(data, 15, 0));
+        return statisticsDto;
     }
 
     private void appendRaw(String range, ValueRange data) {
@@ -286,7 +362,7 @@ public class DefaultGoogleService implements GoogleService {
         return null;
     }
 
-    private String parseValues(List<ValueRange> data, int index) {
-        return data.get(index).getValues().get(0).get(0).toString();
+    private String parseValues(List<ValueRange> data, int firstInd, int secondInd) {
+        return data.get(firstInd).getValues().get(secondInd).get(0).toString();
     }
 }

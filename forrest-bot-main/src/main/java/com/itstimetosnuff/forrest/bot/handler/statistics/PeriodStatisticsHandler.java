@@ -8,6 +8,8 @@ import com.itstimetosnuff.forrest.bot.utils.MainMenuKeyboard;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
+
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class PeriodStatisticsHandler extends AbsBaseHandler {
 
@@ -20,14 +22,14 @@ public class PeriodStatisticsHandler extends AbsBaseHandler {
         variablesInit(update);
         StatisticsDto statisticsDto;
         if (data.equals(Buttons.STATISTICS_MONTH)){
-            statisticsDto = new StatisticsDto();
+            statisticsDto = session.getGoogleService().statisticsGetMonth(LocalDate.now());
             return sendMessage(
                     formatDto(statisticsDto),
                     MainMenuKeyboard.back()
             );
         }
         if (data.equals(Buttons.STATISTICS_YEAR)){
-            statisticsDto = new StatisticsDto();
+            statisticsDto = session.getGoogleService().statisticsGetYear(LocalDate.now());
             return sendMessage(
                     formatDto(statisticsDto),
                     MainMenuKeyboard.back()
@@ -42,8 +44,8 @@ public class PeriodStatisticsHandler extends AbsBaseHandler {
                 "<b>Потрачено</b>: " + statisticsDto.getSpendMoney() + " грн\n" +
                 "<b>Потрачено шаров</b>: " + statisticsDto.getSpendBalls() + " ящиков\n" +
                 "<b>Потрачено гранат</b>: " + statisticsDto.getSpendGrenades() + " шт\n" +
-                "<b>Потрачено средних флешек</b>: " + statisticsDto.getSpendFlashM() + " шт\n" +
-                "<b>Потрачено больших флешек</b>: " + statisticsDto.getSpendFlashL() + " шт\n" +
+                "<b>Потрачено средних флешек</b>: " + statisticsDto.getSpendFlashS() + " шт\n" +
+                "<b>Потрачено больших флешек</b>: " + statisticsDto.getSpendFlashM() + " шт\n" +
                 "<b>Потрачено больших дымов</b>: " + statisticsDto.getSpendSmokeL() + " шт\n" +
                 "<b>Сидели на беседках</b>: " + statisticsDto.getGazeboTimes() + " часов\n" +
                 "<b>Потрачено салфеток</b>: " + statisticsDto.getSpendNapkins() + " пачек\n" +
