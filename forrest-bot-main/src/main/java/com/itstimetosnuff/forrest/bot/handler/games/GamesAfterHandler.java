@@ -13,6 +13,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class GamesAfterHandler extends AbsDialogHandler {
 
@@ -32,10 +33,10 @@ public class GamesAfterHandler extends AbsDialogHandler {
         }
         if (data.equals(Buttons.NO_CALLBACK)){
             CREATE_CASE.set(10);
-            afterGameDto.setGrenades(0);
-            afterGameDto.setFlashM(0);
-            afterGameDto.setFlashL(0);
-            afterGameDto.setSmokeL(0);
+            afterGameDto.setGrenades("0");
+            afterGameDto.setFlashM("0");
+            afterGameDto.setFlashL("0");
+            afterGameDto.setSmokeL("0");
         }
         switch (CREATE_CASE.getAndIncrement()) {
             case 0: {
@@ -46,7 +47,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
                         MainMenuKeyboard.calendar(LocalDate.now()));
             }
             case 1: {
-                afterGameDto.setDate(data);
+                afterGameDto.setDate(LocalDate.parse(data));
                 addMsgDelete();
                 return editMessage(
                         "Выберите время начала",
@@ -69,14 +70,14 @@ public class GamesAfterHandler extends AbsDialogHandler {
             }
             case 4: {
                 addMsgDelete();
-                afterGameDto.setPeople(Integer.valueOf(data));
+                afterGameDto.setPeople(data);
                 return editMessage(
                         "Укажите количество купленых шаров",
                         GamesKeyboard.gameBalls());
             }
             case 5: {
                 addMsgDelete();
-                afterGameDto.setBalls(Integer.valueOf(data));
+                afterGameDto.setBalls(data);
                 return editMessage(
                         "Докупались: гранаты, флешки, дымы?",
                         MainMenuKeyboard.yesNo());
@@ -89,21 +90,21 @@ public class GamesAfterHandler extends AbsDialogHandler {
             }
             case 7: {
                 addMsgDelete();
-                afterGameDto.setGrenades(Integer.valueOf(data));
+                afterGameDto.setGrenades(data);
                 return editMessage(
                         "Укажите количество купленых флешек средних",
                         GamesKeyboard.gameConsumables());
             }
             case 8: {
                 addMsgDelete();
-                afterGameDto.setFlashM(Integer.valueOf(data));
+                afterGameDto.setFlashM(data);
                 return editMessage(
                         "Укажите количество купленых флешек большых",
                         GamesKeyboard.gameConsumables());
             }
             case 9: {
                 addMsgDelete();
-                afterGameDto.setFlashL(Integer.valueOf(data));
+                afterGameDto.setFlashL(data);
                 return editMessage(
                         "Укажите количество купленых дымов маленьких",
                         GamesKeyboard.gameConsumables());
@@ -111,7 +112,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
             case 10: {
                 addMsgDelete();
                 if (!data.equals(Buttons.NO_CALLBACK)) {
-                    afterGameDto.setSmokeL(Integer.valueOf(data));
+                    afterGameDto.setSmokeL(data);
                 }
                 return editMessage(
                         "Укажите сколько часов сидели на беседках",
@@ -119,7 +120,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
             }
             case 11: {
                 addMsgDelete();
-                afterGameDto.setGazebo(Integer.valueOf(data));
+                afterGameDto.setGazebo(data);
                 return sendMessage(
                         "Укажите сумму за поломки",
                         GamesKeyboard.gameEmpty());
@@ -127,9 +128,9 @@ public class GamesAfterHandler extends AbsDialogHandler {
             case 12: {
                 if (!data.equals(" ")) {
                     addMsgDelete();
-                    afterGameDto.setRepair(Integer.valueOf(data));
+                    afterGameDto.setRepair(data);
                 } else {
-                    afterGameDto.setRepair(0);
+                    afterGameDto.setRepair("0");
                 }
                 addMsgDelete();
                 return sendSaveMessage(formatDto());
@@ -142,7 +143,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
 
     private String formatDto() {
         return  "<b>Дата</b>: " + afterGameDto.getDate() + "\n" +
-                "<b>Время начала</b>: " + afterGameDto.getStartTime() + "\n" +
+                "<b>Время начала</b>: " + afterGameDto.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" +
                 "<b>Тип игры</b>: " + afterGameDto.getGameType() + "\n" +
                 "<b>Количество игроков</b>: " + afterGameDto.getPeople() + "\n" +
                 "<b>Куплено шаров</b>: " + afterGameDto.getBalls() + "\n" +

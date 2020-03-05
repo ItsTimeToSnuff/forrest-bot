@@ -3,21 +3,27 @@ package com.itstimetosnuff.forrest.bot.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Data
 @NoArgsConstructor
 public class WarehouseDto {
 
-    private Integer balls;
+    private LocalDate date;
 
-    private Integer grenades;
+    private String author;
 
-    private Integer flashM;
+    private String balls;
 
-    private Integer flashL;
+    private String grenades;
 
-    private Integer smokeL;
+    private String flashM;
 
-    private Integer naples;
+    private String flashL;
 
-    private Integer clean;
+    private String smokeL;
+
+    private String naples;
+
+    private String clean;
 }

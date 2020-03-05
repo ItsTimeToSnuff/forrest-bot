@@ -10,6 +10,8 @@ import com.itstimetosnuff.forrest.bot.utils.WarehouseKeyboard;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
+
 @SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class WarehouseDebitCreditHandler extends AbsDialogHandler {
 
@@ -23,18 +25,25 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
     public BotApiMethod handleEvent(Update update) {
         variablesInit(update);
         if (data.equals(Buttons.SAVE_CALLBACK)) {
+            if (session.getEventLock().equals(EventType.WAREHOUSE_DEBIT)) {
+                session.getGoogleService().warehouseWriteDebit(warehouseDto);
+            } else {
+                session.getGoogleService().warehouseWriteCredit(warehouseDto);
+            }
             return finishAndClear(formatDto(warehouseDto));
         }
         if (data.equals(Buttons.NO_CALLBACK)) {
             CREATE_CASE.set(8);
-            warehouseDto.setGrenades(0);
-            warehouseDto.setFlashM(0);
-            warehouseDto.setFlashL(0);
-            warehouseDto.setSmokeL(0);
+            warehouseDto.setGrenades("0");
+            warehouseDto.setFlashM("0");
+            warehouseDto.setFlashL("0");
+            warehouseDto.setSmokeL("0");
         }
         switch (CREATE_CASE.getAndIncrement()) {
             case 0: {
                 warehouseDto = new WarehouseDto();
+                warehouseDto.setDate(LocalDate.now());
+                warehouseDto.setAuthor(chatId.toString() + "-" + update.getMessage().getFrom().getFirstName());
                 startAndInit(EventType.byType(data));
                 return sendMessage(
                         "Выберите количество <b>ящиков шаров</b>",
@@ -42,7 +51,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 1: {
-                warehouseDto.setBalls(Integer.valueOf(data));
+                warehouseDto.setBalls(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>пачек салфеток</b>",
@@ -50,7 +59,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 2: {
-                warehouseDto.setNaples(Integer.valueOf(data));
+                warehouseDto.setNaples(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>бутылок моющего средства</b>",
@@ -58,7 +67,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 3: {
-                warehouseDto.setClean(Integer.valueOf(data));
+                warehouseDto.setClean(data);
                 addMsgDelete();
                 return editMessage(
                         "Гранаты, дымы, флешки?",
@@ -73,7 +82,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 5: {
-                warehouseDto.setGrenades(Integer.valueOf(data));
+                warehouseDto.setGrenades(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>средних флешек</b>",
@@ -81,7 +90,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 6: {
-                warehouseDto.setFlashM(Integer.valueOf(data));
+                warehouseDto.setFlashM(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>больших флешек</b>",
@@ -89,7 +98,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 7: {
-                warehouseDto.setFlashL(Integer.valueOf(data));
+                warehouseDto.setFlashL(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>больших дымов</b>",
@@ -98,7 +107,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
             }
             case 8: {
                 if (!data.equals(Buttons.NO_CALLBACK)) {
-                    warehouseDto.setSmokeL(Integer.valueOf(data));
+                    warehouseDto.setSmokeL(data);
                 }
                 addMsgDelete();
                 return sendSaveMessage(formatDto(warehouseDto));

@@ -12,6 +12,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
 
 public class GamesCreateHandler extends AbsDialogHandler {
 
@@ -27,6 +28,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
         variablesInit(update);
 
         if (data.contains(Buttons.SAVE_CALLBACK)) {
+            session.getGoogleService().gameCreateEvent(createGameDto);
             return finishAndClear(formatDto());
         }
         switch (CREATE_CASE.getAndIncrement()) {
@@ -45,7 +47,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
                         MainMenuKeyboard.calendar(LocalDate.now()));
             }
             case 2: {
-                createGameDto.setDate(data);
+                createGameDto.setDate(LocalDate.parse(data));
                 addMsgDelete();
                 return editMessage(
                         "Укажите время начала",
@@ -61,7 +63,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
                         GamesKeyboard.gamePeople());
             }
             case 4: {
-                createGameDto.setPeople(Long.valueOf(data));
+                createGameDto.setPeople(data);
                 addMsgDelete();
                 return editMessage(
                         "Укажите номер телефона с +380",
@@ -89,7 +91,8 @@ public class GamesCreateHandler extends AbsDialogHandler {
     private String formatDto() {
         return "<b>Тип игры</b>: " + createGameDto.getGameType() + "\n" +
                 "<b>Дата</b>: " + createGameDto.getDate() + "\n" +
-                "<b>Время</b>: " + createGameDto.getStartTime() + " - " + createGameDto.getEndTime() + "\n" +
+                "<b>Время</b>: " + createGameDto.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) +
+                " - " + createGameDto.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" +
                 "<b>Количество игроков</b>: " + createGameDto.getPeople() + "\n" +
                 "<b>Номер телефона</b>: " + createGameDto.getPhone() + "\n" +
                 "<b>Дополнительно</b>: " + createGameDto.getDescription() + "\n";

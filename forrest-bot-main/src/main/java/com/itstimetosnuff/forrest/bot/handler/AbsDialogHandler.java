@@ -38,7 +38,7 @@ public abstract class AbsDialogHandler extends AbsBaseHandler {
         int lastIndex = data.lastIndexOf(":");
         int strHours = Integer.parseInt(data.substring(0, lastIndex));
         int strMinutes = Integer.parseInt(data.substring(lastIndex + 1));
-        return LocalTime.of(strHours, strMinutes);
+        return LocalTime.of(strHours, strMinutes,0,1);
     }
 
     protected SendMessage sendSaveMessage(String formatDto) {

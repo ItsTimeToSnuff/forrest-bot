@@ -40,6 +40,7 @@ configure(allprojects) { project->
         compile google.client
         compile google.oauth
         compile google.calendar
+        compile google.sheets
 
         testAnnotationProcessor utils.lombok
 
