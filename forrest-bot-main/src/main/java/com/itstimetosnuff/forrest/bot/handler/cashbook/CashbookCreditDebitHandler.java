@@ -9,7 +9,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 public class CashbookCreditDebitHandler extends AbsDialogHandler {
 
@@ -39,7 +38,7 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
                 cashbookDto.setAuthor(chatId.toString() + "-" + update.getMessage().getFrom().getFirstName());
                 startAndInit(EventType.byType(data));
                 return sendMessage(
-                        "Введите сумму",
+                        "Введите <b>сумму</b>",
                         null
                 );
             }
@@ -47,7 +46,7 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
                 cashbookDto.setAmount(data);
                 addMsgDelete();
                 return sendMessage(
-                        "Введите описание",
+                        "Введите <b>описание</b>",
                         null
                 );
             }
@@ -61,7 +60,7 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
     }
 
     private String formatDto() {
-        return  "<b>Сумма</b>: " + cashbookDto.getAmount() + "\n" +
+        return  "<b>Сумма</b>: " + cashbookDto.getAmount() + " грн" + "\n" +
                 "<b>Описание</b>: " + cashbookDto.getDescription() + "\n";
     }
 }

@@ -25,7 +25,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-public class WarehouseDebitCreditHandlerTest {
+public class WarehouseDebitHandlerTest {
 
     @Mock
     private Update mockUpdate;
@@ -47,7 +47,7 @@ public class WarehouseDebitCreditHandlerTest {
         when(mockSession.getChatId()).thenReturn(1L);
     }
 
-    private class TestHelper extends WarehouseDebitCreditHandler {
+    private class TestHelper extends WarehouseDebitHandler {
 
         private void setCase(int i) {
             CREATE_CASE.set(i);

@@ -53,6 +53,10 @@ public final class MainMenuKeyboard extends KeyboardHelper {
         return twoButtons(Buttons.YES, Buttons.YES_CALLBACK, Buttons.NO, Buttons.NO_CALLBACK);
     }
 
+    public static InlineKeyboardMarkup empty() {
+        return oneButton("Оставить пустым", " ");
+    }
+
     public static InlineKeyboardMarkup calendar(LocalDate date) {
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();

@@ -15,7 +15,7 @@ public class ErrorHandler extends AbsBaseHandler {
     public BotApiMethod handleEvent(Update update) {
         variablesInit(update);
         return sendMessage(
-                String.format("комманда \"%s\" не поддерживается", data),
+                String.format("Команда \"%s\" не поддерживается", data),
                 null
         );
     }

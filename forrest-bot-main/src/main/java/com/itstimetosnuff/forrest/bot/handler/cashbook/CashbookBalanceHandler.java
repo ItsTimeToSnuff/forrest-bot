@@ -1,6 +1,5 @@
 package com.itstimetosnuff.forrest.bot.handler.cashbook;
 
-import com.itstimetosnuff.forrest.bot.dto.CashbookDto;
 import com.itstimetosnuff.forrest.bot.handler.AbsBaseHandler;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.MainMenuKeyboard;
