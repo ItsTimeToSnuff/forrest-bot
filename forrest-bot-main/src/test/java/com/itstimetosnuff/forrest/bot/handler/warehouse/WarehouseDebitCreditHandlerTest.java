@@ -168,7 +168,7 @@ public class WarehouseDebitCreditHandlerTest {
     void whenWarehouseDebitCreditHandlerHandleEventCase6ThenReturnEditMessage() {
         //given
         warehouseDebitCreditHandler.setCase(6);
-        doNothing().when(warehouseDto).setFlashM(any());
+        doNothing().when(warehouseDto).setFlashS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -182,7 +182,7 @@ public class WarehouseDebitCreditHandlerTest {
     void whenWarehouseDebitCreditHandlerHandleEventCase7ThenReturnEditMessage() {
         //given
         warehouseDebitCreditHandler.setCase(7);
-        doNothing().when(warehouseDto).setFlashL(any());
+        doNothing().when(warehouseDto).setFlashM(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
