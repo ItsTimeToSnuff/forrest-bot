@@ -29,18 +29,20 @@ public class GamesAfterHandler extends AbsDialogHandler {
         variablesInit(update);
 
         if (data.equals(Buttons.SAVE_CALLBACK)) {
+            session.getGoogleService().gameRecordAfter(afterGameDto);
             return finishAndClear(formatDto());
         }
         if (data.equals(Buttons.NO_CALLBACK)){
             CREATE_CASE.set(10);
             afterGameDto.setGrenades("0");
+            afterGameDto.setFlashS("0");
             afterGameDto.setFlashM("0");
-            afterGameDto.setFlashL("0");
             afterGameDto.setSmokeL("0");
         }
         switch (CREATE_CASE.getAndIncrement()) {
             case 0: {
                 afterGameDto = new AfterGameDto();
+                afterGameDto.setAuthor(chatId.toString() + "-" + update.getMessage().getFrom().getFirstName());
                 startAndInit(EventType.GAMES_AFTER);
                 return sendMessage(
                         "Выберите дату",
@@ -97,14 +99,14 @@ public class GamesAfterHandler extends AbsDialogHandler {
             }
             case 8: {
                 addMsgDelete();
-                afterGameDto.setFlashM(data);
+                afterGameDto.setFlashS(data);
                 return editMessage(
                         "Укажите количество купленых флешек большых",
                         GamesKeyboard.gameConsumables());
             }
             case 9: {
                 addMsgDelete();
-                afterGameDto.setFlashL(data);
+                afterGameDto.setFlashM(data);
                 return editMessage(
                         "Укажите количество купленых дымов маленьких",
                         GamesKeyboard.gameConsumables());
@@ -126,11 +128,11 @@ public class GamesAfterHandler extends AbsDialogHandler {
                         GamesKeyboard.gameEmpty());
             }
             case 12: {
-                if (!data.equals(" ")) {
+                if (data.equals(" ")) {
+                    afterGameDto.setRepair("0");
+                } else {
                     addMsgDelete();
                     afterGameDto.setRepair(data);
-                } else {
-                    afterGameDto.setRepair("0");
                 }
                 addMsgDelete();
                 return sendSaveMessage(formatDto());
@@ -148,8 +150,8 @@ public class GamesAfterHandler extends AbsDialogHandler {
                 "<b>Количество игроков</b>: " + afterGameDto.getPeople() + "\n" +
                 "<b>Куплено шаров</b>: " + afterGameDto.getBalls() + "\n" +
                 "<b>Куплено гранат</b>: " + afterGameDto.getGrenades() + "\n" +
-                "<b>Куплено средних флешек</b>: " + afterGameDto.getFlashM() + "\n" +
-                "<b>Куплено больших флешек</b>: " + afterGameDto.getFlashL() + "\n" +
+                "<b>Куплено средних флешек</b>: " + afterGameDto.getFlashS() + "\n" +
+                "<b>Куплено больших флешек</b>: " + afterGameDto.getFlashM() + "\n" +
                 "<b>Куплено больших дымов</b>: " + afterGameDto.getSmokeL() + "\n" +
                 "<b>Часов на беседке</b>: " + afterGameDto.getGazebo() + "\n" +
                 "<b>Дополнительно</b>: " + afterGameDto.getRepair() + "\n";

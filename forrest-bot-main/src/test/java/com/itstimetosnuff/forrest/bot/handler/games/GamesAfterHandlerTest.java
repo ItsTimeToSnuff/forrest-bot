@@ -196,7 +196,7 @@ public class GamesAfterHandlerTest {
     void whenGamesAfterHandlerHandleEventCase8ThenReturnEditMessage() {
         //given
         gamesAfterHandler.setCase(8);
-        doNothing().when(afterGameDto).setFlashM(any());
+        doNothing().when(afterGameDto).setFlashS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("10");
@@ -210,7 +210,7 @@ public class GamesAfterHandlerTest {
     void whenGamesAfterHandlerHandleEventCase9ThenReturnEditMessage() {
         //given
         gamesAfterHandler.setCase(9);
-        doNothing().when(afterGameDto).setFlashL(any());
+        doNothing().when(afterGameDto).setFlashM(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("10");

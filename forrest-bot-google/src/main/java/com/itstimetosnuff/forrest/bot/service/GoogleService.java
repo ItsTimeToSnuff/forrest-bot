@@ -10,7 +10,7 @@ public interface GoogleService {
 
     void gameCreateEvent(CreateGameDto createGameDto);
 
-    void gameWriteAfter(AfterGameDto afterGameDto);
+    void gameRecordAfter(AfterGameDto afterGameDto);
 
     void warehouseWriteCredit(WarehouseDto warehouseDto);
 
