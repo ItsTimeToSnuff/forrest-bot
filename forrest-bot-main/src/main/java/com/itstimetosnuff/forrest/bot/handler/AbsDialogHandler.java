@@ -25,7 +25,7 @@ public abstract class AbsDialogHandler extends AbsBaseHandler {
         CREATE_CASE.set(0);
         MSG_DELETE_IDs.clear();
         return sendMessage(
-                "✅ Запись успешно создана:\n\n" + formatDto,
+                "✅ <b>Запись успешно создана:</b>\n\n" + formatDto,
                 MainMenuKeyboard.mainMenu());
     }
 
@@ -43,17 +43,16 @@ public abstract class AbsDialogHandler extends AbsBaseHandler {
 
     protected SendMessage sendSaveMessage(String formatDto) {
         return sendMessage(
-                "Сохранить запись?\n\n" + formatDto,
+                "<b>Сохранить запись?</b>\n\n" + formatDto,
                 MainMenuKeyboard.save()
         );
     }
 
     private SendMessage addCancelButton() {
-        SendMessage sendMessage = new SendMessage();
-        sendMessage.setChatId(chatId);
-        sendMessage.setText("\uD83C\uDFC1 Начинаю запись");
-        sendMessage.setReplyMarkup(MainMenuKeyboard.cancel());
-        return sendMessage;
+        return sendMessage(
+                "\uD83C\uDFC1 <i>Начинаю запись</i>",
+                MainMenuKeyboard.cancel()
+        );
     }
 
 }

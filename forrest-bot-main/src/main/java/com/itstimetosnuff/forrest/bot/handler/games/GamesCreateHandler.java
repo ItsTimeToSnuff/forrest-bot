@@ -11,7 +11,6 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
-import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 
 public class GamesCreateHandler extends AbsDialogHandler {
@@ -36,49 +35,57 @@ public class GamesCreateHandler extends AbsDialogHandler {
                 createGameDto = new CreateGameDto();
                 startAndInit(EventType.GAMES_CREATE);
                 return sendMessage(
-                        "Выберите тип игры",
-                        GamesKeyboard.gameType());
+                        "Выберите <b>тип игры</b>",
+                        GamesKeyboard.gameType()
+                );
             }
             case 1: {
                 createGameDto.setGameType(data);
-                addMsgDelete();
                 return editMessage(
-                        "Укажите дату",
-                        MainMenuKeyboard.calendar(LocalDate.now()));
+                        "Выберите <b>дату</b>",
+                        MainMenuKeyboard.calendar(LocalDate.now())
+                );
             }
             case 2: {
                 createGameDto.setDate(LocalDate.parse(data));
-                addMsgDelete();
                 return editMessage(
-                        "Укажите время начала",
-                        GamesKeyboard.gameTime());
+                        "Выберите <b>время начала</b>",
+                        GamesKeyboard.gameTime()
+                );
             }
             case 3: {
-                LocalTime startTime = getTime(data);
-                createGameDto.setStartTime(startTime);
-                createGameDto.setEndTime(startTime.plusHours(2));
-                addMsgDelete();
+                createGameDto.setStartTime(getTime(data)
+                );
                 return editMessage(
-                        "Укажите количество игроков",
-                        GamesKeyboard.gamePeople());
+                        "Выберите <b>продолжительность</b>",
+                        GamesKeyboard.gameDuration()
+                );
             }
             case 4: {
-                createGameDto.setPeople(data);
-                addMsgDelete();
+                createGameDto.setEndTime(getTime(data));
                 return editMessage(
-                        "Укажите номер телефона с +380",
-                        null);
+                        "Выберите <b>количество игроков</b>",
+                        GamesKeyboard.gamePeople()
+                );
             }
             case 5: {
+                createGameDto.setPeople(data);
+                return editMessage(
+                        "Напишите <b>номер телефона с +380</b>",
+                        null
+                );
+            }
+            case 6: {
                 createGameDto.setPhone(data);
                 addMsgDelete();
                 return sendMessage(
-                        "Укажите дополнительное описание",
-                        GamesKeyboard.gameEmpty());
+                        "Напишите <b>дополнительное описание</b>",
+                        MainMenuKeyboard.empty()
+                );
             }
-            case 6: {
+            case 7: {
                 createGameDto.setDescription(data);
-                if (!data.equals(" ")) {
+                if (!data.equals(Buttons.EMPTY)) {
                     addMsgDelete();
                 }
                 addMsgDelete();

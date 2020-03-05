@@ -32,6 +32,7 @@ public final class Buttons {
     public static final String CALENDAR_SCROLL_BACKWARD = "Предыдущий";
     public static final String CALENDAR_SCROLL_BACKWARD_CALLBACK = CALENDAR + "_prev";
     public static final String EMPTY = " ";
+    public static final String EMPTY_VALUE = "0";
     public static final String SAVE = "Сохранить";
     public static final String SAVE_CALLBACK = "save";
 

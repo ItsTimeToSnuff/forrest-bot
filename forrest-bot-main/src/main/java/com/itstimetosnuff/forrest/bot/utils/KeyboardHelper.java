@@ -96,17 +96,23 @@ public class KeyboardHelper {
         return keyboardMarkup.setKeyboard(keyboard);
     }
 
-    public static InlineKeyboardMarkup format(String [] values) {
+    public static InlineKeyboardMarkup format(String [] text, String [] values) {
 
         InlineKeyboardMarkup keyboardMarkup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> keyboard = new ArrayList<>();
         List<InlineKeyboardButton> buttons = new ArrayList<>();
         InlineKeyboardButton button = new InlineKeyboardButton();
 
+        if (values == null) {
+            values = text;
+        }
+        if (text.length != values.length) {
+            throw new IllegalArgumentException("Values length and text length must be equal!");
+        }
         int i = 0;
-        while (i < values.length) {
-            for (int j = 0; j < 5 && i < values.length; j++, i++) {
-                button.setText(values[i]);
+        while (i < text.length) {
+            for (int j = 0; j < 5 && i < text.length; j++, i++) {
+                button.setText(text[i]);
                 button.setCallbackData(values[i]);
                 buttons.add(button);
                 button = new InlineKeyboardButton();
