@@ -20,6 +20,7 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -29,6 +30,8 @@ import java.util.List;
 public class DefaultGoogleService implements GoogleService {
 
     private static final String LOCATION = "For.Rest, вулиця Кургузова, 11, Вишгород, Київська обл., Украина, 07301";
+    private static final String ZERO_VALUE = "0";
+    private static final String MISSING_COLUMN ="-";
     private final GoogleConfiguration googleConfiguration;
 
     @Override
@@ -91,8 +94,28 @@ public class DefaultGoogleService implements GoogleService {
     }
 
     @Override
-    public void gameWriteAfter(AfterGameDto afterGameDto) {
-
+    public void gameRecordAfter(AfterGameDto afterGameDto) {
+        String range = "'Записи после игр'!A:L";
+        ValueRange data = new ValueRange();
+        data.setValues(
+                Collections.singletonList(
+                        Arrays.asList(
+                                afterGameDto.getAuthor(),
+                                afterGameDto.getDate().toString(),
+                                afterGameDto.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")),
+                                afterGameDto.getGameType(),
+                                afterGameDto.getPeople(),
+                                afterGameDto.getBalls(),
+                                afterGameDto.getGrenades(),
+                                afterGameDto.getFlashS(),
+                                afterGameDto.getFlashM(),
+                                afterGameDto.getSmokeL(),
+                                afterGameDto.getGazebo(),
+                                afterGameDto.getRepair()
+                        )
+                )
+        );
+        appendRaw(range, data);
     }
 
     @Override
@@ -104,13 +127,13 @@ public class DefaultGoogleService implements GoogleService {
                         Arrays.asList(
                                 warehouseDto.getRecordDate().toString(),
                                 warehouseDto.getAuthor(),
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0",
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
                                 warehouseDto.getBalls(),
                                 warehouseDto.getGrenades(),
                                 warehouseDto.getFlashS(),
@@ -140,13 +163,13 @@ public class DefaultGoogleService implements GoogleService {
                                 warehouseDto.getSmokeL(),
                                 warehouseDto.getNaples(),
                                 warehouseDto.getClean(),
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0",
-                                "0"
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE
                         )
                 )
         );
@@ -187,8 +210,8 @@ public class DefaultGoogleService implements GoogleService {
                                 cashbookDto.getAuthor(),
                                 cashbookDto.getAmount(),
                                 cashbookDto.getDescription(),
-                                "0",
-                                "-"
+                                ZERO_VALUE,
+                                MISSING_COLUMN
                         )
                 )
         );
@@ -204,8 +227,8 @@ public class DefaultGoogleService implements GoogleService {
                         Arrays.asList(
                                 cashbookDto.getRecordDate().toString(),
                                 cashbookDto.getAuthor(),
-                                "0",
-                                "-",
+                                ZERO_VALUE,
+                                MISSING_COLUMN,
                                 cashbookDto.getAmount(),
                                 cashbookDto.getDescription()
                         )

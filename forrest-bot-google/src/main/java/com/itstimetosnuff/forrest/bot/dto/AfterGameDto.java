@@ -10,6 +10,8 @@ import java.time.LocalTime;
 @NoArgsConstructor
 public class AfterGameDto {
 
+    private String author;
+
     private LocalDate date;
 
     private LocalTime startTime;
@@ -22,9 +24,9 @@ public class AfterGameDto {
 
     private String grenades;
 
-    private String flashM;
+    private String flashS;
 
-    private String flashL;
+    private String flashM;
 
     private String smokeL;
 
