@@ -9,7 +9,7 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class WarehouseDto {
 
-    private LocalDate date;
+    private LocalDate recordDate;
 
     private String author;
 
@@ -17,9 +17,9 @@ public class WarehouseDto {
 
     private String grenades;
 
-    private String flashM;
+    private String flashS;
 
-    private String flashL;
+    private String flashM;
 
     private String smokeL;
 

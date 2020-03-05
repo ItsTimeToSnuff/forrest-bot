@@ -5,8 +5,6 @@ import com.google.api.services.calendar.model.Event;
 import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.EventReminder;
 import com.google.api.services.sheets.v4.model.BatchGetValuesResponse;
-import com.google.api.services.sheets.v4.model.BatchUpdateValuesRequest;
-import com.google.api.services.sheets.v4.model.BatchUpdateValuesResponse;
 import com.google.api.services.sheets.v4.model.ValueRange;
 import com.itstimetosnuff.forrest.bot.configuration.GoogleConfiguration;
 import com.itstimetosnuff.forrest.bot.dto.AfterGameDto;
@@ -22,7 +20,6 @@ import java.time.LocalDateTime;
 import java.time.Year;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -100,17 +97,83 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void warehouseWriteCredit(WarehouseDto warehouseDto) {
-
+        String range = "'Склад'!A:P";
+        ValueRange data = new ValueRange();
+        data.setValues(
+                Collections.singletonList(
+                        Arrays.asList(
+                                warehouseDto.getRecordDate().toString(),
+                                warehouseDto.getAuthor(),
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                warehouseDto.getBalls(),
+                                warehouseDto.getGrenades(),
+                                warehouseDto.getFlashS(),
+                                warehouseDto.getFlashM(),
+                                warehouseDto.getSmokeL(),
+                                warehouseDto.getNaples(),
+                                warehouseDto.getClean()
+                        )
+                )
+        );
+        appendRaw(range, data);
     }
 
     @Override
     public void warehouseWriteDebit(WarehouseDto warehouseDto) {
-
+        String range = "'Склад'!A:P";
+        ValueRange data = new ValueRange();
+        data.setValues(
+                Collections.singletonList(
+                        Arrays.asList(
+                                warehouseDto.getRecordDate().toString(),
+                                warehouseDto.getAuthor(),
+                                warehouseDto.getBalls(),
+                                warehouseDto.getGrenades(),
+                                warehouseDto.getFlashS(),
+                                warehouseDto.getFlashM(),
+                                warehouseDto.getSmokeL(),
+                                warehouseDto.getNaples(),
+                                warehouseDto.getClean(),
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0",
+                                "0"
+                        )
+                )
+        );
+        appendRaw(range, data);
     }
 
     @Override
     public WarehouseDto warehouseGetBalance() {
-        return null;
+        List<String> ranges = Arrays.asList(
+                "'Склад'!R3",
+                "'Склад'!S3",
+                "'Склад'!T3",
+                "'Склад'!U3",
+                "'Склад'!V3",
+                "'Склад'!W3",
+                "'Склад'!X3"
+        );
+        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        WarehouseDto warehouseDto = new WarehouseDto();
+        warehouseDto.setBalls(parseValues(data, 0));
+        warehouseDto.setGrenades(parseValues(data, 1));
+        warehouseDto.setFlashS(parseValues(data, 2));
+        warehouseDto.setFlashM(parseValues(data, 3));
+        warehouseDto.setSmokeL(parseValues(data, 4));
+        warehouseDto.setNaples(parseValues(data, 5));
+        warehouseDto.setClean(parseValues(data, 6));
+        return warehouseDto;
     }
 
     @Override
@@ -129,6 +192,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
+        appendRaw(range, data);
     }
 
     @Override
@@ -152,22 +216,9 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public String cashbookGetBalance() {
-        String balanceColumn = String.format("'%s Касса'!J4", Year.now().getValue());
-        List<String> ranges = Collections.singletonList(balanceColumn);
-        try {
-            BatchGetValuesResponse execute = googleConfiguration
-                    .getSheetsService()
-                    .spreadsheets()
-                    .values()
-                    .batchGet(googleConfiguration.spreadsheetsId)
-                    .setRanges(ranges)
-                    .execute();
-            return execute.getValueRanges().get(0).getValues().get(0).get(0).toString();
-
-        } catch (IOException | GeneralSecurityException e) {
-            e.printStackTrace();
-        }
-        return null;
+        List<String> ranges = Collections.singletonList("'Касса'!H3");
+        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        return parseValues(data, 0);
     }
 
     @Override
@@ -194,5 +245,25 @@ public class DefaultGoogleService implements GoogleService {
         } catch (IOException | GeneralSecurityException e) {
             e.printStackTrace();
         }
+    }
+
+    private BatchGetValuesResponse bathGet(List<String> ranges) {
+        try {
+            return googleConfiguration
+                    .getSheetsService()
+                    .spreadsheets()
+                    .values()
+                    .batchGet(googleConfiguration.spreadsheetsId)
+                    .setRanges(ranges)
+                    .execute();
+
+        } catch (IOException | GeneralSecurityException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private String parseValues(List<ValueRange> data, int index) {
+        return data.get(index).getValues().get(0).get(0).toString();
     }
 }

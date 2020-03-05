@@ -17,7 +17,7 @@ public class WarehouseBalanceHandler extends AbsBaseHandler {
     @Override
     public BotApiMethod handleEvent(Update update) {
         variablesInit(update);
-        WarehouseDto warehouseDto = new WarehouseDto();
+        WarehouseDto warehouseDto = session.getGoogleService().warehouseGetBalance();
         return sendMessage(
                 "<b>На складе осталось</b>:\n\n" + formatDto(warehouseDto),
                 MainMenuKeyboard.back()
@@ -28,8 +28,8 @@ public class WarehouseBalanceHandler extends AbsBaseHandler {
     private String formatDto(WarehouseDto warehouseDto) {
         return "<b>Шаров</b>: " + warehouseDto.getBalls() + " ящ\n" +
                 "<b>Гранат</b>: " + warehouseDto.getGrenades() + " шт\n" +
-                "<b>Средних флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
-                "<b>Больших флешек</b>: " + warehouseDto.getFlashL() + " шт\n" +
+                "<b>Средних флешек</b>: " + warehouseDto.getFlashS() + " шт\n" +
+                "<b>Больших флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
                 "<b>Больших дымов</b>: " + warehouseDto.getSmokeL() + " шт\n" +
                 "<b>Садфеток</b>: " + warehouseDto.getNaples() + " пачек\n" +
                 "<b>Моющего средства</b>: " + warehouseDto.getClean() + " бут";

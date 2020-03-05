@@ -35,14 +35,14 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
         if (data.equals(Buttons.NO_CALLBACK)) {
             CREATE_CASE.set(8);
             warehouseDto.setGrenades("0");
+            warehouseDto.setFlashS("0");
             warehouseDto.setFlashM("0");
-            warehouseDto.setFlashL("0");
             warehouseDto.setSmokeL("0");
         }
         switch (CREATE_CASE.getAndIncrement()) {
             case 0: {
                 warehouseDto = new WarehouseDto();
-                warehouseDto.setDate(LocalDate.now());
+                warehouseDto.setRecordDate(LocalDate.now());
                 warehouseDto.setAuthor(chatId.toString() + "-" + update.getMessage().getFrom().getFirstName());
                 startAndInit(EventType.byType(data));
                 return sendMessage(
@@ -90,7 +90,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 6: {
-                warehouseDto.setFlashM(data);
+                warehouseDto.setFlashS(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>больших флешек</b>",
@@ -98,7 +98,7 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
                 );
             }
             case 7: {
-                warehouseDto.setFlashL(data);
+                warehouseDto.setFlashM(data);
                 addMsgDelete();
                 return editMessage(
                         "Выберите количество <b>больших дымов</b>",
@@ -119,8 +119,8 @@ public class WarehouseDebitCreditHandler extends AbsDialogHandler {
     private String formatDto(WarehouseDto warehouseDto) {
         return "<b>Шаров</b>: " + warehouseDto.getBalls() + " ящ\n" +
                 "<b>Гранат</b>: " + warehouseDto.getGrenades() + " шт\n" +
-                "<b>Средних флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
-                "<b>Больших флешек</b>: " + warehouseDto.getFlashL() + " шт\n" +
+                "<b>Средних флешек</b>: " + warehouseDto.getFlashS() + " шт\n" +
+                "<b>Больших флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
                 "<b>Больших дымов</b>: " + warehouseDto.getSmokeL() + " шт\n" +
                 "<b>Салфеток</b>: " + warehouseDto.getNaples() + " пачек\n" +
                 "<b>Моющего средства</b>: " + warehouseDto.getClean() + " бут";
