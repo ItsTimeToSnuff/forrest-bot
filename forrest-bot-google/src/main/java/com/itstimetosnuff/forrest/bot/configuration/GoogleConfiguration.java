@@ -37,8 +37,16 @@ public final class GoogleConfiguration {
     private final transient String credentialPath;
     private final transient String tokenPath;
     private final transient String appName;
-    public final transient String calendarId;
-    public final transient String spreadsheetsId;
+    private final transient String calendarId;
+    private final transient String spreadsheetsId;
+
+    public String getSpreadsheetsId() {
+        return this.spreadsheetsId;
+    }
+
+    public String getCalendarId() {
+        return this.calendarId;
+    }
 
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
