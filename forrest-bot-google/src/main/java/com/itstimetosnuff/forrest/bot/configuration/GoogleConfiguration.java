@@ -14,7 +14,6 @@ import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.sheets.v4.Sheets;
 import com.google.api.services.sheets.v4.SheetsScopes;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import java.io.FileNotFoundException;
@@ -23,14 +22,17 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 @RequiredArgsConstructor
 public final class GoogleConfiguration {
 
     private static final JsonFactory JSON_FACTORY = JacksonFactory.getDefaultInstance();
-    private static final List<String> SCOPES = Arrays.asList(CalendarScopes.CALENDAR, SheetsScopes.SPREADSHEETS, SheetsScopes.DRIVE);
+    private static final List<String> SCOPES = Arrays.asList(
+            CalendarScopes.CALENDAR,
+            SheetsScopes.SPREADSHEETS,
+            SheetsScopes.DRIVE
+    );
 
     private final transient String credentialPath;
     private final transient String tokenPath;
@@ -41,15 +43,15 @@ public final class GoogleConfiguration {
     private Credential getCredentials(final NetHttpTransport HTTP_TRANSPORT) throws IOException {
         // Load client secrets.
         GoogleClientSecrets clientSecrets;
-        try(InputStream in = GoogleConfiguration.class.getResourceAsStream(credentialPath)) {
+        try (InputStream in = GoogleConfiguration.class.getResourceAsStream(credentialPath)) {
             if (in == null) {
                 throw new FileNotFoundException("Resource not found: " + credentialPath);
             }
             clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
         }
         // Build flow and trigger user authorization request.
-        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow.Builder(
-                HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
+        GoogleAuthorizationCodeFlow flow = new GoogleAuthorizationCodeFlow
+                .Builder(HTTP_TRANSPORT, JSON_FACTORY, clientSecrets, SCOPES)
                 .setDataStoreFactory(new FileDataStoreFactory(new java.io.File(tokenPath)))
                 .setAccessType("offline")
                 .build();
@@ -59,14 +61,16 @@ public final class GoogleConfiguration {
 
     public Calendar getCalendarService() throws GeneralSecurityException, IOException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        return new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        return new Calendar
+                .Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(appName)
                 .build();
     }
 
     public Sheets getSheetsService() throws IOException, GeneralSecurityException {
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
-        return new Sheets.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
+        return new Sheets
+                .Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
                 .setApplicationName(appName)
                 .build();
     }
