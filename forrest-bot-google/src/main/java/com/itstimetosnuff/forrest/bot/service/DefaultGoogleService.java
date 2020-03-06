@@ -30,6 +30,7 @@ import java.util.List;
 public class DefaultGoogleService implements GoogleService {
 
     private static final String LOCATION = "For.Rest, вулиця Кургузова, 11, Вишгород, Київська обл., Украина, 07301";
+    private static final String TIMEZONE = "Europe/Kiev";
     private static final String PHONE_SHEET = "'Номера телефонов'";
     private static final String GAME_RECORDS_SHEET = "'Записи после игр'";
     private static final String WAREHOUSE_SHEET = "'Склад'";
@@ -343,7 +344,7 @@ public class DefaultGoogleService implements GoogleService {
     }
 
     private EventDateTime localDateToEventDate(LocalDateTime dateTime) {
-        Date date = Date.from(ZonedDateTime.of(dateTime, ZoneId.of("Europe/Kiev")).toInstant());
-        return new EventDateTime().setDateTime(new DateTime(date)).setTimeZone("Europe/Kiev");
+        Date date = Date.from(ZonedDateTime.of(dateTime, ZoneId.of(TIMEZONE)).toInstant());
+        return new EventDateTime().setDateTime(new DateTime(date)).setTimeZone(TIMEZONE);
     }
 }
