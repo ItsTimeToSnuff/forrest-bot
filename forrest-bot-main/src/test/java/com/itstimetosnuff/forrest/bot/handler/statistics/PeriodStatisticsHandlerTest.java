@@ -1,5 +1,7 @@
 package com.itstimetosnuff.forrest.bot.handler.statistics;
 
+import com.itstimetosnuff.forrest.bot.dto.StatisticsDto;
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.Test;
@@ -12,8 +14,12 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -24,6 +30,10 @@ public class PeriodStatisticsHandlerTest {
     private Message mockMessage;
     @Mock
     private Session mockSession;
+    @Mock
+    private DefaultGoogleService mockGoogleService;
+    @Mock
+    private StatisticsDto mockStatisticsDto;
 
     @InjectMocks
     private PeriodStatisticsHandler periodStatisticsHandler;
@@ -34,6 +44,8 @@ public class PeriodStatisticsHandlerTest {
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.STATISTICS_MONTH);
         when(mockMessage.getMessageId()).thenReturn(1);
+        when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
+        when(mockGoogleService.statisticsGetMonth(any())).thenReturn(mockStatisticsDto);
         //when
         BotApiMethod method = periodStatisticsHandler.handleEvent(mockUpdate);
         //then
@@ -46,6 +58,8 @@ public class PeriodStatisticsHandlerTest {
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.STATISTICS_YEAR);
         when(mockMessage.getMessageId()).thenReturn(1);
+        when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
+        when(mockGoogleService.statisticsGetYear(any())).thenReturn(mockStatisticsDto);
         //when
         BotApiMethod method = periodStatisticsHandler.handleEvent(mockUpdate);
         //then

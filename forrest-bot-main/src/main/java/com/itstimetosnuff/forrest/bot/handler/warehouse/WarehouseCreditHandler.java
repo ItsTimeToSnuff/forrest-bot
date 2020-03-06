@@ -15,6 +15,7 @@ import java.time.LocalDate;
 import static com.itstimetosnuff.forrest.bot.utils.Buttons.EMPTY;
 import static com.itstimetosnuff.forrest.bot.utils.Buttons.EMPTY_VALUE;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class WarehouseCreditHandler extends AbsDialogHandler {
 
     private transient WarehouseDto warehouseDto;
@@ -114,7 +115,7 @@ public class WarehouseCreditHandler extends AbsDialogHandler {
                 );
             }
             case 7: {
-                if (data.equals(" ")) {
+                if (data.equals(EMPTY)) {
                     warehouseDto.setFlashM(EMPTY_VALUE);
                 } else {
                     warehouseDto.setFlashM(data);

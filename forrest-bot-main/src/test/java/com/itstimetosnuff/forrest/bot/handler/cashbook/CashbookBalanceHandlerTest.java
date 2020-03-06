@@ -1,5 +1,6 @@
 package com.itstimetosnuff.forrest.bot.handler.cashbook;
 
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +24,8 @@ public class CashbookBalanceHandlerTest {
     private Message mockMessage;
     @Mock
     private Session mockSession;
+    @Mock
+    private DefaultGoogleService mockDefaultGoogleService;
 
     @InjectMocks
     private CashbookBalanceHandler cashbookBalanceHandler;
@@ -30,6 +33,8 @@ public class CashbookBalanceHandlerTest {
     @Test
     void whenCashbookBalanceHandlerHandleEventThenReturnSendMessage() {
         //given
+        when(mockSession.getGoogleService()).thenReturn(mockDefaultGoogleService);
+        when(mockDefaultGoogleService.cashbookGetBalance()).thenReturn("test");
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");
         when(mockMessage.getMessageId()).thenReturn(1);

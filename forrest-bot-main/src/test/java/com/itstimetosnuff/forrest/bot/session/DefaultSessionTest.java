@@ -3,6 +3,8 @@ package com.itstimetosnuff.forrest.bot.session;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
 import com.itstimetosnuff.forrest.bot.handler.Handler;
 import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
+import com.itstimetosnuff.forrest.bot.service.GoogleService;
 import com.itstimetosnuff.forrest.bot.store.SessionStore;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.BeforeEach;
@@ -45,6 +47,8 @@ public class DefaultSessionTest {
     private List<BotApiMethod> mockExecutes;
     @Mock
     private CallbackQuery mockCallbackQuery;
+    @Mock
+    private DefaultGoogleService mockDefaultGoogleService;
 
 
     @InjectMocks
@@ -52,7 +56,7 @@ public class DefaultSessionTest {
 
     @BeforeEach
     void init() {
-        session = new DefaultSession(chatId, EventType.LOCK_FREE, mockExecutes, mockHandlerRegistry, mockSessionStore);
+        session = new DefaultSession(chatId, EventType.LOCK_FREE, mockExecutes, mockHandlerRegistry, mockSessionStore, mockDefaultGoogleService);
     }
 
     @Test
@@ -69,6 +73,30 @@ public class DefaultSessionTest {
         List<BotApiMethod> found = session.getExecutes();
         //then
         assertEquals(mockExecutes, found);
+    }
+
+    @Test
+    void whenGetGoogleServiceThenReturnIt() {
+        //when
+        GoogleService found = session.getGoogleService();
+        //then
+        assertEquals(mockDefaultGoogleService, found);
+    }
+
+    @Test
+    void whenGetEventLockThenReturnIt() {
+        //when
+        EventType found = session.getEventLock();
+        //then
+        assertEquals(EventType.LOCK_FREE, found);
+    }
+
+    @Test
+    void whenSetEventLockThenSetIt() {
+        //when
+        session.setEventLock(EventType.GAMES_CREATE);
+        //then
+        assertEquals(EventType.GAMES_CREATE, session.getEventLock());
     }
 
     @Test
