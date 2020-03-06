@@ -1,5 +1,7 @@
 package com.itstimetosnuff.forrest.bot.handler.warehouse;
 
+import com.itstimetosnuff.forrest.bot.dto.WarehouseDto;
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,6 +25,10 @@ public class WarehouseBalanceHandlerTest {
     private Message mockMessage;
     @Mock
     private Session mockSession;
+    @Mock
+    private DefaultGoogleService mockGoogleService;
+    @Mock
+    private WarehouseDto mockWarehouseDto;
 
     @InjectMocks
     private WarehouseBalanceHandler warehouseBalanceHandler;
@@ -33,6 +39,8 @@ public class WarehouseBalanceHandlerTest {
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("test");
         when(mockMessage.getMessageId()).thenReturn(1);
+        when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
+        when(mockGoogleService.warehouseGetBalance()).thenReturn(mockWarehouseDto);
         //when
         BotApiMethod method = warehouseBalanceHandler.handleEvent(mockUpdate);
         //then

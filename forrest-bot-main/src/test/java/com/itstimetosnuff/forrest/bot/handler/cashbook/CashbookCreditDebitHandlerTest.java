@@ -1,6 +1,8 @@
 package com.itstimetosnuff.forrest.bot.handler.cashbook;
 
 import com.itstimetosnuff.forrest.bot.dto.CashbookDto;
+import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
@@ -14,6 +16,7 @@ import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -32,6 +35,10 @@ public class CashbookCreditDebitHandlerTest {
     @Mock
     private CashbookDto cashbookDto;
     @Mock
+    private DefaultGoogleService mockDefaultGoogleService;
+    @Mock
+    private User mockUser;
+
     private static DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
@@ -70,6 +77,8 @@ public class CashbookCreditDebitHandlerTest {
     @Test
     void whenCashbookCreditDebitHandlerHandleEventCase0ThenReturnSendMessage() {
         //given
+        when(mockMessage.getFrom()).thenReturn(mockUser);
+        when(mockUser.getFirstName()).thenReturn("author");
         cashbookCreditDebitHandler.setCase(0);
         //when
         BotApiMethod method = cashbookCreditDebitHandler.handleEvent(mockUpdate);
@@ -101,8 +110,25 @@ public class CashbookCreditDebitHandlerTest {
     }
 
     @Test
-    void whenCashbookCreditDebitHandlerHandleEventCase2SaveThenReturnSendMessage() {
+    void whenCashbookCreditDebitHandlerHandleEventCase2SaveDebitThenReturnSendMessage() {
         //given
+        when(mockSession.getEventLock()).thenReturn(EventType.CASHBOOK_DEBIT);
+        when(mockSession.getGoogleService()).thenReturn(mockDefaultGoogleService);
+        doNothing().when(mockDefaultGoogleService).cashbookWriteDebit(any(CashbookDto.class));
+        cashbookCreditDebitHandler.setCase(2);
+        when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
+        //when
+        BotApiMethod method = cashbookCreditDebitHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenCashbookCreditDebitHandlerHandleEventCase2SaveCreditThenReturnSendMessage() {
+        //given
+        when(mockSession.getEventLock()).thenReturn(EventType.CASHBOOK_CREDIT);
+        when(mockSession.getGoogleService()).thenReturn(mockDefaultGoogleService);
+        doNothing().when(mockDefaultGoogleService).cashbookWriteCredit(any(CashbookDto.class));
         cashbookCreditDebitHandler.setCase(2);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
         //when

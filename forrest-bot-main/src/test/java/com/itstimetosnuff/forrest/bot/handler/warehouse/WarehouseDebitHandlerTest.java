@@ -1,6 +1,7 @@
 package com.itstimetosnuff.forrest.bot.handler.warehouse;
 
 import com.itstimetosnuff.forrest.bot.dto.WarehouseDto;
+import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
@@ -16,6 +17,7 @@ import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageTe
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
+import org.telegram.telegrambots.meta.api.objects.User;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -34,12 +36,16 @@ public class WarehouseDebitHandlerTest {
     @Mock
     private CallbackQuery mockCallbackQuery;
     @Mock
-    private WarehouseDto warehouseDto;
+    private WarehouseDto mockWarehouseDto;
     @Mock
+    private DefaultGoogleService mockGoogleService;
+    @Mock
+    private User mockUser;
+
     private static DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
-    private TestHelper warehouseDebitCreditHandler = new TestHelper(mockSession);
+    private TestHelper warehouseDebitHandler = new TestHelper(mockSession);
 
     private String data = "test";
 
@@ -70,177 +76,181 @@ public class WarehouseDebitHandlerTest {
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase0ThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase0ThenReturnSendMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(0);
+        when(mockMessage.getFrom()).thenReturn(mockUser);
+        when(mockUser.getFirstName()).thenReturn("author");
+        warehouseDebitHandler.setCase(0);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase1ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase1ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(1);
-        doNothing().when(warehouseDto).setBalls(any());
+        warehouseDebitHandler.setCase(1);
+        doNothing().when(mockWarehouseDto).setBalls(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase2ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase2ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(2);
-        doNothing().when(warehouseDto).setNaples(any());
+        warehouseDebitHandler.setCase(2);
+        doNothing().when(mockWarehouseDto).setNaples(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase3ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase3ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(3);
-        doNothing().when(warehouseDto).setClean(any());
+        warehouseDebitHandler.setCase(3);
+        doNothing().when(mockWarehouseDto).setClean(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase3AndSkipThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase3AndSkipThenReturnSendMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(3);
+        warehouseDebitHandler.setCase(3);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.NO_CALLBACK);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase4ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase4ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(4);
+        warehouseDebitHandler.setCase(4);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.YES_CALLBACK);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase5ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase5ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(5);
-        doNothing().when(warehouseDto).setGrenades(any());
+        warehouseDebitHandler.setCase(5);
+        doNothing().when(mockWarehouseDto).setGrenades(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase6ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase6ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(6);
-        doNothing().when(warehouseDto).setFlashS(any());
+        warehouseDebitHandler.setCase(6);
+        doNothing().when(mockWarehouseDto).setFlashS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase7ThenReturnEditMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase7ThenReturnEditMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(7);
-        doNothing().when(warehouseDto).setFlashM(any());
+        warehouseDebitHandler.setCase(7);
+        doNothing().when(mockWarehouseDto).setFlashM(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase8NotNullSmokeThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase8NotNullSmokeThenReturnSendMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(8);
-        doNothing().when(warehouseDto).setSmokeL(any());
+        warehouseDebitHandler.setCase(8);
+        doNothing().when(mockWarehouseDto).setSmokeL(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase8NullSmokeThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase8NullSmokeThenReturnSendMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(8);
+        warehouseDebitHandler.setCase(8);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.NO_CALLBACK);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase8SaveThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase8SaveThenReturnSendMessage() {
         //given
-        warehouseDebitCreditHandler.setCase(8);
+        warehouseDebitHandler.setCase(8);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
+        when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
+        doNothing().when(mockGoogleService).warehouseWriteDebit(mockWarehouseDto);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitCreditHandlerHandleEventCase13ThenReturnNull() {
+    void whenWarehouseDebitHandlerHandleEventCase13ThenReturnNull() {
         //given
-        warehouseDebitCreditHandler.setCase(9);
+        warehouseDebitHandler.setCase(9);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);
         //when
-        BotApiMethod method = warehouseDebitCreditHandler.handleEvent(mockUpdate);
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
         assertNull(method);
     }

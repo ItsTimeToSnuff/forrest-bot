@@ -17,6 +17,7 @@ import java.time.format.DateTimeFormatter;
 
 import static com.itstimetosnuff.forrest.bot.utils.Buttons.EMPTY_VALUE;
 
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class GamesAfterHandler extends AbsDialogHandler {
 
     private transient AfterGameDto afterGameDto;
