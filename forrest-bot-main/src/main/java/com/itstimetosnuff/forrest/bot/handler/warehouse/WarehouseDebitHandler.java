@@ -29,7 +29,7 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
         variablesInit(update);
 
         if (data.equals(Buttons.SAVE_CALLBACK)) {
-            session.getGoogleService().warehouseWriteCredit(warehouseDto);
+            session.getGoogleService().warehouseWriteDebit(warehouseDto);
             return finishAndClear(formatDto(warehouseDto));
         }
         if (data.equals(Buttons.NO_CALLBACK)) {

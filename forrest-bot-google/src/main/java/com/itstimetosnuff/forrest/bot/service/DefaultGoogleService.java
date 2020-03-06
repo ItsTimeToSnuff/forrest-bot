@@ -13,6 +13,7 @@ import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
 import com.itstimetosnuff.forrest.bot.dto.StatisticsDto;
 import com.itstimetosnuff.forrest.bot.dto.WarehouseDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -26,6 +27,7 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
+@Slf4j
 @RequiredArgsConstructor
 public class DefaultGoogleService implements GoogleService {
 
@@ -165,7 +167,7 @@ public class DefaultGoogleService implements GoogleService {
                 WAREHOUSE_SHEET + "!W3",
                 WAREHOUSE_SHEET + "!X3"
         );
-        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        List<ValueRange> data = batchGet(ranges).getValueRanges();
         WarehouseDto warehouseDto = new WarehouseDto();
         warehouseDto.setBalls(parseValues(data, 0, 0));
         warehouseDto.setGrenades(parseValues(data, 1, 0));
@@ -218,7 +220,7 @@ public class DefaultGoogleService implements GoogleService {
     @Override
     public String cashbookGetBalance() {
         List<String> ranges = Collections.singletonList(CASHBOOK_SHEET + "!H3");
-        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        List<ValueRange> data = batchGet(ranges).getValueRanges();
         return parseValues(data, 0, 0);
     }
 
@@ -242,7 +244,7 @@ public class DefaultGoogleService implements GoogleService {
                 STATISTICS_SHEET + "!G24:G35",
                 STATISTICS_SHEET + "!H24:H35"
         );
-        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        List<ValueRange> data = batchGet(ranges).getValueRanges();
         int secondInd = date.getMonthValue() - 1;
         StatisticsDto statisticsDto = new StatisticsDto();
         statisticsDto.setPeriod(date.format(DateTimeFormatter.ofPattern("MM:yyyy")));
@@ -269,7 +271,7 @@ public class DefaultGoogleService implements GoogleService {
                 STATISTICS_SHEET + "!G36",
                 STATISTICS_SHEET + "!H36"
         );
-        List<ValueRange> data = bathGet(ranges).getValueRanges();
+        List<ValueRange> data = batchGet(ranges).getValueRanges();
         StatisticsDto statisticsDto = new StatisticsDto();
         statisticsDto.setPeriod(date.format(DateTimeFormatter.ofPattern("yyyy")));
         return statisticsMapper(statisticsDto, data, 0);
@@ -300,10 +302,10 @@ public class DefaultGoogleService implements GoogleService {
             googleConfiguration
                     .getCalendarService()
                     .events()
-                    .insert(googleConfiguration.calendarId, event)
+                    .insert(googleConfiguration.getCalendarId(), event)
                     .execute();
         } catch (IOException | GeneralSecurityException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
@@ -314,27 +316,27 @@ public class DefaultGoogleService implements GoogleService {
                     .getSheetsService()
                     .spreadsheets()
                     .values()
-                    .append(googleConfiguration.spreadsheetsId, range, data)
+                    .append(googleConfiguration.getSpreadsheetsId(), range, data)
                     .setValueInputOption("USER_ENTERED")
                     .execute()
             ;
         } catch (IOException | GeneralSecurityException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
         }
     }
 
-    private BatchGetValuesResponse bathGet(List<String> ranges) {
+    private BatchGetValuesResponse batchGet(List<String> ranges) {
         try {
             return googleConfiguration
                     .getSheetsService()
                     .spreadsheets()
                     .values()
-                    .batchGet(googleConfiguration.spreadsheetsId)
+                    .batchGet(googleConfiguration.getSpreadsheetsId())
                     .setRanges(ranges)
                     .execute();
 
         } catch (IOException | GeneralSecurityException e) {
-            e.printStackTrace();
+            log.error(e.getMessage(), e);
             throw new NullPointerException("Invalid range, nothing war found");
         }
     }
