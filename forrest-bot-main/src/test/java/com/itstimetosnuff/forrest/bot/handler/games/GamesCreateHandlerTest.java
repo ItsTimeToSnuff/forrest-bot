@@ -140,7 +140,8 @@ public class GamesCreateHandlerTest {
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn("11:00");
+        when(mockCreateGameDto.getStartTime()).thenReturn(LocalTime.now());
+        when(mockCallbackQuery.getData()).thenReturn("60");
         //when
         BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
@@ -184,6 +185,7 @@ public class GamesCreateHandlerTest {
         when(mockMessage.getText()).thenReturn(data);
         when(mockCreateGameDto.getStartTime()).thenReturn(LocalTime.now());
         when(mockCreateGameDto.getEndTime()).thenReturn(LocalTime.now());
+        when(mockCreateGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
@@ -199,6 +201,7 @@ public class GamesCreateHandlerTest {
         when(mockMessage.getText()).thenReturn(Buttons.EMPTY);
         when(mockCreateGameDto.getStartTime()).thenReturn(LocalTime.now());
         when(mockCreateGameDto.getEndTime()).thenReturn(LocalTime.now());
+        when(mockCreateGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
@@ -215,6 +218,7 @@ public class GamesCreateHandlerTest {
         doNothing().when(mockGoogleService).gameCreateEvent(mockCreateGameDto);
         when(mockCreateGameDto.getStartTime()).thenReturn(LocalTime.now());
         when(mockCreateGameDto.getEndTime()).thenReturn(LocalTime.now());
+        when(mockCreateGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then
