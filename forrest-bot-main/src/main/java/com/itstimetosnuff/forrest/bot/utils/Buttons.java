@@ -8,7 +8,6 @@ public final class Buttons {
 
     //main menu
     public static final String START = "/start";
-    public static final String HELP = "/help";
     public static final String GAMES = "\uD83C\uDFAE Игры";
     public static final String WAREHOUSE = "\uD83C\uDFE6 Склад";
     public static final String CASHBOOK = "\uD83D\uDCB2 Касса";

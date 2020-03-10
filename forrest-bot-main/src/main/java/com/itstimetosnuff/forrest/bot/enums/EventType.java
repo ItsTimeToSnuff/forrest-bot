@@ -6,7 +6,6 @@ public enum EventType {
     LOCK_FREE("lockFree"),
     ERROR("error"),
     START(Buttons.START),
-    HELP(Buttons.HELP),
     BACK(Buttons.BACK),
     CANCEL(Buttons.CANCEL),
     GAMES(Buttons.GAMES),
