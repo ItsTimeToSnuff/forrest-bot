@@ -268,6 +268,7 @@ public class GamesAfterHandlerTest {
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.EMPTY);
         when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
+        when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
         //then
@@ -283,6 +284,7 @@ public class GamesAfterHandlerTest {
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("100");
         when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
+        when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
         //then
@@ -300,6 +302,7 @@ public class GamesAfterHandlerTest {
         when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
         doNothing().when(mockGoogleService).gameRecordAfter(mockAfterGameDto);
         when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
+        when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
         //then
