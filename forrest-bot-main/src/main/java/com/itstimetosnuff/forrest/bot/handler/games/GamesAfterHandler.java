@@ -149,7 +149,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
 
 
     private String formatDto() {
-        return  "<b>Дата</b>: " + afterGameDto.getDate() + "\n" +
+        return  "<b>Дата</b>: " + afterGameDto.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
                 "<b>Время начала</b>: " + afterGameDto.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" +
                 "<b>Тип игры</b>: " + afterGameDto.getGameType() + "\n" +
                 "<b>Количество игроков</b>: " + afterGameDto.getPeople() + "\n" +

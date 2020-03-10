@@ -62,7 +62,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
                 );
             }
             case 4: {
-                createGameDto.setEndTime(getTime(data));
+                createGameDto.setEndTime(createGameDto.getStartTime().plusMinutes(Long.parseLong(data)));
                 return editMessage(
                         "Выберите <b>количество игроков</b>",
                         GamesKeyboard.gamePeople()
@@ -97,7 +97,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
 
     private String formatDto() {
         return "<b>Тип игры</b>: " + createGameDto.getGameType() + "\n" +
-                "<b>Дата</b>: " + createGameDto.getDate() + "\n" +
+                "<b>Дата</b>: " + createGameDto.getDate().format(DateTimeFormatter.ofPattern("dd-MM-yyyy")) + "\n" +
                 "<b>Время</b>: " + createGameDto.getStartTime().format(DateTimeFormatter.ofPattern("HH:mm")) +
                 " - " + createGameDto.getEndTime().format(DateTimeFormatter.ofPattern("HH:mm")) + "\n" +
                 "<b>Количество игроков</b>: " + createGameDto.getPeople() + "\n" +

@@ -25,9 +25,13 @@ public final class GamesKeyboard extends KeyboardHelper{
     public static InlineKeyboardMarkup gameDuration() {
         String[] times = {
                 "1:00", "1:30", "2:00", "2:30", "3:00",
-                "3:30", "4:00", "4:30", "5:00", "12:00"
+                "3:30", "4:00", "5:00", "6:00", "12:00"
         };
-        return format(times, null);
+        String[] values = {
+                "60", "90", "120", "150", "180",
+                "210", "240", "300", "360", "720"
+        };
+        return format(times, values);
     }
 
     public static InlineKeyboardMarkup gamePeople() {

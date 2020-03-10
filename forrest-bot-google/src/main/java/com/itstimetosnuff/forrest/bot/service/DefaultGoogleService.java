@@ -67,7 +67,7 @@ public class DefaultGoogleService implements GoogleService {
         insertEvent(event);
 
         //record phone number to spreadsheets
-        String range = PHONE_SHEET + "!A";
+        String range = PHONE_SHEET + "!A2";
         ValueRange data = new ValueRange();
         data.setValues(Collections.singletonList(Collections.singletonList(createGameDto.getPhone())));
         appendRaw(range, data);
@@ -219,7 +219,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public String cashbookGetBalance() {
-        List<String> ranges = Collections.singletonList(CASHBOOK_SHEET + "!H3");
+        List<String> ranges = Collections.singletonList(CASHBOOK_SHEET + "!I3");
         List<ValueRange> data = batchGet(ranges).getValueRanges();
         return parseValues(data, 0, 0);
     }

@@ -41,15 +41,15 @@ public class PeriodStatisticsHandler extends AbsBaseHandler {
     private String formatDto(StatisticsDto statisticsDto) {
         return "За <b>" + statisticsDto.getPeriod() + "</b>:" + "\n\n" +
                 "<b><i>------------Статистика по кассе-------------</i></b>" + "\n" +
-                "<b>Чистая пибыль</b>:" + statisticsDto.getNetIncome() + " грн\n" +
-                "<b>Оборот</b>:" + statisticsDto.getRevenue() + " грн\n" +
+                "<b>Чистая пибыль</b>: " + statisticsDto.getNetIncome() + " грн\n" +
+                "<b>Оборот</b>: " + statisticsDto.getRevenue() + " грн\n" +
                 "<b>Заработано</b>: " + statisticsDto.getEarnMoney() + " грн\n" +
                 "<b>Потрачено</b>: " + statisticsDto.getSpendMoney() + " грн\n\n" +
                 "<b><i>------------Статистика по играм------------</i></b>" + "\n" +
-                "<b>Всего игр</b>:" + statisticsDto.getTotalGames() + " игр\n" +
-                "<b>Покупон</b>:" + statisticsDto.getPokuponGames() + " игр\n" +
-                "<b>Обычные</b>:" + statisticsDto.getUsualGame() + " игр\n" +
-                "<b>Всего игроков</b>:" + statisticsDto.getTotalPeople() + " чел\n" +
+                "<b>Всего игр</b>: " + statisticsDto.getTotalGames() + " игр\n" +
+                "<b>Покупон</b>: " + statisticsDto.getPokuponGames() + " игр\n" +
+                "<b>Обычные</b>: " + statisticsDto.getUsualGame() + " игр\n" +
+                "<b>Всего игроков</b>: " + statisticsDto.getTotalPeople() + " чел\n" +
                 "<b>Сидели на беседках</b>: " + statisticsDto.getGazeboTimes() + " часов\n\n" +
                 "<b><i>------Статистика затрат со склада------</i></b>" + "\n" +
                 "<b>Шаров</b>: " + statisticsDto.getSpendBalls() + " ящиков\n" +
