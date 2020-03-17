@@ -29,7 +29,6 @@ public class BotStarter {
                             .withBotUsername()
                             .withExternalUrl()
                             .withInternalUrl()
-                            .withGoogleTokenPath()
                             .withGoogleTCredentialsPath()
                             .withGoogleAppName()
                             .withGoogleCalendarId()
@@ -43,7 +42,6 @@ public class BotStarter {
             SessionStore sessionStore = new InMemorySessionStore();
             GoogleConfiguration googleConfiguration = new GoogleConfiguration(
                     configuration.getGoogleCredentialsPath(),
-                    configuration.getGoogleTokenPath(),
                     configuration.getGoogleAppName(),
                     configuration.getCalendarId(),
                     configuration.getSpreadsheetsId()

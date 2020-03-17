@@ -37,17 +37,15 @@ configure(allprojects) { project->
 
         compile log.slf4jLog4j
         compile telegram.bots
-        compile google.client
-        compile google.oauth
         compile google.calendar
         compile google.sheets
 
         testAnnotationProcessor utils.lombok
 
-        testImplementation testing.junit5
-        testImplementation testing.junit5Mockhito
-
         testCompileOnly utils.lombok
+
+        testCompile testing.junit5
+        testCompile testing.junit5Mockhito
     }
 
     clean.doFirst {
@@ -61,7 +59,7 @@ project('forrest-bot-main') {
         enabled = true
         manifest {
             attributes ('Implementation-Title': 'Gradle Jar File Example',
-                    'Implementation-Version': '0.1b',
+                    'Implementation-Version': '1.0',
                     'Main-Class': 'com.itstimetosnuff.forrest.bot.BotStarter')
         }
         from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }

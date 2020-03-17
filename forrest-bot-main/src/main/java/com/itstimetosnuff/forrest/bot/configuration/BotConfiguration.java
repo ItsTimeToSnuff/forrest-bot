@@ -25,8 +25,6 @@ public class BotConfiguration {
 
     private String internalUrl;
 
-    private String googleTokenPath;
-
     private String googleCredentialsPath;
 
     private String googleAppName;
@@ -58,7 +56,7 @@ public class BotConfiguration {
         }
 
         public Builder withEnvBotToken() {
-            String name = properties.getProperty("bot.token.name");
+            String name = properties.getProperty("env.var.name.botToken");
             if (name.isEmpty()) {
                 throw new IllegalArgumentException("Property 'bot.token.name' should not be empty");
             }
@@ -98,15 +96,6 @@ public class BotConfiguration {
                 throw new IllegalArgumentException("Property 'bot.internalUrl' should not be empty");
             }
             botConfiguration.internalUrl = internalUrl + port;
-            return this;
-        }
-
-        public Builder withGoogleTokenPath() {
-            String tokenPath = properties.getProperty("google.tokenPath");
-            if (tokenPath.isEmpty()) {
-                throw new IllegalArgumentException("Property 'google.tokenPath' should not be empty");
-            }
-            botConfiguration.googleTokenPath = tokenPath;
             return this;
         }
 
