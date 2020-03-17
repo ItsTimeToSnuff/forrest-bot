@@ -6,47 +6,28 @@ import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
 import com.itstimetosnuff.forrest.bot.service.GoogleService;
 import com.itstimetosnuff.forrest.bot.store.SessionStore;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
-@Slf4j
-@AllArgsConstructor
-public class DefaultSession implements Session {
+public class DefaultSession extends Session {
 
-    private Long chatId;
-
-    private EventType eventLock;
-
-    private List<BotApiMethod> executes;
-
-    private HandlerRegistry handlerRegistry;
-
-    private SessionStore sessionStore;
-
-    private GoogleService googleService;
-
-    @Override
-    public Long getChatId() {
-        return this.chatId;
-    }
-
-    @Override
-    public EventType getEventLock() {
-        return this.eventLock;
-    }
-
-    @Override
-    public void setEventLock(EventType eventType) {
-        eventLock = eventType;
-    }
-
-    @Override
-    public List<BotApiMethod> getExecutes() {
-        return executes;
+    public DefaultSession(
+            Long chatId,
+            EventType eventLock,
+            List<BotApiMethod> executes,
+            HandlerRegistry handlerRegistry,
+            SessionStore sessionStore,
+            GoogleService googleService) {
+        super(
+                chatId,
+                eventLock,
+                executes,
+                handlerRegistry,
+                sessionStore,
+                googleService
+        );
     }
 
     @Override
@@ -54,15 +35,9 @@ public class DefaultSession implements Session {
         String eventType = getEventType(update);
         Handler handler = handlerRegistry.getHandler(EventType.byType(eventType));
         if (handler != null) {
-            log.info(handler.toString());
             return handler.handleEvent(update);
         }
         return null;
-    }
-
-    @Override
-    public GoogleService getGoogleService() {
-        return this.googleService;
     }
 
     @Override

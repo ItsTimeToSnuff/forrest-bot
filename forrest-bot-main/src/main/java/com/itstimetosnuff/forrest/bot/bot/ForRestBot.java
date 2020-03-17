@@ -30,9 +30,7 @@ public class ForRestBot extends TelegramWebhookBot {
             } else {
                 chatId = update.getMessage().getChatId();
             }
-            log.info(chatId.toString());
             Session session = sessionStore.findSession(chatId).orElseGet(() -> sessionFactory.createSession(chatId));
-            log.info(session.toString());
             BotApiMethod onUpdate = session.onUpdate(update);
             List<BotApiMethod> executes = session.getExecutes();
             if (!executes.isEmpty()) {

@@ -1,25 +1,53 @@
 package com.itstimetosnuff.forrest.bot.session;
 
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
 import com.itstimetosnuff.forrest.bot.service.GoogleService;
+import com.itstimetosnuff.forrest.bot.store.SessionStore;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.util.List;
 
-public interface Session {
+@AllArgsConstructor(access = AccessLevel.PROTECTED)
+public abstract class Session {
 
-    Long getChatId();
+    protected Long chatId;
 
-    EventType getEventLock();
+    protected EventType eventLock;
 
-    void setEventLock(EventType eventType);
+    protected List<BotApiMethod> executes;
 
-    List<BotApiMethod> getExecutes();
+    protected HandlerRegistry handlerRegistry;
 
-    BotApiMethod onUpdate(Update update);
+    protected SessionStore sessionStore;
 
-    GoogleService getGoogleService();
+    protected GoogleService googleService;
 
-    void close();
+
+    public Long getChatId() {
+        return this.chatId;
+    }
+
+    public EventType getEventLock() {
+        return this.eventLock;
+    }
+
+    public List<BotApiMethod> getExecutes() {
+        return executes;
+    }
+
+    public GoogleService getGoogleService() {
+        return this.googleService;
+    }
+
+    public void setEventLock(EventType eventType) {
+        eventLock = eventType;
+    }
+
+    public abstract BotApiMethod onUpdate(Update update);
+
+    public abstract void close();
 }
