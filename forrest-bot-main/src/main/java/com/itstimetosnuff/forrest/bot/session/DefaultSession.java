@@ -34,10 +34,8 @@ public class DefaultSession extends Session {
     public BotApiMethod onUpdate(Update update) {
         String eventType = getEventType(update);
         Handler handler = handlerRegistry.getHandler(EventType.byType(eventType));
-        if (handler != null) {
-            return handler.handleEvent(update);
-        }
-        return null;
+        return handler.handleEvent(update);
+
     }
 
     @Override
@@ -47,7 +45,7 @@ public class DefaultSession extends Session {
 
     private String getEventType(Update update) {
         String text = getText(update);
-        if (!eventLock.equals(EventType.LOCK_FREE)){
+        if (!eventLock.equals(EventType.LOCK_FREE)) {
             if (text.equals(Buttons.CANCEL) ||
                     text.contains(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK) ||
                     text.contains(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK)) {
@@ -55,7 +53,7 @@ public class DefaultSession extends Session {
             } else {
                 return eventLock.getValue();
             }
-        }else {
+        } else {
             return text;
         }
     }

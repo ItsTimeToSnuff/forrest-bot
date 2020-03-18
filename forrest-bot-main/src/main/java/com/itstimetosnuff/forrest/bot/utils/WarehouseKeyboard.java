@@ -5,7 +5,7 @@ import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class WarehouseKeyboard extends KeyboardHelper {
+public final class WarehouseKeyboard extends KeyboardHelper {
 
     public static InlineKeyboardMarkup balls() {
         String [] balls = {

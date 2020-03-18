@@ -13,6 +13,7 @@ import java.util.Properties;
 @Slf4j
 @Getter
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
+@SuppressWarnings("PMD.AvoidDuplicateLiterals")
 public class BotConfiguration {
 
     private String botUsername;
@@ -60,7 +61,11 @@ public class BotConfiguration {
             if (name.isEmpty()) {
                 throw new IllegalArgumentException("Property 'bot.token.name' should not be empty");
             }
-            botConfiguration.botToken = System.getenv(name);
+            String token = System.getenv(name);
+            if (token.isEmpty()) {
+                throw new IllegalArgumentException(String.format("Environmental variable '%s' should not be empty", token));
+            }
+            botConfiguration.botToken = token;
             return this;
         }
 
@@ -89,7 +94,7 @@ public class BotConfiguration {
             }
             String port = System.getenv(portVarName);
             if (port.isEmpty()) {
-                throw new IllegalArgumentException("Property 'portVarName' should not be empty");
+                throw new IllegalArgumentException(String.format("Environmental variable '%s' should not be empty", portVarName));
             }
             String internalUrl = properties.getProperty("bot.internalUrl");
             if (internalUrl.isEmpty()) {
@@ -124,7 +129,7 @@ public class BotConfiguration {
             }
             String calendarId = System.getenv(calendarVarName);
             if (calendarId.isEmpty()) {
-                throw new IllegalArgumentException("Property 'calendarId' should not be empty");
+                throw new IllegalArgumentException(String.format("Environmental variable '%s' should not be empty", calendarVarName));
             }
             botConfiguration.calendarId = calendarId;
             return this;
@@ -137,7 +142,7 @@ public class BotConfiguration {
             }
             String spreadsheetId =  System.getenv(spreadsheetsVarName);
             if (spreadsheetId.isEmpty()) {
-                throw new IllegalArgumentException("Property 'spreadsheetId' should not be empty");
+                throw new IllegalArgumentException(String.format("Environmental variable '%s' should not be empty", spreadsheetId));
             }
             botConfiguration.spreadsheetsId = spreadsheetId;
             return this;

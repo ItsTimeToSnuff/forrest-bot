@@ -174,18 +174,6 @@ public class DefaultSessionTest {
     }
 
     @Test
-    void whenDefaultSessionOnUpdateReturnNull() {
-        //given
-        when(mockUpdate.getMessage()).thenReturn(mockMessage);
-        when(mockMessage.getText()).thenReturn("/test");
-        when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(null);
-        //when
-        BotApiMethod method = session.onUpdate(mockUpdate);
-        //then
-        assertNull(method);
-    }
-
-    @Test
     void whenDefaultSessionCloseThenCloseIt(){
         //when
         session.close();
