@@ -33,4 +33,6 @@ public class AfterGameDto {
     private String gazebo;
 
     private String repair;
+
+    private String prepayment;
 }

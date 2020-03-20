@@ -140,6 +140,19 @@ public class GamesAfterHandler extends AbsDialogHandler {
                     afterGameDto.setRepair(data);
                 }
                 addMsgDelete();
+                return sendMessage(
+                        "Укажите сумму <b>предоплаты</b>",
+                        MainMenuKeyboard.empty()
+                );
+            }
+            case 13: {
+                if (data.equals(Buttons.EMPTY)) {
+                    afterGameDto.setPrepayment(EMPTY_VALUE);
+                } else {
+                    addMsgDelete();
+                    afterGameDto.setPrepayment(data);
+                }
+                addMsgDelete();
                 return sendSaveMessage(formatDto());
             }
         }
@@ -159,6 +172,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
                 "<b>Куплено средних флешек</b>: " + afterGameDto.getFlashM() + " шт" + "\n" +
                 "<b>Куплено больших дымов</b>: " + afterGameDto.getSmokeL() + " шт" + "\n" +
                 "<b>Часов на беседке</b>: " + afterGameDto.getGazebo() + " ч" + "\n" +
-                "<b>Поломки</b>: " + afterGameDto.getRepair() + " грн" + "\n";
+                "<b>Поломки</b>: " + afterGameDto.getRepair() + " грн" + "\n" +
+                "<b>Предоплата</b>: " + afterGameDto.getPrepayment() + " грн" + "\n";
     }
 }

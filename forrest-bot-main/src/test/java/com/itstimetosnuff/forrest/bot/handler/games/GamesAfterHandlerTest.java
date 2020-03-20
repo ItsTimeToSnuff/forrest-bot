@@ -267,8 +267,6 @@ public class GamesAfterHandlerTest {
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.EMPTY);
-        when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
-        when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
         //when
         BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
         //then
@@ -283,6 +281,36 @@ public class GamesAfterHandlerTest {
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("100");
+        //when
+        BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenGamesAfterHandlerHandleEventCase13Repair0ThenReturnEditMessage() {
+        //given
+        gamesAfterHandler.setCase(13);
+        doNothing().when(mockAfterGameDto).setPrepayment(any());
+        when(mockUpdate.hasCallbackQuery()).thenReturn(false);
+        when(mockUpdate.getMessage()).thenReturn(mockMessage);
+        when(mockMessage.getText()).thenReturn(Buttons.EMPTY);
+        when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
+        when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
+        //when
+        BotApiMethod method = gamesAfterHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenGamesAfterHandlerHandleEventCase13RepairNotNullThenReturnEditMessage() {
+        //given
+        gamesAfterHandler.setCase(13);
+        doNothing().when(mockAfterGameDto).setPrepayment(any());
+        when(mockUpdate.hasCallbackQuery()).thenReturn(false);
+        when(mockUpdate.getMessage()).thenReturn(mockMessage);
+        when(mockMessage.getText()).thenReturn("100");
         when(mockAfterGameDto.getStartTime()).thenReturn(LocalTime.now());
         when(mockAfterGameDto.getDate()).thenReturn(LocalDate.now());
         //when
@@ -293,9 +321,9 @@ public class GamesAfterHandlerTest {
 
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase12SaveThenReturnSendMessage() {
+    void whenGamesAfterHandlerHandleEventCase13SaveThenReturnSendMessage() {
         //given
-        gamesAfterHandler.setCase(12);
+        gamesAfterHandler.setCase(13);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
@@ -310,9 +338,9 @@ public class GamesAfterHandlerTest {
     }
 
     @Test
-    void whenGamesAfterHandlerHandleEventCase13ThenReturnNull() {
+    void whenGamesAfterHandlerHandleEventCase14ThenReturnNull() {
         //given
-        gamesAfterHandler.setCase(13);
+        gamesAfterHandler.setCase(14);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);
