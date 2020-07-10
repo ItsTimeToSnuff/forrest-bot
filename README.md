@@ -1,4 +1,5 @@
 # Forrest-bot
+
 It`s a CRM telegram bot for "For.Rest" paintball club. This bot uses 
 Google Spreadsheets like DB.
 
@@ -12,7 +13,8 @@ Functional:
 - get statistics for the current month/year
 
 ##Building project
- JDK 11 need to be installed and ```environmental variables``` need to be created:
+
+JDK 11 need to be installed and ```environmental variables``` need to be created:
 
 - ```BOT_TOKEN```
 - ```CALENDAR_ID```
@@ -33,6 +35,7 @@ Next from the project root dir run:
 to skip test phase add `-x test` to the previous command.
 
 ##Running project
+
 From project root dir run:
 - Windows: 
 ```java -jar forrest-bot-main/build/libs/forrest-bot-main.jar prod/dev.properties```
