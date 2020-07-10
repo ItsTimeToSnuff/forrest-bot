@@ -12,7 +12,7 @@ Functional:
 - get cashbook balance
 - get statistics for the current month/year
 
-##Building project
+## Building project
 
 JDK 11 need to be installed and ```environmental variables``` need to be created:
 
@@ -34,7 +34,7 @@ Next from the project root dir run:
 
 to skip test phase add `-x test` to the previous command.
 
-##Running project
+## Running project
 
 From project root dir run:
 - Windows: 
