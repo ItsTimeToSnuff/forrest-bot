@@ -76,7 +76,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
                 );
             }
             case 6: {
-                createGameDto.setPhone(data);
+                createGameDto.setPhone(data.replaceAll("\\s+", ""));
                 addMsgDelete();
                 return sendMessage(
                         "Напишите <b>дополнительное описание</b>",
