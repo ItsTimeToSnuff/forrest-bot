@@ -1,2 +1,2 @@
 default_process_types:
-  web: java -jar forrest-bot-main/build/libs/forrest-bot-main.jar prod.properties
+  web: java -jar build/libs/forrest-bot-1.1.1.jar prod.properties
