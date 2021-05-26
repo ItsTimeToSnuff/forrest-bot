@@ -1,7 +1,9 @@
 package com.itstimetosnuff.forrest.bot.handler.statistics;
 
 import com.itstimetosnuff.forrest.bot.dto.StatisticsDto;
+import com.itstimetosnuff.forrest.bot.entity.User;
 import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
+import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import com.itstimetosnuff.forrest.bot.utils.Buttons;
 import org.junit.jupiter.api.Test;
@@ -14,12 +16,10 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
-import java.time.LocalDate;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
@@ -29,14 +29,21 @@ public class PeriodStatisticsHandlerTest {
     @Mock
     private Message mockMessage;
     @Mock
-    private Session mockSession;
-    @Mock
     private DefaultGoogleService mockGoogleService;
     @Mock
     private StatisticsDto mockStatisticsDto;
 
     @InjectMocks
     private PeriodStatisticsHandler periodStatisticsHandler;
+
+    @InjectMocks
+    private static final Session mockSession = mock(DefaultSession.class);
+    private static final User mockUser = mock(User.class);
+
+    static {
+        when(mockSession.getUser()).thenReturn(mockUser);
+        when(mockUser.getChatId()).thenReturn(1L);
+    }
 
     @Test
     void whenPeriodStatisticsHandlerHandleEventMonthThenReturnSendMessage() {

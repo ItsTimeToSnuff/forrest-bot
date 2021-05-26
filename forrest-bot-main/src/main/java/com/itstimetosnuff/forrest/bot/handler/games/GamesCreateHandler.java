@@ -30,7 +30,7 @@ public class GamesCreateHandler extends AbsDialogHandler {
             session.getGoogleService().gameCreateEvent(createGameDto);
             return finishAndClear(formatDto());
         }
-        switch (CREATE_CASE.getAndIncrement()) {
+        switch (session.getDialogueInfo().getPosition().getAndIncrement()) {
             case 0: {
                 createGameDto = new CreateGameDto();
                 startAndInit(EventType.GAMES_CREATE);

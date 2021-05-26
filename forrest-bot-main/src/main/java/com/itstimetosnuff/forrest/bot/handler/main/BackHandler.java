@@ -18,7 +18,7 @@ public class BackHandler extends AbsBaseHandler {
         variablesInit(update);
         return sendMessage(
                 Buttons.ASK_FOR_HELP,
-                MainMenuKeyboard.mainMenu()
+                MainMenuKeyboard.mainMenu(session.getUser().getRole())
         );
     }
 }

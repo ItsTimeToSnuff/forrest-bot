@@ -1,6 +1,8 @@
 package com.itstimetosnuff.forrest.bot.handler.warehouse;
 
 import com.itstimetosnuff.forrest.bot.dto.WarehouseDto;
+import com.itstimetosnuff.forrest.bot.enums.Role;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
@@ -13,11 +15,12 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.itstimetosnuff.forrest.bot.utils.Buttons.EMPTY;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -43,21 +46,27 @@ public class WarehouseCreditHandlerTest {
     @Mock
     private User mockUser;
 
-    private static DefaultSession mockSession = mock(DefaultSession.class);
+    private static final com.itstimetosnuff.forrest.bot.entity.User mockBotUser = mock(com.itstimetosnuff.forrest.bot.entity.User.class);
+    private static final DialogueInfo mockDialogueInfo = mock(DialogueInfo.class);
+    private static final AtomicInteger mockPosition = mock(AtomicInteger.class);
+    private static final DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
-    private TestHelper warehouseCreditHandler = new TestHelper(mockSession);
+    private final TestHelper warehouseCreditHandler = new TestHelper(mockSession);
 
-    private String data = "test";
+    private final String data = "test";
 
     static {
-        when(mockSession.getChatId()).thenReturn(1L);
+        when(mockSession.getDialogueInfo()).thenReturn(mockDialogueInfo);
+        when(mockDialogueInfo.getPosition()).thenReturn(mockPosition);
+        when(mockSession.getUser()).thenReturn(mockBotUser);
+        when(mockBotUser.getChatId()).thenReturn(1L);
     }
 
     private class TestHelper extends WarehouseCreditHandler {
 
         private void setCase(int i) {
-            CREATE_CASE.set(i);
+            session.getDialogueInfo().getPosition().set(i);
         }
 
         private TestHelper(Session session) {
@@ -320,6 +329,7 @@ public class WarehouseCreditHandlerTest {
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
         when(mockSession.getGoogleService()).thenReturn(mockGoogleService);
         doNothing().when(mockGoogleService).warehouseWriteCredit(mockWarehouseDto);
+        when(mockBotUser.getRole()).thenReturn(Role.ADMIN);
         //when
         BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
         //then

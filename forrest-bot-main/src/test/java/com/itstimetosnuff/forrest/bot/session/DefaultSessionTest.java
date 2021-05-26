@@ -1,6 +1,8 @@
 package com.itstimetosnuff.forrest.bot.session;
 
+import com.itstimetosnuff.forrest.bot.entity.User;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.handler.Handler;
 import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
 import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
@@ -21,7 +23,6 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -30,7 +31,6 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 public class DefaultSessionTest {
 
-    private Long chatId = 1L;
     @Mock
     private HandlerRegistry mockHandlerRegistry;
     @Mock
@@ -49,22 +49,25 @@ public class DefaultSessionTest {
     private CallbackQuery mockCallbackQuery;
     @Mock
     private DefaultGoogleService mockDefaultGoogleService;
-
+    @Mock
+    private User mockUser;
+    @Mock
+    private DialogueInfo mockDialogueInfo;
 
     @InjectMocks
     private DefaultSession session;
 
     @BeforeEach
     void init() {
-        session = new DefaultSession(chatId, EventType.LOCK_FREE, mockExecutes, mockHandlerRegistry, mockSessionStore, mockDefaultGoogleService);
+        session = new DefaultSession(mockUser, mockDialogueInfo, mockExecutes, mockHandlerRegistry, mockSessionStore, mockDefaultGoogleService);
     }
 
     @Test
-    void whenDefaultSessionGetChatIdThenReturnIt() {
+    void whenDefaultSessionGetUserThenReturnIt() {
         //when
-        Long found = session.getChatId();
+        User found = session.getUser();
         //then
-        assertEquals(chatId, found);
+        assertEquals(mockUser, found);
     }
 
     @Test
@@ -84,24 +87,17 @@ public class DefaultSessionTest {
     }
 
     @Test
-    void whenGetEventLockThenReturnIt() {
+    void whenGetDialogueInfoThenReturnIt() {
         //when
-        EventType found = session.getEventLock();
+        DialogueInfo found = session.getDialogueInfo();
         //then
-        assertEquals(EventType.LOCK_FREE, found);
-    }
-
-    @Test
-    void whenSetEventLockThenSetIt() {
-        //when
-        session.setEventLock(EventType.GAMES_CREATE);
-        //then
-        assertEquals(EventType.GAMES_CREATE, session.getEventLock());
+        assertEquals(mockDialogueInfo, found);
     }
 
     @Test
     void whenDefaultSessionOnUpdateReturnBotApiMethod() {
         //given
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.LOCK_FREE);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn("/test");
@@ -116,10 +112,11 @@ public class DefaultSessionTest {
     @Test
     void whenDefaultSessionOnUpdateEventLockReturnBotApiMethod() {
         //given
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.LOCK_FREE);
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getData()).thenReturn("test");
-        session.setEventLock(EventType.GAMES_CREATE);
+        session.getDialogueInfo().setEventLock(EventType.GAMES_CREATE);
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
         when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when
@@ -131,10 +128,11 @@ public class DefaultSessionTest {
     @Test
     void whenDefaultSessionOnUpdateCancelReturnBotApiMethod() {
         //given
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.LOCK_FREE);
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.CANCEL);
-        session.setEventLock(EventType.GAMES_CREATE);
+        session.getDialogueInfo().setEventLock(EventType.GAMES_CREATE);
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
         when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when
@@ -146,10 +144,11 @@ public class DefaultSessionTest {
     @Test
     void whenDefaultSessionOnUpdateCalendarForwardReturnBotApiMethod() {
         //given
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.LOCK_FREE);
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK);
-        session.setEventLock(EventType.GAMES_CREATE);
+        session.getDialogueInfo().setEventLock(EventType.GAMES_CREATE);
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
         when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when
@@ -161,10 +160,11 @@ public class DefaultSessionTest {
     @Test
     void whenDefaultSessionOnUpdateCalendarBackwardReturnBotApiMethod() {
         //given
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.LOCK_FREE);
         when(mockUpdate.hasCallbackQuery()).thenReturn(true);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK);
-        session.setEventLock(EventType.GAMES_CREATE);
+        session.getDialogueInfo().setEventLock(EventType.GAMES_CREATE);
         when(mockHandlerRegistry.getHandler(any(EventType.class))).thenReturn(mockHandler);
         when(mockHandler.handleEvent(mockUpdate)).thenReturn(mockBotApiMethod);
         //when

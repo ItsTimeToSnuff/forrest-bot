@@ -19,7 +19,7 @@ public class StartHandler extends AbsBaseHandler {
         return sendMessage(
                 String.format("<b>%s</b>,\n" +
                         "Приветствую тебя в боте клуба <i>For.Rest.</i>\nЧем могу помочь?", name),
-                MainMenuKeyboard.mainMenu()
+                MainMenuKeyboard.mainMenu(session.getUser().getRole())
         );
     }
 }

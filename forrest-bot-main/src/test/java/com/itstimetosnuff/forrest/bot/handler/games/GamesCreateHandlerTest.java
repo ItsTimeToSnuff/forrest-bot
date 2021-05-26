@@ -1,6 +1,8 @@
 package com.itstimetosnuff.forrest.bot.handler.games;
 
 import com.itstimetosnuff.forrest.bot.dto.CreateGameDto;
+import com.itstimetosnuff.forrest.bot.enums.Role;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
@@ -20,6 +22,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -42,21 +45,27 @@ public class GamesCreateHandlerTest {
     @Mock
     private DefaultGoogleService mockGoogleService;
 
-    private static DefaultSession mockSession = mock(DefaultSession.class);
+    private static final com.itstimetosnuff.forrest.bot.entity.User mockBotUser = mock(com.itstimetosnuff.forrest.bot.entity.User.class);
+    private static final DialogueInfo mockDialogueInfo = mock(DialogueInfo.class);
+    private static final AtomicInteger mockPosition = mock(AtomicInteger.class);
+    private static final DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
-    private TestHelper gamesCreateHandler = new TestHelper(mockSession);
+    private final TestHelper gamesCreateHandler = new TestHelper(mockSession);
 
-    private String data = "test";
+    private final String data = "test";
 
     static {
-        when(mockSession.getChatId()).thenReturn(1L);
+        when(mockSession.getDialogueInfo()).thenReturn(mockDialogueInfo);
+        when(mockDialogueInfo.getPosition()).thenReturn(mockPosition);
+        when(mockSession.getUser()).thenReturn(mockBotUser);
+        when(mockBotUser.getChatId()).thenReturn(1L);
     }
 
     private class TestHelper extends GamesCreateHandler {
 
         private void setCase(int i) {
-            CREATE_CASE.set(i);
+            session.getDialogueInfo().getPosition().set(i);
         }
 
         private TestHelper(Session session) {
@@ -219,6 +228,7 @@ public class GamesCreateHandlerTest {
         when(mockCreateGameDto.getStartTime()).thenReturn(LocalTime.now());
         when(mockCreateGameDto.getEndTime()).thenReturn(LocalTime.now());
         when(mockCreateGameDto.getDate()).thenReturn(LocalDate.now());
+        when(mockBotUser.getRole()).thenReturn(Role.ADMIN);
         //when
         BotApiMethod method = gamesCreateHandler.handleEvent(mockUpdate);
         //then

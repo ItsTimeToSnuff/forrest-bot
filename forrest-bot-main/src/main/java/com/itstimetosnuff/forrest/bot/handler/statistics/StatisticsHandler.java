@@ -18,7 +18,7 @@ public class StatisticsHandler extends AbsBaseHandler {
         variablesInit(update);
         return sendMessage(
                 Buttons.ASK_FOR_HELP,
-                MainMenuKeyboard.statisticsMenu()
+                MainMenuKeyboard.statisticsMenu(session.getUser().getRole())
         );
     }
 }

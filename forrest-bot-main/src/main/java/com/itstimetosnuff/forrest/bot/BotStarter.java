@@ -33,6 +33,7 @@ public class BotStarter {
                             .withGoogleAppName()
                             .withGoogleCalendarId()
                             .withGoogleSpreadsheetsId()
+                            .withAdminIdList()
                             .build();
             String externalUrl = configuration.getExternalUrl();
             String internalUrl = configuration.getInternalUrl();
@@ -47,8 +48,9 @@ public class BotStarter {
                     configuration.getSpreadsheetsId()
             );
             GoogleService googleService = new DefaultGoogleService(googleConfiguration);
-            SessionFactory sessionFactory = new DefaultSessionFactory(sessionStore, googleService);
-            botsApi.registerBot(new ForRestBot(configuration, sessionStore, sessionFactory));
+            SessionFactory sessionFactory = new DefaultSessionFactory(sessionStore, googleService, configuration.getAdmins());
+            ForRestBot forRestBot = new ForRestBot(configuration, sessionStore, sessionFactory);
+            botsApi.registerBot(forRestBot);
             log.info("Bot successful started");
         } catch (Exception e) {
             log.error(e.getMessage(), e);

@@ -17,9 +17,9 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ForRestBot extends TelegramWebhookBot {
 
-    private final transient BotConfiguration configuration;
-    private final transient SessionStore sessionStore;
-    private final transient SessionFactory sessionFactory;
+    private final BotConfiguration configuration;
+    private final SessionStore sessionStore;
+    private final SessionFactory sessionFactory;
 
     @Override
     public BotApiMethod onWebhookUpdateReceived(Update update) {

@@ -9,22 +9,16 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboard;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
-
 public abstract class AbsBaseHandler implements Handler {
 
     protected transient String data;
     protected transient Integer msgId;
     protected transient final Long chatId;
     protected transient final Session session;
-    protected static final AtomicInteger CREATE_CASE = new AtomicInteger();
-    protected static final Set<Integer> MSG_DELETE_IDs = new HashSet<>();
 
     protected AbsBaseHandler(Session session) {
         this.session = session;
-        this.chatId = session.getChatId();
+        chatId = session.getUser().getChatId();
     }
 
     protected void variablesInit(Update update) {

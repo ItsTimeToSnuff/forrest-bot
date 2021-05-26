@@ -24,7 +24,7 @@ public enum EventType {
     STATISTICS_YEAR(Buttons.STATISTICS_YEAR),
     CALENDAR(Buttons.CALENDAR);
 
-    private String type;
+    private final String type;
 
     EventType(String type) {
         this.type = type;

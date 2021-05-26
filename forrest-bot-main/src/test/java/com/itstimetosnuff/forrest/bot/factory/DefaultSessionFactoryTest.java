@@ -8,6 +8,8 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.ArrayList;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.times;
@@ -18,6 +20,8 @@ public class DefaultSessionFactoryTest {
 
     @Mock
     private SessionStore mockSessionStore;
+    @Mock
+    private ArrayList<Long> mockAdminList;
 
     @InjectMocks
     private DefaultSessionFactory sessionFactory;
@@ -28,6 +32,6 @@ public class DefaultSessionFactoryTest {
         Session session = sessionFactory.createSession(1L);
         //then
         verify(mockSessionStore, times(1)).registerSession(any(Session.class));
-        assertEquals(1L, session.getChatId());
+        assertEquals(1L, session.getUser().getChatId());
     }
 }

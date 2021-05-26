@@ -33,13 +33,13 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
             return finishAndClear(formatDto(warehouseDto));
         }
         if (data.equals(Buttons.NO_CALLBACK)) {
-            CREATE_CASE.set(8);
+            session.getDialogueInfo().getPosition().set(8);
             warehouseDto.setGrenades(EMPTY_VALUE);
             warehouseDto.setFlashS(EMPTY_VALUE);
             warehouseDto.setFlashM(EMPTY_VALUE);
             warehouseDto.setSmokeL(EMPTY_VALUE);
         }
-        switch (CREATE_CASE.getAndIncrement()) {
+        switch (session.getDialogueInfo().getPosition().getAndIncrement()) {
             case 0: {
                 warehouseDto = new WarehouseDto();
                 warehouseDto.setRecordDate(LocalDate.now());

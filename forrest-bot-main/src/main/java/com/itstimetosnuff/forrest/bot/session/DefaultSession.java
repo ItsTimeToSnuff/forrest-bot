@@ -1,6 +1,8 @@
 package com.itstimetosnuff.forrest.bot.session;
 
+import com.itstimetosnuff.forrest.bot.entity.User;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.handler.Handler;
 import com.itstimetosnuff.forrest.bot.handler.HandlerRegistry;
 import com.itstimetosnuff.forrest.bot.service.GoogleService;
@@ -14,15 +16,15 @@ import java.util.List;
 public class DefaultSession extends Session {
 
     public DefaultSession(
-            Long chatId,
-            EventType eventLock,
+            User user,
+            DialogueInfo dialogueInfo,
             List<BotApiMethod> executes,
             HandlerRegistry handlerRegistry,
             SessionStore sessionStore,
             GoogleService googleService) {
         super(
-                chatId,
-                eventLock,
+                user,
+                dialogueInfo,
                 executes,
                 handlerRegistry,
                 sessionStore,
@@ -34,8 +36,10 @@ public class DefaultSession extends Session {
     public BotApiMethod onUpdate(Update update) {
         String eventType = getEventType(update);
         Handler handler = handlerRegistry.getHandler(EventType.byType(eventType));
+        if (handler == null) {
+            handler = handlerRegistry.getHandler(EventType.ERROR);
+        }
         return handler.handleEvent(update);
-
     }
 
     @Override
@@ -45,6 +49,7 @@ public class DefaultSession extends Session {
 
     private String getEventType(Update update) {
         String text = getText(update);
+        EventType eventLock = dialogueInfo.getEventLock();
         if (!eventLock.equals(EventType.LOCK_FREE)) {
             if (text.equals(Buttons.CANCEL) ||
                     text.contains(Buttons.CALENDAR_SCROLL_FORWARD_CALLBACK) ||

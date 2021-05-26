@@ -1,5 +1,6 @@
 package com.itstimetosnuff.forrest.bot.utils;
 
+import com.itstimetosnuff.forrest.bot.enums.Role;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
@@ -9,52 +10,100 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 @SuppressWarnings("PMD.DataflowAnomalyAnalysis")
-public final class MainMenuKeyboard extends KeyboardHelper {
+public final class MainMenuKeyboard extends BaseKeyboardHelper {
 
-    public static ReplyKeyboardMarkup mainMenu() {
-        return fourButton(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.CASHBOOK, Buttons.STATISTICS);
+    public static ReplyKeyboardMarkup mainMenu(Role role) {
+        List<String> buttons;
+        switch (role) {
+            case USER: {
+                buttons = Arrays.asList(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.CASHBOOK);
+                break;
+            }
+            case ADMIN: {
+                buttons = Arrays.asList(Buttons.GAMES, Buttons.WAREHOUSE, Buttons.CASHBOOK, Buttons.STATISTICS);
+                break;
+            }
+            default: {
+                buttons = new ArrayList<>();
+                break;
+            }
+        }
+        return createReplyKeyboard(buttons, 2);
     }
 
     public static ReplyKeyboardMarkup gamesMenu() {
-        return threeButton(Buttons.GAMES_CREATE, Buttons.GAMES_AFTER, Buttons.BACK);
+        List<String> buttons = Arrays.asList(Buttons.GAMES_CREATE, Buttons.GAMES_AFTER, Buttons.BACK);
+        return createReplyKeyboard(buttons, 2);
     }
 
     public static ReplyKeyboardMarkup warehouseMenu() {
-        return fourButton(Buttons.WAREHOUSE_DEBIT, Buttons.WAREHOUSE_CREDIT,
-                Buttons.WAREHOUSE_BALANCE, Buttons.BACK);
+        List<String> buttons =
+                Arrays.asList(Buttons.WAREHOUSE_DEBIT, Buttons.WAREHOUSE_CREDIT, Buttons.WAREHOUSE_BALANCE, Buttons.BACK);
+        return createReplyKeyboard(buttons, 2);
     }
 
-    public static ReplyKeyboardMarkup cashbookMenu() {
-        return fourButton(Buttons.CASHBOOK_DEBIT, Buttons.CASHBOOK_CREDIT,
-                Buttons.CASHBOOK_BALANCE, Buttons.BACK);
+    public static ReplyKeyboardMarkup cashbookMenu(Role role) {
+        List<String> buttons;
+        switch (role) {
+            case USER: {
+                buttons = Arrays.asList(Buttons.CASHBOOK_DEBIT, Buttons.CASHBOOK_CREDIT, Buttons.BACK);
+                break;
+            }
+            case ADMIN: {
+                buttons = Arrays.asList(Buttons.CASHBOOK_DEBIT, Buttons.CASHBOOK_CREDIT,
+                        Buttons.CASHBOOK_BALANCE, Buttons.BACK);
+                break;
+            }
+            default: {
+                buttons = new ArrayList<>();
+                break;
+            }
+        }
+        return createReplyKeyboard(buttons, 2);
     }
 
-    public static ReplyKeyboardMarkup statisticsMenu() {
-        return threeButton(Buttons.STATISTICS_MONTH, Buttons.STATISTICS_YEAR, Buttons.BACK);
+    public static ReplyKeyboardMarkup statisticsMenu(Role role) {
+        List<String> buttons;
+        if (role == Role.ADMIN) {
+            buttons = Arrays.asList(Buttons.STATISTICS_MONTH, Buttons.STATISTICS_YEAR, Buttons.BACK);
+        } else {
+            buttons = Collections.singletonList(Buttons.BACK);
+        }
+        return createReplyKeyboard(buttons, 2);
     }
 
     public static ReplyKeyboardMarkup cancel() {
-        return oneButton(Buttons.CANCEL);
+        List<String> buttons = Collections.singletonList(Buttons.CANCEL);
+        return createReplyKeyboard(buttons, 1);
     }
 
     public static ReplyKeyboardMarkup back() {
-        return oneButton(Buttons.BACK);
+        List<String> buttons = Collections.singletonList(Buttons.BACK);
+        return createReplyKeyboard(buttons, 1);
     }
 
     public static InlineKeyboardMarkup save() {
-        return oneButton(Buttons.SAVE, Buttons.SAVE_CALLBACK);
+        List<String> texts = Collections.singletonList(Buttons.SAVE);
+        List<String> values = Collections.singletonList(Buttons.SAVE_CALLBACK);
+        return createInlineKeyboard(texts, values, 1);
     }
 
     public static InlineKeyboardMarkup yesNo() {
-        return twoButtons(Buttons.YES, Buttons.YES_CALLBACK, Buttons.NO, Buttons.NO_CALLBACK);
+        List<String> texts = Arrays.asList(Buttons.YES, Buttons.NO);
+        List<String> values = Arrays.asList(Buttons.YES_CALLBACK, Buttons.NO_CALLBACK);
+        return createInlineKeyboard(texts, values, 2);
     }
 
     public static InlineKeyboardMarkup empty() {
-        return oneButton("Оставить пустым", " ");
+        List<String> texts = Collections.singletonList(Buttons.EMPTY_BUTTON);
+        List<String> values = Collections.singletonList(Buttons.EMPTY_BUTTON_VALUE);
+        return createInlineKeyboard(texts, values, 1);
     }
 
     public static InlineKeyboardMarkup calendar(LocalDate date) {
@@ -72,7 +121,7 @@ public final class MainMenuKeyboard extends KeyboardHelper {
         title.setCallbackData(Buttons.CALENDAR_SCROLL_BACKWARD_CALLBACK + ":" + date.getMonthValue());
         buttons.add(title);
         title = new InlineKeyboardButton();
-        title.setText(date.format(DateTimeFormatter.ofPattern("MMMM YYYY")));
+        title.setText(date.format(DateTimeFormatter.ofPattern("MMMM yyyy")));
         title.setCallbackData(Buttons.EMPTY);
         buttons.add(title);
         title = new InlineKeyboardButton();

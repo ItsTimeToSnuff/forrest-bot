@@ -2,6 +2,8 @@ package com.itstimetosnuff.forrest.bot.handler.cashbook;
 
 import com.itstimetosnuff.forrest.bot.dto.CashbookDto;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.enums.Role;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.service.DefaultGoogleService;
 import com.itstimetosnuff.forrest.bot.session.DefaultSession;
 import com.itstimetosnuff.forrest.bot.session.Session;
@@ -17,6 +19,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -39,21 +43,27 @@ public class CashbookCreditDebitHandlerTest {
     @Mock
     private User mockUser;
 
-    private static DefaultSession mockSession = mock(DefaultSession.class);
+    private static final com.itstimetosnuff.forrest.bot.entity.User mockBotUser = mock(com.itstimetosnuff.forrest.bot.entity.User.class);
+    private static final DialogueInfo mockDialogueInfo = mock(DialogueInfo.class);
+    private static final AtomicInteger mockPosition = mock(AtomicInteger.class);
+    private static final DefaultSession mockSession = mock(DefaultSession.class);
 
     @InjectMocks
-    private TestHelper cashbookCreditDebitHandler = new TestHelper(mockSession);
+    private final TestHelper cashbookCreditDebitHandler = new TestHelper(mockSession);
 
-    private String data = "test";
+    private final String data = "test";
 
     static {
-        when(mockSession.getChatId()).thenReturn(1L);
+        when(mockSession.getDialogueInfo()).thenReturn(mockDialogueInfo);
+        when(mockDialogueInfo.getPosition()).thenReturn(mockPosition);
+        when(mockSession.getUser()).thenReturn(mockBotUser);
+        when(mockBotUser.getChatId()).thenReturn(1L);
     }
 
     private class TestHelper extends CashbookCreditDebitHandler {
 
         private void setCase(int i) {
-            CREATE_CASE.set(i);
+            session.getDialogueInfo().getPosition().set(i);
         }
 
         private TestHelper(Session session) {
@@ -112,11 +122,12 @@ public class CashbookCreditDebitHandlerTest {
     @Test
     void whenCashbookCreditDebitHandlerHandleEventCase2SaveDebitThenReturnSendMessage() {
         //given
-        when(mockSession.getEventLock()).thenReturn(EventType.CASHBOOK_DEBIT);
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.CASHBOOK_DEBIT);
         when(mockSession.getGoogleService()).thenReturn(mockDefaultGoogleService);
         doNothing().when(mockDefaultGoogleService).cashbookWriteDebit(any(CashbookDto.class));
         cashbookCreditDebitHandler.setCase(2);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
+        when(mockBotUser.getRole()).thenReturn(Role.ADMIN);
         //when
         BotApiMethod method = cashbookCreditDebitHandler.handleEvent(mockUpdate);
         //then
@@ -126,11 +137,12 @@ public class CashbookCreditDebitHandlerTest {
     @Test
     void whenCashbookCreditDebitHandlerHandleEventCase2SaveCreditThenReturnSendMessage() {
         //given
-        when(mockSession.getEventLock()).thenReturn(EventType.CASHBOOK_CREDIT);
+        when(mockDialogueInfo.getEventLock()).thenReturn(EventType.CASHBOOK_CREDIT);
         when(mockSession.getGoogleService()).thenReturn(mockDefaultGoogleService);
         doNothing().when(mockDefaultGoogleService).cashbookWriteCredit(any(CashbookDto.class));
         cashbookCreditDebitHandler.setCase(2);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
+        when(mockBotUser.getRole()).thenReturn(Role.USER);
         //when
         BotApiMethod method = cashbookCreditDebitHandler.handleEvent(mockUpdate);
         //then

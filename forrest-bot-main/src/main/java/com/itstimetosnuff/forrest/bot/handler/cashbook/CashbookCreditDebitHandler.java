@@ -24,14 +24,14 @@ public class CashbookCreditDebitHandler extends AbsDialogHandler {
         variablesInit(update);
 
         if (data.equals(Buttons.SAVE_CALLBACK)) {
-            if (session.getEventLock().equals(EventType.CASHBOOK_DEBIT)){
+            if (session.getDialogueInfo().getEventLock().equals(EventType.CASHBOOK_DEBIT)){
                 session.getGoogleService().cashbookWriteDebit(cashbookDto);
             } else {
                 session.getGoogleService().cashbookWriteCredit(cashbookDto);
             }
             return finishAndClear(formatDto());
         }
-        switch (CREATE_CASE.getAndIncrement()) {
+        switch (session.getDialogueInfo().getPosition().getAndIncrement()) {
             case 0 : {
                 cashbookDto = new CashbookDto();
                 cashbookDto.setRecordDate(LocalDate.now());

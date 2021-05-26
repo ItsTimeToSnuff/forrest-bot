@@ -21,11 +21,11 @@ public class InMemorySessionStore implements SessionStore {
 
     @Override
     public void registerSession(Session session) {
-        sessions.put(session.getChatId(), session);
+        sessions.put(session.getUser().getChatId(), session);
     }
 
     @Override
     public void closeSession(Session session) {
-        sessions.remove(session.getChatId());
+        sessions.remove(session.getUser().getChatId());
     }
 }

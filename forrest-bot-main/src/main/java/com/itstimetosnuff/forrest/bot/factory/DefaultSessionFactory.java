@@ -1,6 +1,9 @@
 package com.itstimetosnuff.forrest.bot.factory;
 
+import com.itstimetosnuff.forrest.bot.entity.User;
 import com.itstimetosnuff.forrest.bot.enums.EventType;
+import com.itstimetosnuff.forrest.bot.enums.Role;
+import com.itstimetosnuff.forrest.bot.handler.DialogueInfo;
 import com.itstimetosnuff.forrest.bot.handler.cashbook.CashbookBalanceHandler;
 import com.itstimetosnuff.forrest.bot.handler.cashbook.CashbookCreditDebitHandler;
 import com.itstimetosnuff.forrest.bot.handler.cashbook.CashbookHandler;
@@ -27,24 +30,33 @@ import lombok.AllArgsConstructor;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 
 import java.util.ArrayList;
+import java.util.List;
 
 @AllArgsConstructor
 public class DefaultSessionFactory implements SessionFactory{
 
     private final SessionStore sessionStore;
     private final GoogleService googleService;
+    private final List<Long> adminsList;
 
     @Override
     public Session createSession(Long chatId) {
         HandlerRegistry handlerRegistry = new HandlerRegistry();
         ArrayList<BotApiMethod> executes = new ArrayList<>();
-        Session session = new DefaultSession(chatId, EventType.LOCK_FREE, executes, handlerRegistry, sessionStore, googleService);
-        registerHandlers(handlerRegistry, session);
+        Role role;
+        if (adminsList.contains(chatId)) {
+            role = Role.ADMIN;
+        } else {
+            role = Role.USER;
+        }
+        User user = new User(chatId, role);
+        Session session = new DefaultSession(user, new DialogueInfo(), executes, handlerRegistry, sessionStore, googleService);
+        registerHandlers(handlerRegistry, session, session.getUser().getRole());
         sessionStore.registerSession(session);
         return session;
     }
 
-    private void registerHandlers(HandlerRegistry handlerRegistry, Session session) {
+    private void registerHandlers(HandlerRegistry handlerRegistry, Session session, Role role) {
         handlerRegistry.register(EventType.START, new StartHandler(session));
         handlerRegistry.register(EventType.ERROR, new ErrorHandler(session));
         handlerRegistry.register(EventType.CANCEL, new CancelHandler(session));
@@ -60,9 +72,11 @@ public class DefaultSessionFactory implements SessionFactory{
         handlerRegistry.register(EventType.CASHBOOK, new CashbookHandler(session));
         handlerRegistry.register(EventType.CASHBOOK_DEBIT, new CashbookCreditDebitHandler(session));
         handlerRegistry.register(EventType.CASHBOOK_CREDIT, new CashbookCreditDebitHandler(session));
-        handlerRegistry.register(EventType.CASHBOOK_BALANCE, new CashbookBalanceHandler(session));
-        handlerRegistry.register(EventType.STATISTICS, new StatisticsHandler(session));
-        handlerRegistry.register(EventType.STATISTICS_MONTH, new PeriodStatisticsHandler(session));
-        handlerRegistry.register(EventType.STATISTICS_YEAR, new PeriodStatisticsHandler(session));
+        if (role == Role.ADMIN) {
+            handlerRegistry.register(EventType.CASHBOOK_BALANCE, new CashbookBalanceHandler(session));
+            handlerRegistry.register(EventType.STATISTICS, new StatisticsHandler(session));
+            handlerRegistry.register(EventType.STATISTICS_MONTH, new PeriodStatisticsHandler(session));
+            handlerRegistry.register(EventType.STATISTICS_YEAR, new PeriodStatisticsHandler(session));
+        }
     }
 }

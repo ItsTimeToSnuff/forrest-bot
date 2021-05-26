@@ -1,5 +1,6 @@
 package com.itstimetosnuff.forrest.bot.store;
 
+import com.itstimetosnuff.forrest.bot.entity.User;
 import com.itstimetosnuff.forrest.bot.session.Session;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,6 +21,8 @@ public class InMemorySessionStoreTest {
     private Session mockSession;
     @Mock
     private Map<Long, Session> mockSessions;
+    @Mock
+    private User mockUser;
 
     @InjectMocks
     private InMemorySessionStore sessionStore;
@@ -35,7 +38,8 @@ public class InMemorySessionStoreTest {
     @Test
     void whenInMemorySessionStoreRegisterSessionThenRegisterIt() {
         //given
-        when(mockSession.getChatId()).thenReturn(1L);
+        when(mockSession.getUser()).thenReturn(mockUser);
+        when(mockUser.getChatId()).thenReturn(1L);
         //when
         sessionStore.registerSession(mockSession);
         //then
@@ -45,7 +49,8 @@ public class InMemorySessionStoreTest {
     @Test
     void whenInMemorySessionStoreCloseSessionThenCloseIt() {
         //given
-        when(mockSession.getChatId()).thenReturn(1L);
+        when(mockSession.getUser()).thenReturn(mockUser);
+        when(mockUser.getChatId()).thenReturn(1L);
         //when
         sessionStore.closeSession(mockSession);
         //then

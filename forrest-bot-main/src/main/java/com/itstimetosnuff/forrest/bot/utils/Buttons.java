@@ -20,12 +20,18 @@ public final class Buttons {
     public static final String NO = "Нет";
     public static final String NO_CALLBACK = "no";
     public static final String CALENDAR = "calendar";
+    public static final String EMPTY_BUTTON = "Оставить пустым";
+    public static final String EMPTY_BUTTON_VALUE = " ";
 
     //games menu
     //reply keyboard
     public static final String GAMES_CREATE = "\uD83D\uDCC6 Новая игра";
     public static final String GAMES_AFTER = "\uD83D\uDCDD После игры";
     //inline keyboard
+    public static final String GAME_COMMON = "Обычный";
+    public static final String GAME_COMMON_CALLBACK = "Обычный";
+    public static final String GAME_POKUPON = "Покупон";
+    public static final String GAME_POKUPON_CALLBACK = "Покупон";
     public static final String CALENDAR_SCROLL_FORWARD = "Следующий";
     public static final String CALENDAR_SCROLL_FORWARD_CALLBACK = CALENDAR + "_next";
     public static final String CALENDAR_SCROLL_BACKWARD = "Предыдущий";

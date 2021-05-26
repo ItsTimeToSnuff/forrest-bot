@@ -18,7 +18,7 @@ public class CashbookHandler extends AbsBaseHandler {
         variablesInit(update);
         return sendMessage(
                 Buttons.ASK_FOR_HELP,
-                MainMenuKeyboard.cashbookMenu()
+                MainMenuKeyboard.cashbookMenu(session.getUser().getRole())
         );
     }
 }

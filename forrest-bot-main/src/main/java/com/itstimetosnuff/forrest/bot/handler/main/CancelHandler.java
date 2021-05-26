@@ -17,13 +17,13 @@ public class CancelHandler extends AbsBaseHandler {
     @Override
     public BotApiMethod handleEvent(Update update) {
         variablesInit(update);
-        session.setEventLock(EventType.LOCK_FREE);
-        MSG_DELETE_IDs.forEach(msg -> session.getExecutes().add(deleteMessage(msg)));
-        CREATE_CASE.set(0);
-        MSG_DELETE_IDs.clear();
+        session.getDialogueInfo().setEventLock(EventType.LOCK_FREE);
+        session.getDialogueInfo().getMsgToDelete().forEach(msg -> session.getExecutes().add(deleteMessage(msg)));
+        session.getDialogueInfo().getMsgToDelete().clear();
+        session.getDialogueInfo().getPosition().set(0);
         return sendMessage(
                 Buttons.ASK_FOR_HELP,
-                MainMenuKeyboard.mainMenu()
+                MainMenuKeyboard.mainMenu(session.getUser().getRole())
         );
     }
 }
