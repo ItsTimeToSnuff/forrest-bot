@@ -1,9 +1,9 @@
-#Forrest-bot
+# Forrest-bot
 
 It`s a CRM telegram bot for "For.Rest" paintball club. This bot uses 
 Google Spreadsheets like DB.
 
-##Functional
+## Functional
 - create a record of the new game in Google Calendar
 - write down statistics after the game
 - write down replenishment/costs from stock
@@ -12,15 +12,15 @@ Google Spreadsheets like DB.
 - get cashbook balance
 - get statistics for the current month/year
 
-##Release notes
+## Release notes
 
-- ###**_v1.1:_**
+- ### **_v1.1:_**
   - add roles: ```ADMIN```, ```USER```
   - add environmental variable ```ADMIN_ID_LIST``` to manage list of admins
   - fix bug with concurrent user access
   - add some small fixes and improvements 
 
-##Building project
+## Building project
 
 JDK 11 need to be installed and ```environmental variables``` need to be created:
 
@@ -43,7 +43,7 @@ Next from the project root dir run:
 
 to skip test phase add `-x test` to the previous command.
 
-##Running project
+## Running project
 
 From project root dir run:
 - Windows: 
