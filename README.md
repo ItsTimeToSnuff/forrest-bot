@@ -30,7 +30,7 @@ JDK 11 need to be installed and ```environmental variables``` need to be created
 - ```PORT```
 - ```ADMIN_ID_LIST```
 
-and had a ```google-credentials.json``` file at ```%PROJECT_ROOT_DIR%/token/```.
+and had a ```google-credentials.json``` file at ```{PROJECT_ROOT_DIR}/token/```.
 Also ```src/main/resources/dev.properties or.prod properties``` need to be edited, specifically: ```externalUrl```, ```internalUrl```. 
 And if you running it from the local machine, ```ngrok``` or similar program need to be installed.
 
@@ -47,9 +47,9 @@ to skip test phase add `-x test` to the previous command.
 
 From project root dir run:
 - Windows: 
-```java -jar forrest-bot-main/build/libs/forrest-bot-main.jar prod/dev.properties```
+```java -jar build/libs/forrest-bot-{VERSION}.jar prod/dev.properties```
 - Mac, Linux: 
-```./java -jar forrest-bot-main/build/libs/forrest-bot-main.jar prod/dev.properties```
+```./java -jar build/libs/forrest-bot-{VERSION}.jar prod/dev.properties```
 
 
 

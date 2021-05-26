@@ -1,5 +1,5 @@
 group 'com.itstimetosnuff.forrest.bot'
-version '1.1'
+version '1.1.1'
 
 wrapper {
     gradleVersion = '5.6.2'
@@ -24,9 +24,11 @@ configure(allprojects) { project->
             excludeTags 'slow'
             includeEngines 'junit-jupiter'
         }
+
         testLogging {
             events 'PASSED', 'FAILED', 'SKIPPED'
         }
+
         failFast = false
     }
 
@@ -56,16 +58,6 @@ configure(allprojects) { project->
 
 project('forrest-bot-main') {
 
-    jar {
-        enabled = true
-        manifest {
-            attributes ('Implementation-Title': 'Gradle Jar File Example',
-                    'Implementation-Version': '1.0',
-                    'Main-Class': 'com.itstimetosnuff.forrest.bot.BotStarter')
-        }
-        from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
-    }
-
     dependencies {
         compile project(':forrest-bot-google')
     }
@@ -74,5 +66,28 @@ project('forrest-bot-main') {
 project('forrest-bot-google') {
 
     dependencies {
+
     }
+}
+
+configurations {
+    childJars
+}
+
+dependencies {
+    subprojects.each { childJars project(it.path)}
+}
+
+jar {
+    enabled = true
+
+    manifest {
+        attributes ('Implementation-Title': rootProject.name,
+                'Implementation-Version': archiveVersion,
+                'Main-Class': 'com.itstimetosnuff.forrest.bot.BotStarter')
+    }
+
+    dependsOn configurations.childJars
+
+    from { configurations.childJars.collect { zipTree(it) } }
 }
