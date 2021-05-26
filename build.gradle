@@ -1,5 +1,5 @@
 group 'com.itstimetosnuff.forrest.bot'
-version '1.1.1'
+version '1.1.1' /*TODO: Reminder - if version changed Procfile must be changed to*/
 
 wrapper {
     gradleVersion = '5.6.2'
