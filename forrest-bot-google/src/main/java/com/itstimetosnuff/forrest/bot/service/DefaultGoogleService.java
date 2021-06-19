@@ -67,10 +67,10 @@ public class DefaultGoogleService implements GoogleService {
         insertEvent(event);
 
         //record phone number to spreadsheets
-        String range = PHONE_SHEET + "!A:A";
+        String range = PHONE_SHEET + "!A2";
         ValueRange data = new ValueRange();
         data.setValues(Collections.singletonList(Collections.singletonList(createGameDto.getPhone())));
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -96,7 +96,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -125,7 +125,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -154,7 +154,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -196,7 +196,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -215,7 +215,7 @@ public class DefaultGoogleService implements GoogleService {
                         )
                 )
         );
-        appendRaw(range, data);
+        appendRow(range, data);
     }
 
     @Override
@@ -310,7 +310,7 @@ public class DefaultGoogleService implements GoogleService {
         }
     }
 
-    private void appendRaw(String range, ValueRange data) {
+    private void appendRow(String range, ValueRange data) {
         try {
             data.setMajorDimension("ROWS");
             googleConfiguration
