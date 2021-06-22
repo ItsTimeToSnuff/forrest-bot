@@ -67,13 +67,12 @@ public class DefaultGoogleService implements GoogleService {
         insertEvent(event);
 
         //record phone number to spreadsheets
-        String range = PHONE_SHEET + "!A:B";
+        String range = PHONE_SHEET + "!C:C";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
-                        Arrays.asList(
-                                createGameDto.getPhone(),
-                                null)));
+                        Collections.singletonList(
+                                createGameDto.getPhone())));
         appendRow(range, data);
     }
 
