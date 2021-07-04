@@ -67,7 +67,7 @@ public class DefaultGoogleService implements GoogleService {
         insertEvent(event);
 
         //record phone number to spreadsheets
-        String range = PHONE_SHEET + "!A2";
+        String range = PHONE_SHEET + "!B:B";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
