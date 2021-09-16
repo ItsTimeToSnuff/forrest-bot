@@ -27,10 +27,13 @@ public class WarehouseBalanceHandler extends AbsBaseHandler {
 
     private String formatDto(WarehouseDto warehouseDto) {
         return "<b>Шаров</b>: " + warehouseDto.getBalls() + " ящ\n" +
-                "<b>Гранат</b>: " + warehouseDto.getGrenades() + " шт\n" +
+                "<b>Гранат картонных</b>: " + warehouseDto.getGrenades() + " шт\n" +
+                "<b>Гранат пластиковых</b>: " + warehouseDto.getGrenadesPlastic() + " шт\n" +
                 "<b>Маленьких флешек</b>: " + warehouseDto.getFlashS() + " шт\n" +
                 "<b>Средних флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
-                "<b>Больших дымов</b>: " + warehouseDto.getSmokeL() + " шт\n" +
+                "<b>Дымов S</b>: " + warehouseDto.getSmokeS() + " шт\n" +
+                "<b>Дымов M</b>: " + warehouseDto.getSmokeM() + " шт\n" +
+                "<b>Дымов XL</b>: " + warehouseDto.getSmokeXL() + " шт\n" +
                 "<b>Салфеток</b>: " + warehouseDto.getNaples() + " пачек\n" +
                 "<b>Моющего средства</b>: " + warehouseDto.getClean() + " бут";
     }

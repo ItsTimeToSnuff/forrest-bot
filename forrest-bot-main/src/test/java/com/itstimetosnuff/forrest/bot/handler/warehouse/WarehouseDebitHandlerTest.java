@@ -152,7 +152,7 @@ public class WarehouseDebitHandlerTest {
         //when
         BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
-        assertEquals(SendMessage.class, method.getClass());
+        assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
@@ -186,7 +186,7 @@ public class WarehouseDebitHandlerTest {
     void whenWarehouseDebitHandlerHandleEventCase6ThenReturnEditMessage() {
         //given
         warehouseDebitHandler.setCase(6);
-        doNothing().when(mockWarehouseDto).setFlashS(any());
+        doNothing().when(mockWarehouseDto).setGrenadesPlastic(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -200,6 +200,20 @@ public class WarehouseDebitHandlerTest {
     void whenWarehouseDebitHandlerHandleEventCase7ThenReturnEditMessage() {
         //given
         warehouseDebitHandler.setCase(7);
+        doNothing().when(mockWarehouseDto).setFlashS(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(EditMessageText.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseDebitHandlerHandleEventCase8ThenReturnEditMessage() {
+        //given
+        warehouseDebitHandler.setCase(8);
         doNothing().when(mockWarehouseDto).setFlashM(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
@@ -211,10 +225,38 @@ public class WarehouseDebitHandlerTest {
     }
 
     @Test
-    void whenWarehouseDebitHandlerHandleEventCase8NotNullSmokeThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase9ThenReturnEditMessage() {
         //given
-        warehouseDebitHandler.setCase(8);
-        doNothing().when(mockWarehouseDto).setSmokeL(any());
+        warehouseDebitHandler.setCase(9);
+        doNothing().when(mockWarehouseDto).setSmokeS(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(EditMessageText.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseDebitHandlerHandleEventCase10NotNullSmokeThenReturnSendMessage() {
+        //given
+        warehouseDebitHandler.setCase(10);
+        doNothing().when(mockWarehouseDto).setSmokeM(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(EditMessageText.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseDebitHandlerHandleEventCase11NotNullSmokeThenReturnSendMessage() {
+        //given
+        warehouseDebitHandler.setCase(11);
+        doNothing().when(mockWarehouseDto).setSmokeXL(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -225,22 +267,22 @@ public class WarehouseDebitHandlerTest {
     }
 
     @Test
-    void whenWarehouseDebitHandlerHandleEventCase8NullSmokeThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase11NullSmokeThenReturnSendMessage() {
         //given
-        warehouseDebitHandler.setCase(8);
+        warehouseDebitHandler.setCase(11);
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(Buttons.NO_CALLBACK);
         //when
         BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
-        assertEquals(SendMessage.class, method.getClass());
+        assertEquals(EditMessageText.class, method.getClass());
     }
 
     @Test
-    void whenWarehouseDebitHandlerHandleEventCase8SaveThenReturnSendMessage() {
+    void whenWarehouseDebitHandlerHandleEventCase11SaveThenReturnSendMessage() {
         //given
-        warehouseDebitHandler.setCase(8);
+        warehouseDebitHandler.setCase(11);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
@@ -254,9 +296,9 @@ public class WarehouseDebitHandlerTest {
     }
 
     @Test
-    void whenWarehouseDebitHandlerHandleEventCase13ThenReturnNull() {
+    void whenWarehouseDebitHandlerHandleEventCase12ThenReturnNull() {
         //given
-        warehouseDebitHandler.setCase(9);
+        warehouseDebitHandler.setCase(12);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);

@@ -31,11 +31,17 @@ public class StatisticsDto {
 
     private String spendGrenades;
 
+    private String spendGrenadesPlastic;
+
     private String spendFlashS;
 
     private String spendFlashM;
 
-    private String spendSmokeL;
+    private String spendSmokeS;
+
+    private String spendSmokeM;
+
+    private String spendSmokeXL;
 
     private String spendNapkins;
 

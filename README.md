@@ -14,6 +14,10 @@ Google Spreadsheets like DB.
 
 ## Release notes
 
+- ### **_v1.2:_**
+  - add new items to bot: smoke S, smoke XL, and plastic grenade
+  - refactor smoke L to smoke M
+
 - ### **_v1.1:_**
   - add roles: ```ADMIN```, ```USER```
   - add environmental variable ```ADMIN_ID_LIST``` to manage list of admins

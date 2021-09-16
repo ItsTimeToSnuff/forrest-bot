@@ -228,7 +228,7 @@ public class WarehouseCreditHandlerTest {
     void whenWarehouseCreditHandlerHandleEventCase6ThenReturnEditMessage() {
         //given
         warehouseCreditHandler.setCase(6);
-        doNothing().when(mockWarehouseDto).setFlashS(any());
+        doNothing().when(mockWarehouseDto).setGrenadesPlastic(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -242,7 +242,7 @@ public class WarehouseCreditHandlerTest {
     void whenWarehouseCreditHandlerHandleEventCase6WithEmptyDataThenReturnEditMessage() {
         //given
         warehouseCreditHandler.setCase(6);
-        doNothing().when(mockWarehouseDto).setFlashS(any());
+        doNothing().when(mockWarehouseDto).setGrenadesPlastic(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(EMPTY);
@@ -256,7 +256,7 @@ public class WarehouseCreditHandlerTest {
     void whenWarehouseCreditHandlerHandleEventCase7ThenReturnEditMessage() {
         //given
         warehouseCreditHandler.setCase(7);
-        doNothing().when(mockWarehouseDto).setFlashM(any());
+        doNothing().when(mockWarehouseDto).setFlashS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -270,6 +270,34 @@ public class WarehouseCreditHandlerTest {
     void whenWarehouseCreditHandlerHandleEventCase7WithEmptyDataThenReturnEditMessage() {
         //given
         warehouseCreditHandler.setCase(7);
+        doNothing().when(mockWarehouseDto).setFlashS(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn(EMPTY);
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase8ThenReturnEditMessage() {
+        //given
+        warehouseCreditHandler.setCase(8);
+        doNothing().when(mockWarehouseDto).setFlashM(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase8WithEmptyDataThenReturnEditMessage() {
+        //given
+        warehouseCreditHandler.setCase(8);
         doNothing().when(mockWarehouseDto).setFlashM(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
@@ -281,10 +309,10 @@ public class WarehouseCreditHandlerTest {
     }
 
     @Test
-    void whenWarehouseCreditHandlerHandleEventCase8NotNullSmokeThenReturnSendMessage() {
+    void whenWarehouseCreditHandlerHandleEventCase9ThenReturnEditMessage() {
         //given
-        warehouseCreditHandler.setCase(8);
-        doNothing().when(mockWarehouseDto).setSmokeL(any());
+        warehouseCreditHandler.setCase(9);
+        doNothing().when(mockWarehouseDto).setSmokeS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn("1");
@@ -295,22 +323,10 @@ public class WarehouseCreditHandlerTest {
     }
 
     @Test
-    void whenWarehouseCreditHandlerHandleEventCase8NullSmokeThenReturnSendMessage() {
+    void whenWarehouseCreditHandlerHandleEventCase9WithEmptyDataThenReturnEditMessage() {
         //given
-        warehouseCreditHandler.setCase(8);
-        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
-        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
-        when(mockCallbackQuery.getData()).thenReturn(Buttons.NO_CALLBACK);
-        //when
-        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
-        //then
-        assertEquals(SendMessage.class, method.getClass());
-    }
-
-    @Test
-    void whenWarehouseCreditHandlerHandleEventCase8EmptyDataSmokeThenReturnSendMessage() {
-        //given
-        warehouseCreditHandler.setCase(8);
+        warehouseCreditHandler.setCase(9);
+        doNothing().when(mockWarehouseDto).setSmokeS(any());
         when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
         when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
         when(mockCallbackQuery.getData()).thenReturn(EMPTY);
@@ -321,9 +337,77 @@ public class WarehouseCreditHandlerTest {
     }
 
     @Test
-    void whenWarehouseCreditHandlerHandleEventCase8SaveThenReturnSendMessage() {
+    void whenWarehouseCreditHandlerHandleEventCase10ThenReturnEditMessage() {
         //given
-        warehouseCreditHandler.setCase(8);
+        warehouseCreditHandler.setCase(10);
+        doNothing().when(mockWarehouseDto).setSmokeM(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase10WithEmptyDataThenReturnEditMessage() {
+        //given
+        warehouseCreditHandler.setCase(10);
+        doNothing().when(mockWarehouseDto).setSmokeM(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn(EMPTY);
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase11NotNullSmokeThenReturnSendMessage() {
+        //given
+        warehouseCreditHandler.setCase(11);
+        doNothing().when(mockWarehouseDto).setSmokeXL(any());
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn("1");
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase11NullSmokeThenReturnSendMessage() {
+        //given
+        warehouseCreditHandler.setCase(11);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn(Buttons.NO_CALLBACK);
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase11EmptyDataSmokeThenReturnSendMessage() {
+        //given
+        warehouseCreditHandler.setCase(11);
+        when(mockUpdate.getCallbackQuery()).thenReturn(mockCallbackQuery);
+        when(mockCallbackQuery.getMessage()).thenReturn(mockMessage);
+        when(mockCallbackQuery.getData()).thenReturn(EMPTY);
+        //when
+        BotApiMethod method = warehouseCreditHandler.handleEvent(mockUpdate);
+        //then
+        assertEquals(SendMessage.class, method.getClass());
+    }
+
+    @Test
+    void whenWarehouseCreditHandlerHandleEventCase11SaveThenReturnSendMessage() {
+        //given
+        warehouseCreditHandler.setCase(11);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(Buttons.SAVE_CALLBACK);
@@ -337,9 +421,9 @@ public class WarehouseCreditHandlerTest {
     }
 
     @Test
-    void whenWarehouseCreditHandlerHandleEventCase13ThenReturnNull() {
+    void whenWarehouseCreditHandlerHandleEventCase12ThenReturnNull() {
         //given
-        warehouseCreditHandler.setCase(9);
+        warehouseCreditHandler.setCase(12);
         when(mockUpdate.hasCallbackQuery()).thenReturn(false);
         when(mockUpdate.getMessage()).thenReturn(mockMessage);
         when(mockMessage.getText()).thenReturn(data);

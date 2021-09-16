@@ -17,11 +17,17 @@ public class WarehouseDto {
 
     private String grenades;
 
+    private String grenadesPlastic;
+
     private String flashS;
 
     private String flashM;
 
-    private String smokeL;
+    private String smokeS;
+
+    private String smokeM;
+
+    private String smokeXL;
 
     private String naples;
 

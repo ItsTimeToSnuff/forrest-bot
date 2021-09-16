@@ -52,10 +52,13 @@ public class PeriodStatisticsHandler extends AbsBaseHandler {
                 "<b>Сидели на беседках</b>: " + statisticsDto.getGazeboTimes() + " часов\n\n" +
                 "<b><i>------Статистика затрат со склада------</i></b>" + "\n" +
                 "<b>Шаров</b>: " + statisticsDto.getSpendBalls() + " ящиков\n" +
-                "<b>Гранат</b>: " + statisticsDto.getSpendGrenades() + " шт\n" +
+                "<b>Гранат картонных</b>: " + statisticsDto.getSpendGrenades() + " шт\n" +
+                "<b>Гранат пластиковых</b>: " + statisticsDto.getSpendGrenadesPlastic() + " шт\n" +
                 "<b>Маленьких флешек</b>: " + statisticsDto.getSpendFlashS() + " шт\n" +
                 "<b>Средних флешек</b>: " + statisticsDto.getSpendFlashM() + " шт\n" +
-                "<b>Больших дымов</b>: " + statisticsDto.getSpendSmokeL() + " шт\n" +
+                "<b>Дымов S</b>: " + statisticsDto.getSpendSmokeS() + " шт\n" +
+                "<b>Дымов M</b>: " + statisticsDto.getSpendSmokeM() + " шт\n" +
+                "<b>Дымов XL</b>: " + statisticsDto.getSpendSmokeXL() + " шт\n" +
                 "<b>Салфеток</b>: " + statisticsDto.getSpendNapkins() + " пачек\n" +
                 "<b>Моющего стредства</b>: " + statisticsDto.getSpendClean() + " бут\n";
     }

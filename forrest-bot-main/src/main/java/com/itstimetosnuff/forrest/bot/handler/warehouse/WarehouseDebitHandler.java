@@ -37,7 +37,7 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
             warehouseDto.setGrenades(EMPTY_VALUE);
             warehouseDto.setFlashS(EMPTY_VALUE);
             warehouseDto.setFlashM(EMPTY_VALUE);
-            warehouseDto.setSmokeL(EMPTY_VALUE);
+            warehouseDto.setSmokeM(EMPTY_VALUE);
         }
         switch (session.getDialogueInfo().getPosition().getAndIncrement()) {
             case 0: {
@@ -73,36 +73,57 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
             }
             case 4: {
                 return editMessage(
-                        "Выберите количество <b>гранат</b>",
+                        "Выберите количество <b>картонных гранат</b>",
                         WarehouseKeyboard.grenades()
                 );
             }
             case 5: {
                 warehouseDto.setGrenades(data);
                 return editMessage(
-                        "Выберите количество <b>маленьких флешек</b>",
+                        "Выберите количество <b>пластиковых гранат</b>",
                         WarehouseKeyboard.grenades()
                 );
             }
             case 6: {
+                warehouseDto.setGrenadesPlastic(data);
+                return editMessage(
+                        "Выберите количество <b>маленьких флешек</b>",
+                        WarehouseKeyboard.grenades()
+                );
+            }
+            case 7: {
                 warehouseDto.setFlashS(data);
                 return editMessage(
                         "Выберите количество <b>средних флешек</b>",
                         WarehouseKeyboard.grenades()
                 );
             }
-            case 7: {
+            case 8: {
                 warehouseDto.setFlashM(data);
                 return editMessage(
-                        "Выберите количество <b>больших дымов</b>",
+                        "Выберите количество <b>дымов S</b>",
                         WarehouseKeyboard.grenades()
                 );
             }
-            case 8: {
+            case 9: {
+                warehouseDto.setSmokeS(data);
+                return editMessage(
+                        "Выберите количество <b>дымов M</b>",
+                        WarehouseKeyboard.grenades()
+                );
+            }
+            case 10: {
+                warehouseDto.setSmokeM(data);
+                return editMessage(
+                        "Выберите количество <b>дымов XL</b>",
+                        WarehouseKeyboard.grenades()
+                );
+            }
+            case 11: {
                 if (!data.equals(Buttons.NO_CALLBACK)) {
-                    warehouseDto.setSmokeL(data);
+                    warehouseDto.setSmokeXL(data);
                 } else {
-                    warehouseDto.setSmokeL(EMPTY_VALUE);
+                    warehouseDto.setSmokeXL(EMPTY_VALUE);
                 }
                 addMsgDelete();
                 return sendSaveMessage(formatDto(warehouseDto));
@@ -113,10 +134,13 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
 
     private String formatDto(WarehouseDto warehouseDto) {
         return "<b>Шаров</b>: " + warehouseDto.getBalls() + " ящ\n" +
-                "<b>Гранат</b>: " + warehouseDto.getGrenades() + " шт\n" +
+                "<b>Гранат картонных</b>: " + warehouseDto.getGrenades() + " шт\n" +
+                "<b>Гранат пластиковых</b>: " + warehouseDto.getGrenadesPlastic() + " шт\n" +
                 "<b>Маленьких флешек</b>: " + warehouseDto.getFlashS() + " шт\n" +
                 "<b>Средних флешек</b>: " + warehouseDto.getFlashM() + " шт\n" +
-                "<b>Больших дымов</b>: " + warehouseDto.getSmokeL() + " шт\n" +
+                "<b>Дымов S</b>: " + warehouseDto.getSmokeS() + " шт\n" +
+                "<b>Дымов M</b>: " + warehouseDto.getSmokeM() + " шт\n" +
+                "<b>Дымов XL</b>: " + warehouseDto.getSmokeXL() + " шт\n" +
                 "<b>Салфеток</b>: " + warehouseDto.getNaples() + " пачек\n" +
                 "<b>Моющего средства</b>: " + warehouseDto.getClean() + " бут";
     }

@@ -130,7 +130,7 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceWarehouseGetBalanceThenReturnWarehouseDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(7,0);
+        initValueRanges(10,0);
         //given
         WarehouseDto warehouseDto = defaultGoogleService.warehouseGetBalance();
         //then
@@ -176,7 +176,7 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceStatisticsGetMonthThenReturnStatisticsDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(16,2);
+        initValueRanges(19,2);
         //given
         StatisticsDto statisticsDto = defaultGoogleService.statisticsGetMonth(LocalDate.of(2020, 3, 1));
         //then
@@ -188,11 +188,11 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceStatisticsGetYearThenReturnStatisticsDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(16,0);
+        initValueRanges(19,0);
         //given
         StatisticsDto statisticsDto = defaultGoogleService.statisticsGetYear(LocalDate.of(2020, 3, 1));
         //then
-        assertEquals("1", statisticsDto.getSpendSmokeL());
+        assertEquals("1", statisticsDto.getSpendSmokeM());
         verify(mockBatchGet, atLeastOnce()).execute();
     }
 
@@ -255,7 +255,7 @@ public class DefaultGoogleServiceTest {
         when(mockAfterGameDto.getGrenades()).thenReturn("1");
         when(mockAfterGameDto.getFlashS()).thenReturn("1");
         when(mockAfterGameDto.getFlashM()).thenReturn("1");
-        when(mockAfterGameDto.getSmokeL()).thenReturn("1");
+        when(mockAfterGameDto.getSmokeM()).thenReturn("1");
         when(mockAfterGameDto.getGazebo()).thenReturn("1");
         when(mockAfterGameDto.getRepair()).thenReturn("1");
     }
@@ -267,7 +267,7 @@ public class DefaultGoogleServiceTest {
         when(mockWarehouseDto.getGrenades()).thenReturn("1");
         when(mockWarehouseDto.getFlashS()).thenReturn("1");
         when(mockWarehouseDto.getFlashM()).thenReturn("1");
-        when(mockWarehouseDto.getSmokeL()).thenReturn("1");
+        when(mockWarehouseDto.getSmokeM()).thenReturn("1");
         when(mockWarehouseDto.getNaples()).thenReturn("1");
         when(mockWarehouseDto.getClean()).thenReturn("1");
     }

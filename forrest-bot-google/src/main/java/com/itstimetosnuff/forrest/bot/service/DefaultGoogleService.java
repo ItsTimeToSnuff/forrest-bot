@@ -40,6 +40,7 @@ public class DefaultGoogleService implements GoogleService {
     private static final String STATISTICS_SHEET = "'Прайс/Статистика'";
     private static final String ZERO_VALUE = "0";
     private static final String MISSING_COLUMN = "-";
+    private static final String EMPTY_CELL = "";
 
     private final GoogleConfiguration googleConfiguration;
 
@@ -78,7 +79,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void gameRecordAfter(AfterGameDto afterGameDto) {
-        String range = GAME_RECORDS_SHEET + "!A:M";
+        String range = GAME_RECORDS_SHEET + "!A:Y";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
@@ -92,7 +93,19 @@ public class DefaultGoogleService implements GoogleService {
                                 afterGameDto.getGrenades(),
                                 afterGameDto.getFlashS(),
                                 afterGameDto.getFlashM(),
-                                afterGameDto.getSmokeL(),
+                                afterGameDto.getSmokeM(),
+                                afterGameDto.getSmokeS(),
+                                afterGameDto.getSmokeXL(),
+                                afterGameDto.getGrenadesPlastic(),
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
                                 afterGameDto.getGazebo(),
                                 afterGameDto.getRepair(),
                                 afterGameDto.getPrepayment()
@@ -104,7 +117,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void warehouseWriteCredit(WarehouseDto warehouseDto) {
-        String range = WAREHOUSE_SHEET + "!A:P";
+        String range = WAREHOUSE_SHEET + "!A:Z";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
@@ -118,13 +131,23 @@ public class DefaultGoogleService implements GoogleService {
                                 ZERO_VALUE,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                EMPTY_CELL,
+                                EMPTY_CELL,
                                 warehouseDto.getBalls(),
                                 warehouseDto.getGrenades(),
                                 warehouseDto.getFlashS(),
                                 warehouseDto.getFlashM(),
-                                warehouseDto.getSmokeL(),
+                                warehouseDto.getSmokeM(),
                                 warehouseDto.getNaples(),
-                                warehouseDto.getClean()
+                                warehouseDto.getClean(),
+                                warehouseDto.getSmokeS(),
+                                warehouseDto.getSmokeXL(),
+                                warehouseDto.getGrenadesPlastic(),
+                                EMPTY_CELL,
+                                EMPTY_CELL
                         )
                 )
         );
@@ -133,7 +156,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void warehouseWriteDebit(WarehouseDto warehouseDto) {
-        String range = WAREHOUSE_SHEET + "!A:P";
+        String range = WAREHOUSE_SHEET + "!A:Z";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
@@ -144,16 +167,26 @@ public class DefaultGoogleService implements GoogleService {
                                 warehouseDto.getGrenades(),
                                 warehouseDto.getFlashS(),
                                 warehouseDto.getFlashM(),
-                                warehouseDto.getSmokeL(),
+                                warehouseDto.getSmokeM(),
                                 warehouseDto.getNaples(),
                                 warehouseDto.getClean(),
+                                warehouseDto.getSmokeS(),
+                                warehouseDto.getSmokeXL(),
+                                warehouseDto.getGrenadesPlastic(),
+                                EMPTY_CELL,
+                                EMPTY_CELL,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
                                 ZERO_VALUE,
-                                ZERO_VALUE
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                ZERO_VALUE,
+                                EMPTY_CELL,
+                                EMPTY_CELL
                         )
                 )
         );
@@ -163,13 +196,16 @@ public class DefaultGoogleService implements GoogleService {
     @Override
     public WarehouseDto warehouseGetBalance() {
         List<String> ranges = Arrays.asList(
-                WAREHOUSE_SHEET + "!R3",
-                WAREHOUSE_SHEET + "!S3",
-                WAREHOUSE_SHEET + "!T3",
-                WAREHOUSE_SHEET + "!U3",
-                WAREHOUSE_SHEET + "!V3",
-                WAREHOUSE_SHEET + "!W3",
-                WAREHOUSE_SHEET + "!X3"
+                WAREHOUSE_SHEET + "!A3",
+                WAREHOUSE_SHEET + "!B3",
+                WAREHOUSE_SHEET + "!C3",
+                WAREHOUSE_SHEET + "!D3",
+                WAREHOUSE_SHEET + "!E3",
+                WAREHOUSE_SHEET + "!F3",
+                WAREHOUSE_SHEET + "!G3",
+                WAREHOUSE_SHEET + "!H3",
+                WAREHOUSE_SHEET + "!I3",
+                WAREHOUSE_SHEET + "!J3"
         );
         List<ValueRange> data = batchGet(ranges).getValueRanges();
         WarehouseDto warehouseDto = new WarehouseDto();
@@ -177,9 +213,12 @@ public class DefaultGoogleService implements GoogleService {
         warehouseDto.setGrenades(parseValues(data, 1, 0));
         warehouseDto.setFlashS(parseValues(data, 2, 0));
         warehouseDto.setFlashM(parseValues(data, 3, 0));
-        warehouseDto.setSmokeL(parseValues(data, 4, 0));
+        warehouseDto.setSmokeM(parseValues(data, 4, 0));
         warehouseDto.setNaples(parseValues(data, 5, 0));
         warehouseDto.setClean(parseValues(data, 6, 0));
+        warehouseDto.setSmokeS(parseValues(data, 7, 0));
+        warehouseDto.setSmokeXL(parseValues(data, 8, 0));
+        warehouseDto.setGrenadesPlastic(parseValues(data, 9, 0));
         return warehouseDto;
     }
 
@@ -246,7 +285,10 @@ public class DefaultGoogleService implements GoogleService {
                 STATISTICS_SHEET + "!E24:E35",
                 STATISTICS_SHEET + "!F24:F35",
                 STATISTICS_SHEET + "!G24:G35",
-                STATISTICS_SHEET + "!H24:H35"
+                STATISTICS_SHEET + "!H24:H35",
+                STATISTICS_SHEET + "!I24:I35",
+                STATISTICS_SHEET + "!J24:J35",
+                STATISTICS_SHEET + "!K24:K35"
         );
         List<ValueRange> data = batchGet(ranges).getValueRanges();
         int secondInd = date.getMonthValue() - 1;
@@ -273,7 +315,10 @@ public class DefaultGoogleService implements GoogleService {
                 STATISTICS_SHEET + "!E36",
                 STATISTICS_SHEET + "!F36",
                 STATISTICS_SHEET + "!G36",
-                STATISTICS_SHEET + "!H36"
+                STATISTICS_SHEET + "!H36",
+                STATISTICS_SHEET + "!I36",
+                STATISTICS_SHEET + "!J36",
+                STATISTICS_SHEET + "!K36"
         );
         List<ValueRange> data = batchGet(ranges).getValueRanges();
         StatisticsDto statisticsDto = new StatisticsDto();
@@ -295,9 +340,12 @@ public class DefaultGoogleService implements GoogleService {
         statisticsDto.setSpendGrenades(parseValues(data, 10, secondInd));
         statisticsDto.setSpendFlashS(parseValues(data, 11, secondInd));
         statisticsDto.setSpendFlashM(parseValues(data, 12, secondInd));
-        statisticsDto.setSpendSmokeL(parseValues(data, 13, secondInd));
+        statisticsDto.setSpendSmokeM(parseValues(data, 13, secondInd));
         statisticsDto.setSpendNapkins(parseValues(data, 14, secondInd));
         statisticsDto.setSpendClean(parseValues(data, 15, secondInd));
+        statisticsDto.setSpendSmokeS(parseValues(data, 16, secondInd));
+        statisticsDto.setSpendSmokeXL(parseValues(data, 17, secondInd));
+        statisticsDto.setSpendGrenadesPlastic(parseValues(data, 18, secondInd));
         return statisticsDto;
     }
 
