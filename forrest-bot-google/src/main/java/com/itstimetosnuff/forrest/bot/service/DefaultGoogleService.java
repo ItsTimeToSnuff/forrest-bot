@@ -79,7 +79,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void gameRecordAfter(AfterGameDto afterGameDto) {
-        String range = GAME_RECORDS_SHEET + "!A9:Y";
+        String range = GAME_RECORDS_SHEET + "!A:Y";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
@@ -117,7 +117,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void warehouseWriteCredit(WarehouseDto warehouseDto) {
-        String range = WAREHOUSE_SHEET + "!A:Z";
+        String range = WAREHOUSE_SHEET + "!A8:Z";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
@@ -156,7 +156,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void warehouseWriteDebit(WarehouseDto warehouseDto) {
-        String range = WAREHOUSE_SHEET + "!A:Z";
+        String range = WAREHOUSE_SHEET + "!A8:Z";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
