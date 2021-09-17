@@ -152,7 +152,7 @@ public class WarehouseDebitHandlerTest {
         //when
         BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
-        assertEquals(EditMessageText.class, method.getClass());
+        assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
@@ -276,7 +276,7 @@ public class WarehouseDebitHandlerTest {
         //when
         BotApiMethod method = warehouseDebitHandler.handleEvent(mockUpdate);
         //then
-        assertEquals(EditMessageText.class, method.getClass());
+        assertEquals(SendMessage.class, method.getClass());
     }
 
     @Test
