@@ -79,7 +79,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void gameRecordAfter(AfterGameDto afterGameDto) {
-        String range = GAME_RECORDS_SHEET + "!A:Y";
+        String range = GAME_RECORDS_SHEET + "!A9:Y";
         ValueRange data = new ValueRange();
         data.setValues(
                 Collections.singletonList(
