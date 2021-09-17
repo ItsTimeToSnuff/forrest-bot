@@ -35,9 +35,12 @@ public class WarehouseDebitHandler extends AbsDialogHandler {
         if (data.equals(Buttons.NO_CALLBACK)) {
             session.getDialogueInfo().getPosition().set(11);
             warehouseDto.setGrenades(EMPTY_VALUE);
+            warehouseDto.setGrenadesPlastic(EMPTY_VALUE);
             warehouseDto.setFlashS(EMPTY_VALUE);
             warehouseDto.setFlashM(EMPTY_VALUE);
+            warehouseDto.setSmokeS(EMPTY_VALUE);
             warehouseDto.setSmokeM(EMPTY_VALUE);
+            warehouseDto.setSmokeXL(EMPTY_VALUE);
         }
         switch (session.getDialogueInfo().getPosition().getAndIncrement()) {
             case 0: {
