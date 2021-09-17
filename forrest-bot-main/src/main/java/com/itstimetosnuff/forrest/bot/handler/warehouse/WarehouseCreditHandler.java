@@ -34,7 +34,7 @@ public class WarehouseCreditHandler extends AbsDialogHandler {
             return finishAndClear(formatDto(warehouseDto));
         }
         if (data.equals(Buttons.NO_CALLBACK)) {
-            session.getDialogueInfo().getPosition().set(8);
+            session.getDialogueInfo().getPosition().set(11);
             warehouseDto.setGrenades(EMPTY_VALUE);
             warehouseDto.setGrenadesPlastic(EMPTY_VALUE);
             warehouseDto.setFlashS(EMPTY_VALUE);

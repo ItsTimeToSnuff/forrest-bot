@@ -36,7 +36,7 @@ public class GamesAfterHandler extends AbsDialogHandler {
             return finishAndClear(formatDto());
         }
         if (data.equals(Buttons.NO_CALLBACK)) {
-            session.getDialogueInfo().getPosition().set(10);
+            session.getDialogueInfo().getPosition().set(13);
             afterGameDto.setGrenades(EMPTY_VALUE);
             afterGameDto.setGrenadesPlastic(EMPTY_VALUE);
             afterGameDto.setFlashS(EMPTY_VALUE);
