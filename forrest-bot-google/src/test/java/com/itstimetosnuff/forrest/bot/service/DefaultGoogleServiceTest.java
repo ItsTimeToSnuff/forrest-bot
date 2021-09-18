@@ -25,11 +25,15 @@ import java.time.LocalTime;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -94,6 +98,47 @@ public class DefaultGoogleServiceTest {
     }
 
     @Test
+    void whenDefaultGoogleServiceGameCreateEventWithEmptyDescriptionShouldCreateIt() throws IOException, GeneralSecurityException {
+        //given
+        initCreateGameDtoMock();
+        when(mockCreateGameDto.getDescription()).thenReturn(" ");
+        initCalendarMock();
+        initSpreadsheetsAppendMock();
+        //when
+        defaultGoogleService.gameCreateEvent(mockCreateGameDto);
+        //then
+        verify(mockInsert, atLeastOnce()).execute();
+        verify(mockAppend, atLeastOnce()).execute();
+    }
+
+    @Test
+    void whenDefaultGoogleServiceGameCreateEventThrowCalendarExceptionShouldCatchIt() throws IOException, GeneralSecurityException {
+        //given
+        initCreateGameDtoMock();
+        doThrow(GeneralSecurityException.class).when(mockGoogleConfiguration).getCalendarService();
+        initSpreadsheetsAppendMock();
+        //when
+        defaultGoogleService.gameCreateEvent(mockCreateGameDto);
+        //then
+        verify(mockInsert, never()).execute();
+    }
+
+    @Test
+    void whenDefaultGoogleServiceGameCreateEventThrowSpreadsheetExceptionShouldCatchIt() throws IOException, GeneralSecurityException {
+        //given
+        initCreateGameDtoMock();
+        when(mockGoogleConfiguration.getCalendarId()).thenReturn("calendarId");
+        when(mockGoogleConfiguration.getCalendarService()).thenReturn(mockCalendar);
+        when(mockCalendar.events()).thenReturn(mockEvents);
+        when(mockEvents.insert(anyString(), any(Event.class))).thenReturn(mockInsert);
+        doThrow(GeneralSecurityException.class).when(mockGoogleConfiguration).getSheetsService();
+        //when
+        defaultGoogleService.gameCreateEvent(mockCreateGameDto);
+        //then
+        verify(mockAppend, never()).execute();
+    }
+
+    @Test
     void wheDefaultGoogleServiceGameRecordAfterShouldRecordIt() throws IOException, GeneralSecurityException {
         //given
         initAfterGameDto();
@@ -130,12 +175,20 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceWarehouseGetBalanceThenReturnWarehouseDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(10,0);
+        initValueRanges(10, 0);
         //given
         WarehouseDto warehouseDto = defaultGoogleService.warehouseGetBalance();
         //then
         assertEquals("1", warehouseDto.getBalls());
         verify(mockBatchGet, atLeastOnce()).execute();
+    }
+
+    @Test
+    void wheDefaultGoogleServiceWarehouseGetBalanceThrowExceptionThenCatchIt() throws IOException, GeneralSecurityException {
+        //when
+        doThrow(GeneralSecurityException.class).when(mockGoogleConfiguration).getSheetsService();
+        //then
+        assertThrows(NullPointerException.class, ()->defaultGoogleService.warehouseGetBalance());
     }
 
     @Test
@@ -164,7 +217,7 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceCashbookGetBalanceThenReturnBalance() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(1,0);
+        initValueRanges(1, 0);
         //given
         String balance = defaultGoogleService.cashbookGetBalance();
         //then
@@ -176,7 +229,7 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceStatisticsGetMonthThenReturnStatisticsDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(19,2);
+        initValueRanges(19, 2);
         //given
         StatisticsDto statisticsDto = defaultGoogleService.statisticsGetMonth(LocalDate.of(2020, 3, 1));
         //then
@@ -188,7 +241,7 @@ public class DefaultGoogleServiceTest {
     void wheDefaultGoogleServiceStatisticsGetYearThenReturnStatisticsDto() throws IOException, GeneralSecurityException {
         //given
         initSpreadsheetsBatchGetMock();
-        initValueRanges(19,0);
+        initValueRanges(19, 0);
         //given
         StatisticsDto statisticsDto = defaultGoogleService.statisticsGetYear(LocalDate.of(2020, 3, 1));
         //then

@@ -46,7 +46,7 @@ public class DefaultGoogleService implements GoogleService {
 
     @Override
     public void gameCreateEvent(CreateGameDto createGameDto) {
-        String summary = createGameDto.getGameType() + " " + createGameDto.getPeople() + " человек";
+        String summary = createGameDto.getGameType() + " " + createGameDto.getPeople() + " человек" + (createGameDto.getDescription().equals(" ") ? " " : "‼️Читай описание‼️");
         String description = createGameDto.getDescription() + "\n" + createGameDto.getPhone();
         LocalDateTime localStart = LocalDateTime.of(createGameDto.getDate(), createGameDto.getStartTime());
         LocalDateTime localEnd = LocalDateTime.of(createGameDto.getDate(), createGameDto.getEndTime());
